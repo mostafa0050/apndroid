@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.google.code.apndroid"
+      android:versionName="1.2.2" android:versionCode="7">
+    <application android:label="@string/app_name" android:icon="@drawable/apndroid">
+        <activity android:name=".MainActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".InfoActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+</application>
+
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"></uses-permission>
+    
+</manifest>
