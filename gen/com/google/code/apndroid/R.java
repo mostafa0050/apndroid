@@ -46,6 +46,7 @@ public final class R {
         public static final int close=0x7f040005;
         public static final int dontsave=0x7f040008;
         /**  Locale plug-in 
+ Locale plug-in 
          */
         public static final int help=0x7f040006;
         public static final int local_state_disabled=0x7f04000c;

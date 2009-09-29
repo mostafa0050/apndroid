@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">APNdroid</string>
+	<string name="title_enabled">3G/EDGE/GPRS Povoleno</string>
+	<string name="title_disabled">3G/EDGE/GPRS Zakázáno</string>
+	<string name="status_enabled">Přístup k internetu byl povolen.</string>
+	<string name="status_disabled">Přístup k internetu byl zakázán, stávající datové přenosy z dřívějška však mohou být stále aktivní.\n\n\Přípona <i>apndroid</i> byla přídána ke každému <b>názvu</b> a <b>typu APN</b> v menu Názvy přístupových bodů v Nastavení telefonu.</string>
+	<string name="close">Zavřít</string>
+
+	<!-- Locale plug-in -->
+	<string name="help">Help</string>
+    <string name="save">Save</string>
+    <string name="dontsave">Don\'t Save</string>
+    <string name="notification_hint">Show notification</string>
+    <string name="state_hint">Internet access </string>
+    <string name="local_state_enabled">Enabled</string>
+    <string name="local_state_disabled">Disabled</string>
+    <string-array name="state_labels">
+     	<item>Enabled</item>
+        <item>Disabled</item>
+    </string-array>
+</resources>
