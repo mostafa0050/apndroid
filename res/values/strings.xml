@@ -6,4 +6,17 @@
 	<string name="status_enabled">Internet access is enabled.</string>
 	<string name="status_disabled">Internet access is disabled. However, preexisting connections might be still alive.\n\n\<i>apndroid</i> suffix was added to <b>APN</b> and <b>APN type</b> of all Access Point Names in phone Settings.</string>
 	<string name="close">Close</string>
+	
+	<!-- Locale plug-in -->
+	<string name="help">Help</string>
+    <string name="save">Save</string>
+    <string name="dontsave">Don\'t Save</string>
+    <string name="notification_hint">Show notification</string>
+    <string name="state_hint">Internet access </string>
+    <string name="local_state_enabled">Enabled</string>
+    <string name="local_state_disabled">Disabled</string>
+    <string-array name="state_labels">
+     	<item>Enabled</item>
+        <item>Disabled</item>
+    </string-array>
 </resources>

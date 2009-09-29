@@ -15,6 +15,21 @@
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
+        
+		<activity android:name=".LocaleActivity"
+                  android:label="@string/app_name"
+                  android:icon="@drawable/icon_plugin_color_32"
+                  android:exported="true">
+			<intent-filter>
+                <action
+                    android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity>
+		<receiver android:name=".LocaleEventReceiver" >
+             <intent-filter>
+                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+             </intent-filter>
+         </receiver>
 </application>
 
     <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"></uses-permission>
