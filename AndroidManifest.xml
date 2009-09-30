@@ -15,22 +15,34 @@
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
-        
-		<activity android:name=".LocaleActivity"
+        <activity android:name=".LocaleActivity"
                   android:label="@string/app_name"
                   android:icon="@drawable/icon_plugin_color_32"
                   android:exported="true">
-			<intent-filter>
-                <action
-                    android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
         </activity>
-		<receiver android:name=".LocaleEventReceiver" >
-             <intent-filter>
-                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
-             </intent-filter>
-         </receiver>
-</application>
+        <receiver android:name=".LocaleEventReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".StatusReceiver" android:label="StatusReceiver">
+            <intent-filter>
+                <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
+                    android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="StatusWidget">
+            <meta-data android:name="android.appwidget.provider"
+                    android:resource="@xml/widget_configuration" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
+            </intent-filter>
+        </receiver>
+    </application>
 
     <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"></uses-permission>
     

@@ -24,12 +24,13 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 /**
- * 
  * @author Martin Adamek <martin.adamek@gmail.com>
+ * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
-public class DbUtil {
+public final class DbUtil {
 
     private static final String ID = "_id";
     private static final String APN = "apn";
@@ -38,8 +39,10 @@ public class DbUtil {
     // from frameworks/base/core/java/android/provider/Telephony.java
     static final Uri CONTENT_URI = Uri.parse("content://telephony/carriers");
 
+    private static final String DB_LIKE_SUFFIX = "%"+NameUtil.SUFFIX;
+    
     static List<ApnInfo> bgGetApnMap(ContentResolver contentResolver) {
-        Cursor mCursor = contentResolver.query(CONTENT_URI, new String[] { ID, APN, TYPE }, null, null, null);
+        Cursor mCursor = contentResolver.query(CONTENT_URI, new String[]{ID, APN, TYPE}, "current is not null", null, null);
         List<ApnInfo> result = new ArrayList<ApnInfo>();
         mCursor.moveToFirst();
         while (!mCursor.isAfterLast()) {
@@ -50,6 +53,54 @@ public class DbUtil {
             mCursor.moveToNext();
         }
         return result;
+    }
+
+    static int countAllApns(ContentResolver contentResolver){
+        Cursor cursor = null;
+        try {
+            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "current is not null", null, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            } else {
+                return -1;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    static int countEnabledApns(ContentResolver contentResolver) {
+        Cursor cursor = null;
+        try {
+            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "(apn not like ? and type not like ?) and current is not null", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX}, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            } else {
+                return -1;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    static int countDisabledApns(ContentResolver contentResolver){
+        Cursor cursor = null;
+        try {
+            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "(apn like ? or type like ?) and current is not null", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX}, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            } else {
+                return -1;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     static void bgEnableAllInDb(ContentResolver contentResolver) {
@@ -71,7 +122,7 @@ public class DbUtil {
             } else {
                 values.put(TYPE, newApnType);
             }
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[] { apnInfo.id });
+            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
         }
     }
 
@@ -83,7 +134,30 @@ public class DbUtil {
             values.put(APN, newApnName);
             String newApnType = NameUtil.addSuffixIfNotPresent(apnInfo.type);
             values.put(TYPE, newApnType);
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[] { apnInfo.id });
+            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
+        }
+    }
+
+    static void switchApnState(ContentResolver contentResolver, boolean enabled){
+        if (enabled){
+            bgDisableAllInDb(contentResolver);
+        }else{
+            bgEnableAllInDb(contentResolver);
+        }
+    }
+
+    static boolean getApnState(ContentResolver contentResolver){
+        int total = DbUtil.countAllApns(contentResolver);
+        int disabled = DbUtil.countDisabledApns(contentResolver);
+
+        if (disabled == 0) {
+            return true;
+        } else if (total == disabled) {
+            return false;
+        } else {
+            // inconsistency - some APNs have suffix, some not, let's remove our
+            // suffixes and let user to do whatever she wants
+            return false;
         }
     }
 

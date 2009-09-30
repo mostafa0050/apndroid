@@ -25,9 +25,9 @@ import com.google.code.apndroid.DbUtil.ApnInfo;
  * 
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class NameUtil {
+public final class NameUtil {
 
-    private static final String SUFFIX = "apndroid";
+    public static final String SUFFIX = "apndroid";
 
     static String addSuffixIfNotPresent(String currentName) {
         String result = currentName;

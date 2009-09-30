@@ -17,21 +17,15 @@
 
 package com.google.code.apndroid;
 
-import java.util.List;
-
-import com.google.code.apndroid.DbUtil.ApnInfo;
-
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 /**
- * 
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
 public class MainActivity extends Activity {
@@ -40,6 +34,7 @@ public class MainActivity extends Activity {
 
     private final Handler mHandler = new Handler();
     private boolean mIsNetEnabled;
+    private static final String MAIN_ACTIVITY_TAG = "MAIN_ACTIVITY_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,60 +42,13 @@ public class MainActivity extends Activity {
         // Fire off a thread to do some work that we shouldn't do directly in the UI thread
         Thread t = new Thread() {
             public void run() {
-                mIsNetEnabled = bgGetAPNState();
-                if (mIsNetEnabled) {
-                    DbUtil.bgDisableAllInDb(getContentResolver());
-                    mIsNetEnabled = false;
-                } else {
-                    DbUtil.bgEnableAllInDb(getContentResolver());
-                    mIsNetEnabled = true;
-                }
-                mHandler.post(mShowDialog);
+                mIsNetEnabled = DbUtil.getApnState(getContentResolver());
+                DbUtil.switchApnState(getContentResolver(), mIsNetEnabled);
+                NotificationUtils.sendStatusNotification(MainActivity.this, !mIsNetEnabled);//we switched apns state so we should send negation of isNetEnabled var
+                MainActivity.this.finish();
             }
         };
         t.start();
     }
-
-    /**
-     * Reading from DB, should run in background thread
-     * 
-     * @return current state
-     */
-    private boolean bgGetAPNState() {
-        List<ApnInfo> apns = DbUtil.bgGetApnMap(getContentResolver());
-        if (NameUtil.areAllEnabled(apns)) {
-            return true;
-        } else if (NameUtil.areAllDisabled(apns)) {
-            return false;
-        } else {
-            // inconsistency - some APNs have suffix, some not, let's remove our
-            // suffixes and let user to do whatever she wants
-            return false;
-        }
-    }
-
-    private final Runnable mShowDialog = new Runnable() {
-        public void run() {
-            int iconId = mIsNetEnabled ? R.drawable.stat_apndroid_on : R.drawable.stat_apndroid_off;
-            int barTextId = mIsNetEnabled ? R.string.title_enabled : R.string.title_disabled;
-            String barText = getResources().getString(barTextId);
-            Notification notification = new Notification(iconId, barText, System.currentTimeMillis());
-
-            Intent intent = new Intent(MainActivity.this, InfoActivity.class);
-            intent.putExtra(InfoActivity.EXTRA_IS_NET_ENABLED, mIsNetEnabled);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, -1 /* not used in SDK1.0 */, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            String notifyTitle = getResources().getString(R.string.app_name);
-            int notifySummaryId = mIsNetEnabled ? R.string.status_enabled : R.string.status_disabled;
-            String notifySummaryText = getResources().getString(notifySummaryId);
-            notification.setLatestEventInfo(MainActivity.this, notifyTitle, notifySummaryText, pendingIntent);
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFICATION_ID, notification);
-
-            MainActivity.this.finish();
-        }
-    };
 
 }
