@@ -18,12 +18,7 @@
 package com.google.code.apndroid;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
@@ -32,9 +27,7 @@ public class MainActivity extends Activity {
 
     static final int NOTIFICATION_ID = 1;
 
-    private final Handler mHandler = new Handler();
     private boolean mIsNetEnabled;
-    private static final String MAIN_ACTIVITY_TAG = "MAIN_ACTIVITY_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

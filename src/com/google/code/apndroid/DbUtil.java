@@ -24,7 +24,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
