@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
             public void run() {
                 mIsNetEnabled = DbUtil.getApnState(getContentResolver());
                 DbUtil.switchApnState(getContentResolver(), mIsNetEnabled);
-                NotificationUtils.sendStatusNotification(MainActivity.this, !mIsNetEnabled);//we switched apns state so we should send negation of isNetEnabled var
+                MessagingUtils.sendStatusMessage(MainActivity.this, !mIsNetEnabled, true /* temporary a constant value */);//we switched apns state so we should send negation of isNetEnabled var
                 MainActivity.this.finish();
             }
         };

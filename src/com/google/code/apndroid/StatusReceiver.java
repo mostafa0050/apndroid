@@ -13,23 +13,20 @@ import android.os.Bundle;
  */
 public class StatusReceiver extends BroadcastReceiver {
 
-    static final String APN_DROID_STATUS = "com.google.code.apndroid.intent.action.STATUS_CHANGED";
-    static final String APN_DROID_STATUS_EXTRA = "com.google.code.apndroid.intent.extra.STATUS";
-
     private static final int NOTIFICATION_ID = 1;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (APN_DROID_STATUS.equals(intent.getAction())) {
+        if (ApplicationConstants.APN_DROID_STATUS.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-            if (extras != null) {
-                boolean isNetEnabled = extras.getBoolean(APN_DROID_STATUS_EXTRA);
-                performStatusChange(context, isNetEnabled);
+            if (extras != null && extras.getBoolean(ApplicationConstants.APN_DROID_SHOW_NOTIFICATION, true)) {
+                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.APN_DROID_STATUS_EXTRA);
+                performNotificationStatusChange(context, isNetEnabled);
             }
         }
     }
 
-    private void performStatusChange(Context context, boolean isNetEnabled) {
+    private void performNotificationStatusChange(Context context, boolean isNetEnabled) {
         int iconId = isNetEnabled ? R.drawable.stat_apndroid_on : R.drawable.stat_apndroid_off;
         int barTextId = isNetEnabled ? R.string.title_enabled : R.string.title_disabled;
         String barText = context.getResources().getString(barTextId);
@@ -47,6 +44,6 @@ public class StatusReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
-    }    
+    }
 
 }

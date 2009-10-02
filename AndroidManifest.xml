@@ -31,7 +31,7 @@
         <receiver android:name=".StatusReceiver" android:label="StatusReceiver">
             <intent-filter>
                 <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
-                    android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
         </receiver>
         <receiver android:name="StatusWidget">
@@ -40,6 +40,11 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="SwitchStateReceiver">
+            <intent-filter>
+                <action android:name="com.google.code.apndroid.intent.action.CHANGE_STATUS" />                
             </intent-filter>
         </receiver>
     </application>

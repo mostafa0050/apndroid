@@ -15,14 +15,16 @@ public final class R {
     }
     public static final class drawable {
         public static final int apndroid=0x7f020000;
-        public static final int icon_dontsave_color_40=0x7f020001;
-        public static final int icon_help_color_40=0x7f020002;
-        public static final int icon_plugin_color_32=0x7f020003;
-        public static final int icon_plugin_color_48=0x7f020004;
-        public static final int icon_save_color_40=0x7f020005;
-        public static final int locale_border=0x7f020006;
-        public static final int stat_apndroid_off=0x7f020007;
-        public static final int stat_apndroid_on=0x7f020008;
+        public static final int apndroid_widget_off=0x7f020001;
+        public static final int apndroid_widget_on=0x7f020002;
+        public static final int icon_dontsave_color_40=0x7f020003;
+        public static final int icon_help_color_40=0x7f020004;
+        public static final int icon_plugin_color_32=0x7f020005;
+        public static final int icon_plugin_color_48=0x7f020006;
+        public static final int icon_save_color_40=0x7f020007;
+        public static final int locale_border=0x7f020008;
+        public static final int stat_apndroid_off=0x7f020009;
+        public static final int stat_apndroid_on=0x7f02000a;
     }
     public static final class id {
         public static final int locale_ellipsizing_title_text=0x7f080001;
@@ -32,7 +34,7 @@ public final class R {
         public static final int screen=0x7f080000;
         public static final int statespinner=0x7f080002;
         public static final int status_text=0x7f080004;
-        public static final int widgetButton=0x7f080005;
+        public static final int widgetCanvas=0x7f080005;
     }
     public static final class layout {
         public static final int locale_ellipsizing_title_text=0x7f030000;

@@ -8,21 +8,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.RemoteViews;
+import android.app.PendingIntent;
 
 /**
  * @author Pavlov "Zelgadis" Dmitry
  */
-public class StatusWidget extends AppWidgetProvider{
+public class StatusWidget extends AppWidgetProvider {
 
     private static final String WIDGET_SETTINGS = "com.google.code.apndroid.widget.SETTINGS";
     private static final String WIDGET_STATUS = "com.google.code.apndroid.widget.STATUS";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (StatusReceiver.APN_DROID_STATUS.equals(intent.getAction())){
+        if (ApplicationConstants.APN_DROID_STATUS.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-            if (extras != null && extras.containsKey(StatusReceiver.APN_DROID_STATUS_EXTRA)){
-                boolean isNetEnabled = extras.getBoolean(StatusReceiver.APN_DROID_STATUS_EXTRA);
+            if (extras != null && extras.containsKey(ApplicationConstants.APN_DROID_STATUS_EXTRA)) {
+                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.APN_DROID_STATUS_EXTRA);
                 AppWidgetManager manager = AppWidgetManager.getInstance(context);
                 int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, StatusWidget.class));
                 showWidget(context, manager, widgetIds, isNetEnabled);
@@ -32,7 +34,7 @@ public class StatusWidget extends AppWidgetProvider{
     }
 
     private void storeStatus(Context context, boolean netEnabled) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(WIDGET_SETTINGS, Context.MODE_PRIVATE).edit();        
+        SharedPreferences.Editor editor = context.getSharedPreferences(WIDGET_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putBoolean(WIDGET_STATUS, netEnabled);
         editor.commit();
     }
@@ -42,22 +44,27 @@ public class StatusWidget extends AppWidgetProvider{
         super.onUpdate(context, appWidgetManager, ints);
         SharedPreferences prefs = context.getSharedPreferences(WIDGET_SETTINGS, Context.MODE_PRIVATE);
         boolean isNetEnabled;
-        if (prefs.contains(WIDGET_STATUS)){
-            isNetEnabled = prefs.getBoolean(WIDGET_STATUS,true);
-        }else{
+        if (prefs.contains(WIDGET_STATUS)) {
+            isNetEnabled = prefs.getBoolean(WIDGET_STATUS, true);
+        } else {
             isNetEnabled = DbUtil.getApnState(context.getContentResolver());
         }
         showWidget(context, appWidgetManager, ints, isNetEnabled);
     }
 
-    private void showWidget(Context context, AppWidgetManager manager, int[] widgetIds, boolean status){
+    private void showWidget(Context context, AppWidgetManager manager, int[] widgetIds, boolean status) {
         RemoteViews views = createRemoteViews(context, status);
         manager.updateAppWidget(widgetIds, views);
     }
 
-    private RemoteViews createRemoteViews(Context context, boolean status){
+    private RemoteViews createRemoteViews(Context context, boolean status) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        views.setTextViewText(R.id.widgetButton, status ? "checked" : "unchecked");
+        int iconId = status ? R.drawable.apndroid_widget_on : R.drawable.apndroid_widget_off;
+        views.setInt(R.id.widgetCanvas, "setImageResource", iconId);        
+
+        Intent msg = new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS);
+        PendingIntent intent  = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widgetCanvas, intent);
         return views;
     }
 
