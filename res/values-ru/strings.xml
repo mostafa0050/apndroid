@@ -16,7 +16,7 @@
     <string name="local_state_enabled">Активирован</string>
     <string name="local_state_disabled">Деактивирован</string>
     <string-array name="state_labels">
-     	<item>Активирован</item>
-        <item>Деактивирован</item>
+     	<item>Вкл.</item>
+        <item>Выкл.</item>
     </string-array>
 </resources>

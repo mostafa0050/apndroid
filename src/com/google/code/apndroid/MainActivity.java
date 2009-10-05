@@ -33,15 +33,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Fire off a thread to do some work that we shouldn't do directly in the UI thread
-        Thread t = new Thread() {
-            public void run() {
-                mIsNetEnabled = DbUtil.getApnState(getContentResolver());
-                DbUtil.switchApnState(getContentResolver(), mIsNetEnabled);
-                MessagingUtils.sendStatusMessage(MainActivity.this, !mIsNetEnabled, true /* temporary a constant value */);//we switched apns state so we should send negation of isNetEnabled var
-                MainActivity.this.finish();
-            }
-        };
-        t.start();
+        setContentView(R.layout.main);
+//        Thread t = new Thread() {
+//            public void run() {
+//                mIsNetEnabled = DbUtil.getApnState(getContentResolver());
+//                DbUtil.switchApnState(getContentResolver(), mIsNetEnabled);
+//                MessagingUtils.sendStatusMessage(MainActivity.this, !mIsNetEnabled, true /* temporary a constant value */);//we switched apns state so we should send negation of isNetEnabled var
+//                MainActivity.this.finish();
+//            }
+//        };
+//        t.start();
     }
 
 }

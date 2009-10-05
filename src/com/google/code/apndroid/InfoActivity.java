@@ -57,7 +57,7 @@ public class InfoActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         super.onCreateDialog(id);
 
-        View view = getLayoutInflater().inflate(R.layout.main, null);
+        View view = getLayoutInflater().inflate(R.layout.notification_info, null);
         TextView statusText = (TextView) view.findViewById(R.id.status_text);
 
         int iconId = mIsNetEnabled ? R.drawable.stat_apndroid_on : R.drawable.stat_apndroid_off;

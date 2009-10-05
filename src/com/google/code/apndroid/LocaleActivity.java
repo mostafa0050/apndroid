@@ -59,10 +59,11 @@ public class LocaleActivity extends Activity {
 
         String breadcrumbString = getIntent().getStringExtra(com.twofortyfouram.Intent.EXTRA_STRING_BREADCRUMB);
 
-        if (breadcrumbString == null)
+        if (breadcrumbString == null) {
             breadcrumbString = getString(R.string.app_name);
-        else
+        } else {
             breadcrumbString = String.format("%s%s%s", breadcrumbString, com.twofortyfouram.Intent.BREADCRUMB_SEPARATOR, getString(R.string.app_name));
+        }
         ((TextView) findViewById(R.id.locale_ellipsizing_title_text)).setText(breadcrumbString);
         setTitle(breadcrumbString);
 
