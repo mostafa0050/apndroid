@@ -2,33 +2,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:gravity="top">
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-                  android:id="@+id/mms_row">
-        <TextView android:text="Ignore mms apns" android:id="@+id/mms_title"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="left"/>
-        <CheckBox android:id="@+id/mms_checkbox" android:enabled="true"
-                android:layout_toRightOf="@id/mms_title"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="right"/>
-    </RelativeLayout>
-    <RelativeLayout android:id="@+id/showNotificationRow"
-                  android:layout_width="fill_parent" android:layout_height="wrap_content"
-            android:layout_below="@id/mms_row" >
+                >
+    <TableLayout
+            android:id="@+id/settings_table"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"            >
 
-    </RelativeLayout>
-    <TextView android:id="@+id/header"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textColor="@android:color/black"
-              android:textStyle="bold"
-              android:textSize="@android:dimen/app_icon_size"/>
-    <TextView android:id="@+id/body"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_below="@id/header"/>
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="@string/internet_label"
+                android:textSize="9pt"
+                android:padding="3dip"
+                    android:gravity="left|bottom"/>
+            <CheckBox
+                android:id="@+id/internet_enabled_button"
+                android:padding="10dp"
+                />
+        </TableRow>
 
-</RelativeLayout>        
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="@string/mms_label"
+                android:padding="3dip"
+                    android:textSize="9pt"
+                    android:gravity="left|bottom"/>
+            <CheckBox
+                android:id="@+id/mms_enabled_button"
+                android:padding="10dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="@string/show_notification_label"
+                android:padding="3dip"
+                    android:textSize="9pt"
+                    android:gravity="left|bottom"/>
+            <CheckBox
+                android:id="@+id/show_notification_button"
+                android:padding="10dp"
+                />
+        </TableRow>
+        <View
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+    </TableLayout>
+    <Button
+            android:id="@+id/switch_button"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_table"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dip"            
+            android:text="@string/switch_apn_label"
+            android:textSize="9pt"
+            />
+
+</RelativeLayout>

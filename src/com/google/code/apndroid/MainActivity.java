@@ -18,31 +18,99 @@
 package com.google.code.apndroid;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
+import android.widget.*;
+import android.view.View;
+import android.content.SharedPreferences;
+import android.content.Context;
+import android.content.Intent;
+
+import java.util.List;
+import java.util.Map;
+import java.util.LinkedList;
+import java.util.HashMap;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     static final int NOTIFICATION_ID = 1;
 
-    private boolean mIsNetEnabled;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Fire off a thread to do some work that we shouldn't do directly in the UI thread
         setContentView(R.layout.main);
-//        Thread t = new Thread() {
-//            public void run() {
-//                mIsNetEnabled = DbUtil.getApnState(getContentResolver());
-//                DbUtil.switchApnState(getContentResolver(), mIsNetEnabled);
-//                MessagingUtils.sendStatusMessage(MainActivity.this, !mIsNetEnabled, true /* temporary a constant value */);//we switched apns state so we should send negation of isNetEnabled var
-//                MainActivity.this.finish();
-//            }
-//        };
-//        t.start();
+
+        initSettingsListener();
+        findViewById(R.id.switch_button).setOnClickListener(this);
+    }
+
+    private void initSettingsListener() {
+        sharedPreferences = getSharedPreferences(ApplicationConstants.AND_DROID_SETTINGS, Context.MODE_PRIVATE);
+        SettingsPersister persister = new SettingsPersister(sharedPreferences);
+
+        CheckBox checkBox = (CheckBox) findViewById(R.id.internet_enabled_button);
+        checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, true));
+        checkBox.setOnClickListener(persister);
+
+        checkBox = (CheckBox) findViewById(R.id.mms_enabled_button);
+        checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, true));
+        checkBox.setOnClickListener(persister);
+
+        checkBox = (CheckBox) findViewById(R.id.show_notification_button);
+        checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.APN_DROID_SHOW_NOTIFICATION, true));
+        checkBox.setOnClickListener(persister);
+    }
+
+    public void onClick(View view) {
+        sendBroadcast(new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS));
+    }
+
+    private void storeSettings(String settingsKey, boolean value) {
+        sharedPreferences.edit().putBoolean(settingsKey, value).commit();
+    }
+
+    //    @Override
+//    protected void onListItemClick(ListView listView, View view, int i, long l) {
+//        super.onListItemClick(listView, view, i, l);
+//    }
+
+    private static final class SettingsBinder implements SimpleAdapter.ViewBinder {
+        public boolean setViewValue(View view, Object o, String s) {
+
+            return true;
+        }
+    }
+
+    private static final class SettingsPersister implements View.OnClickListener {
+
+        private SharedPreferences sharedPreferences;
+
+        private SettingsPersister(SharedPreferences sharedPreferences) {
+            this.sharedPreferences = sharedPreferences;
+        }
+
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.internet_enabled_button:
+                    sharedPreferences.edit()
+                            .putBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, ((CheckBox) view).isChecked())
+                            .commit();
+                    break;
+                case R.id.mms_enabled_button:
+                    sharedPreferences.edit()
+                            .putBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, ((CheckBox) view).isChecked()).commit();
+                    break;
+                case R.id.show_notification_button:
+                    sharedPreferences.edit()
+                            .putBoolean(ApplicationConstants.AND_DROID_SETTINGS_SHOW_NOTIFICATION, ((CheckBox) view).isChecked()).commit();
+                    break;
+            }
+        }
     }
 
 }
