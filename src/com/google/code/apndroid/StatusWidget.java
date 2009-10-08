@@ -60,7 +60,7 @@ public class StatusWidget extends AppWidgetProvider {
     private RemoteViews createRemoteViews(Context context, boolean status) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         int iconId = status ? R.drawable.apndroid_widget_on : R.drawable.apndroid_widget_off;
-        views.setInt(R.id.widgetCanvas, "setImageResource", iconId);        
+        views.setImageViewResource(R.id.widgetCanvas, iconId);
 
         Intent msg = new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS);
         PendingIntent intent  = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
