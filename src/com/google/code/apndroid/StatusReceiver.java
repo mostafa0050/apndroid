@@ -28,9 +28,8 @@ public class StatusReceiver extends BroadcastReceiver {
 
     private void performNotificationStatusChange(Context context, boolean isNetEnabled) {
         int iconId = isNetEnabled ? R.drawable.stat_apndroid_on : R.drawable.stat_apndroid_off;
-        int barTextId = isNetEnabled ? R.string.title_enabled : R.string.title_disabled;
-        String barText = context.getResources().getString(barTextId);
-        Notification notification = new Notification(iconId, barText, System.currentTimeMillis());
+        // display notification icon without text
+        Notification notification = new Notification(iconId, null, System.currentTimeMillis());
 
         Intent intent = new Intent(context, InfoActivity.class);
         intent.putExtra(InfoActivity.EXTRA_IS_NET_ENABLED, isNetEnabled);
