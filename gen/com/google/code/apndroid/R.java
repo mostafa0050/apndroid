@@ -68,6 +68,7 @@ public final class R {
         /**  Locale plug-in 
  Locale plug-in 
  Locale plug-in 
+ Locale plug-in 
          */
         public static final int help=0x7f06000a;
         public static final int internet_label=0x7f060006;
