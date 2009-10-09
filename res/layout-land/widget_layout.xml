@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main"
-        android:layout_width="@dimen/appwidget_width"
-        android:layout_height="@dimen/appwidget_height"
+        android:layout_width="68dip"
+        android:layout_height="68dip"
         android:gravity="center"
         android:background="@drawable/appwidget_bg" >
         
