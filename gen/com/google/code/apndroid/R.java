@@ -29,11 +29,10 @@ public final class R {
         public static final int icon_dontsave_color_40=0x7f020008;
         public static final int icon_help_color_40=0x7f020009;
         public static final int icon_plugin_color_32=0x7f02000a;
-        public static final int icon_plugin_color_48=0x7f02000b;
-        public static final int icon_save_color_40=0x7f02000c;
-        public static final int locale_border=0x7f02000d;
-        public static final int stat_apndroid_off=0x7f02000e;
-        public static final int stat_apndroid_on=0x7f02000f;
+        public static final int icon_save_color_40=0x7f02000b;
+        public static final int locale_border=0x7f02000c;
+        public static final int stat_apndroid_off=0x7f02000d;
+        public static final int stat_apndroid_on=0x7f02000e;
     }
     public static final class id {
         public static final int internet_enabled_button=0x7f090005;
