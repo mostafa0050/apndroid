@@ -88,9 +88,10 @@ public final class ApnDao {
         }
     }
 
-    void enableAllInDb() {
+    boolean enableAllInDb() {
         List<ApnInfo> apns = getDisabledApnsMap();
         enableAllInDb(apns);
+        return true;//we always return true because in any situation we can reset all apns to initial state
     }
 
     /**
@@ -114,7 +115,11 @@ public final class ApnDao {
         }
     }
 
-
+    /**
+     * Creates list of apn dtos from a DB cursor
+     * @param mCursor db cursor with select result set
+     * @return list of APN dtos
+     */
     private List<ApnInfo> createApnList(Cursor mCursor) {
         List<ApnInfo> result = new ArrayList<ApnInfo>();
         mCursor.moveToFirst();
@@ -128,8 +133,15 @@ public final class ApnDao {
         return result;
     }
 
-    void disableAllInDb() {
+    /**
+     * Tries to disable apn's according to user preferences.
+     * @return {@code true} if one o more apns changed and {@code false} if all APNs did not changed their states
+     */
+    boolean disableAllInDb() {
         List<ApnInfo> apns = getEnabledApnsMap();
+
+        if (apns.isEmpty()) return false;
+        
         final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
@@ -139,29 +151,40 @@ public final class ApnDao {
             values.put(TYPE, newApnType);
             contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
         }
+        return true;
     }
 
     /**
-     * Calculates current apn state and perfroms switch to another (on -> off, off->on)
+     * Calculates current apn state and try to perfrom switching to another (on -> off, off->on) state.
+     * Switch is always successfull if we are in "disabled" state (any APN has our prefix), but not always
+     * available in enabled state.
+     * <br/>
+     * If in enabled state query result set is empty, then we stay in the same state. If result set is not empty,
+     * then we switch to another state (off, with disabled APN's according to user preferences)
      *
-     * @return new apn state ({@code true} if apn is now enabled, and {@code false} if apn is disabled)
+     * @return new apn state ({@code true} if apn is now enabled, and {@code false} if apn is disabled).
+     *
      */
     boolean switchApnState() {
         boolean currentState = getApnState();
-        switchApnState(currentState);
-        return !currentState;
+        if (switchApnState(currentState)){
+            return !currentState;
+        }else{
+            return currentState;
+        }
     }
 
     /**
      * Perorms switching apns work state according to passed state parameter
      *
      * @param enabled apn state. this method tries to make a switch to another state( enabled == true -> off, enabled == false -> on)
+     * @return {@code true} if switch was successfull (apn state changed) and {@code false} if apn state was not changed
      */
-    void switchApnState(boolean enabled) {
+    boolean switchApnState(boolean enabled) {
         if (enabled) {
-            disableAllInDb();
+            return disableAllInDb();
         } else {
-            enableAllInDb();
+            return enableAllInDb();
         }
     }
 

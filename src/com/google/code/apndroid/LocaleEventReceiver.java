@@ -48,8 +48,8 @@ public class LocaleEventReceiver extends BroadcastReceiver {
                 }
                 boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
 
-                dao.switchApnState(currentState);
-                MessagingUtils.sendStatusMessage(context, targetState, showNotification);
+                boolean resultState = dao.switchApnState(currentState);
+                MessagingUtils.sendStatusMessage(context, resultState, showNotification);
             }
         }
     }
