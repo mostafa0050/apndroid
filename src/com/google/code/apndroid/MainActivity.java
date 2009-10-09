@@ -18,18 +18,12 @@
 package com.google.code.apndroid;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.os.Bundle;
-import android.widget.*;
-import android.view.View;
-import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
-
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedList;
-import java.util.HashMap;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
@@ -68,22 +62,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     public void onClick(View view) {
         sendBroadcast(new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS));
-    }
-
-    private void storeSettings(String settingsKey, boolean value) {
-        sharedPreferences.edit().putBoolean(settingsKey, value).commit();
-    }
-
-    //    @Override
-//    protected void onListItemClick(ListView listView, View view, int i, long l) {
-//        super.onListItemClick(listView, view, i, l);
-//    }
-
-    private static final class SettingsBinder implements SimpleAdapter.ViewBinder {
-        public boolean setViewValue(View view, Object o, String s) {
-
-            return true;
-        }
     }
 
     private static final class SettingsPersister implements View.OnClickListener {
