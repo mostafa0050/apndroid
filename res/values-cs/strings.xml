@@ -7,16 +7,20 @@
 	<string name="status_disabled">Přístup k internetu byl zakázán, stávající datové přenosy z dřívějška však mohou být stále aktivní.\n\n\Přípona <i>apndroid</i> byla přídána ke každému <b>názvu</b> a <b>typu APN</b> v menu Názvy přístupových bodů v Nastavení telefonu.</string>
 	<string name="close">Zavřít</string>
 
+    <string name="internet_label">Internet povolen</string>
+    <string name="mms_label">MMS povoleno</string>
+    <string name="show_notification_label">Zobrazit notifikace</string>
+    <string name="switch_apn_label">Přepnout</string>
 	<!-- Locale plug-in -->
-	<string name="help">Help</string>
-    <string name="save">Save</string>
-    <string name="dontsave">Don\'t Save</string>
-    <string name="notification_hint">Show notification</string>
-    <string name="state_hint">Internet access </string>
-    <string name="local_state_enabled">Enabled</string>
-    <string name="local_state_disabled">Disabled</string>
+	<string name="help">Pomoc</string>
+    <string name="save">Uložit</string>
+    <string name="dontsave">Neuložit</string>
+    <string name="notification_hint">Zobrazit notifikace</string>
+    <string name="state_hint">Přístup k internetu</string>
+    <string name="local_state_enabled">Povolen</string>
+    <string name="local_state_disabled">Zakázán</string>
     <string-array name="state_labels">
-     	<item>Enabled</item>
-        <item>Disabled</item>
+     	<item>Povolen</item>
+        <item>Zakázán</item>
     </string-array>
 </resources>
