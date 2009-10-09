@@ -8,15 +8,15 @@
 	<string name="close">Zavřít</string>
 
     <string name="internet_label">Internet povolen</string>
-    <string name="mms_label">MMS povoleno</string>
+    <string name="mms_label">MMS povoleny</string>
     <string name="show_notification_label">Zobrazit notifikace</string>
     <string name="switch_apn_label">Přepnout</string>
 	<!-- Locale plug-in -->
-	<string name="help">Pomoc</string>
+	<string name="help">Nápověda</string>
     <string name="save">Uložit</string>
     <string name="dontsave">Neuložit</string>
     <string name="notification_hint">Zobrazit notifikace</string>
-    <string name="state_hint">Přístup k internetu</string>
+    <string name="state_hint">Přístup k Internetu</string>
     <string name="local_state_enabled">Povolen</string>
     <string name="local_state_disabled">Zakázán</string>
     <string-array name="state_labels">
