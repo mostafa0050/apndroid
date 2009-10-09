@@ -18,13 +18,11 @@
 package com.google.code.apndroid;
 
 /**
- * 
  * @author Julien Muniak <julien.muniak@gmail.com>
  */
 public final class LocaleConstants {
-    
-    private LocaleConstants()
-    {
+
+    private LocaleConstants() {
         throw new UnsupportedOperationException("LocaleConstants(): Cannot instantiate Constants");
     }
 

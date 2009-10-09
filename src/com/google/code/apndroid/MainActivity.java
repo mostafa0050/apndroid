@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.SimpleAdapter;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
@@ -33,6 +34,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     static final int NOTIFICATION_ID = 1;
 
     private SharedPreferences sharedPreferences;
+
+    private SettingsPersister settingsPersister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void initSettingsListener() {
         sharedPreferences = getSharedPreferences(ApplicationConstants.AND_DROID_SETTINGS, Context.MODE_PRIVATE);
-        SettingsPersister persister = new SettingsPersister(sharedPreferences);
+        
+        SettingsPersister persister = settingsPersister = new SettingsPersister(sharedPreferences);
 
         CheckBox checkBox = (CheckBox) findViewById(R.id.internet_enabled_button);
         checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, true));
@@ -61,33 +65,40 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     public void onClick(View view) {
+        settingsPersister.persist();
         sendBroadcast(new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS));
     }
 
-    private static final class SettingsPersister implements View.OnClickListener {
+    @Override
+    protected void onStop() {
+        super.onStop();
+        settingsPersister.persist();
+    }
 
-        private SharedPreferences sharedPreferences;
+    private static final class SettingsPersister implements View.OnClickListener {
+        
+        private SharedPreferences.Editor editor;
 
         private SettingsPersister(SharedPreferences sharedPreferences) {
-            this.sharedPreferences = sharedPreferences;
+            editor = sharedPreferences.edit();
         }
 
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.internet_enabled_button:
-                    sharedPreferences.edit()
-                            .putBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, ((CheckBox) view).isChecked())
-                            .commit();
+                    editor.putBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, ((CheckBox) view).isChecked());
                     break;
                 case R.id.mms_enabled_button:
-                    sharedPreferences.edit()
-                            .putBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, ((CheckBox) view).isChecked()).commit();
+                    editor.putBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, ((CheckBox) view).isChecked());
                     break;
                 case R.id.show_notification_button:
-                    sharedPreferences.edit()
-                            .putBoolean(ApplicationConstants.AND_DROID_SETTINGS_SHOW_NOTIFICATION, ((CheckBox) view).isChecked()).commit();
+                    editor.putBoolean(ApplicationConstants.AND_DROID_SETTINGS_SHOW_NOTIFICATION, ((CheckBox) view).isChecked());
                     break;
             }
+        }
+
+        public void persist(){
+            editor.commit();
         }
     }
 

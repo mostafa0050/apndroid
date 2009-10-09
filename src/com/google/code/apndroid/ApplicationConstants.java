@@ -22,7 +22,7 @@ package com.google.code.apndroid;
  * Date: 03.10.2009
  */
 public final class ApplicationConstants {
-    
+    static final String APP_LOG = "apndroid.log_tag";
     static final String APN_DROID_STATUS = "com.google.code.apndroid.intent.action.STATUS_CHANGED";
     static final String APN_DROID_STATUS_EXTRA = "com.google.code.apndroid.intent.extra.STATUS";
 

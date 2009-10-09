@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * 
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
 public class InfoActivity extends Activity {

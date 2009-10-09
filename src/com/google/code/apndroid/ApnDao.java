@@ -17,19 +17,20 @@
 
 package com.google.code.apndroid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
-public final class DbUtil {
+public final class ApnDao {
 
     private static final String ID = "_id";
     private static final String APN = "apn";
@@ -40,15 +41,42 @@ public final class DbUtil {
 
     private static final String DB_LIKE_SUFFIX = "%" + NameUtil.SUFFIX;
 
-    static List<ApnInfo> getEnabledApnsMap(ContentResolver contentResolver) {
-        return selectApnInfo(contentResolver, "current is not null", null);
+    private ContentResolver contentResolver;
+
+    private boolean modifyInternet = true;
+    private boolean modifyMms = true;
+
+    public ApnDao(ContentResolver contentResolver, boolean modifyInternet, boolean modifyMms) {
+        this.contentResolver = contentResolver;
+        this.modifyInternet = modifyInternet;
+        this.modifyMms = modifyMms;
     }
 
-    static List<ApnInfo> getDisabledApnsMap(ContentResolver contentResolver) {
-        return selectApnInfo(contentResolver, "apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
+    public ApnDao(ContentResolver contentResolver) {
+        this.contentResolver = contentResolver;
     }
 
-    private static List<ApnInfo> selectApnInfo(ContentResolver contentResolver, String whereQuery, String[] whereParams) {
+    List<ApnInfo> getEnabledApnsMap() {
+        String query;
+        boolean modifyInternet = this.modifyInternet;
+        boolean modifyMms = this.modifyMms;
+        if (modifyInternet && modifyMms) {
+            query = "current is not null";
+        } else if (modifyInternet && !modifyMms) {
+            query = "(not lower(type)='mms' or type is null) and current is not null";
+        } else if (!modifyInternet && modifyMms) {
+            query = "lower(type)='mms' and current is not null";
+        } else {
+            return Collections.EMPTY_LIST;
+        }
+        return selectApnInfo(query, null);
+    }
+
+    List<ApnInfo> getDisabledApnsMap() {
+        return selectApnInfo("apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
+    }
+
+    private List<ApnInfo> selectApnInfo(String whereQuery, String[] whereParams) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(CONTENT_URI, new String[]{ID, APN, TYPE}, whereQuery, whereParams, null);
@@ -60,28 +88,18 @@ public final class DbUtil {
         }
     }
 
-    private static List<ApnInfo> createApnList(Cursor mCursor) {
-        List<ApnInfo> result = new ArrayList<ApnInfo>();
-        mCursor.moveToFirst();
-        while (!mCursor.isAfterLast()) {
-            String id = mCursor.getString(0);
-            String apn = mCursor.getString(1);
-            String type = mCursor.getString(2);
-            result.add(new ApnInfo(id, apn, type));
-            mCursor.moveToNext();
-        }
-        return result;
-    }
-
-    static void bgEnableAllInDb(ContentResolver contentResolver) {
-        List<ApnInfo> apns = getDisabledApnsMap(contentResolver);
-        bgEnableAllInDb(contentResolver, apns);
+    void enableAllInDb() {
+        List<ApnInfo> apns = getDisabledApnsMap();
+        enableAllInDb(apns);
     }
 
     /**
      * Use this one if you have fresh list of APNs already and you can save one query to DB
+     *
+     * @param apns list of apns data to modify
      */
-    static void bgEnableAllInDb(ContentResolver contentResolver, List<ApnInfo> apns) {
+    void enableAllInDb(List<ApnInfo> apns) {
+        final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
             String newApnName = NameUtil.removeSuffixIfPresent(apnInfo.apn);
@@ -96,8 +114,23 @@ public final class DbUtil {
         }
     }
 
-    static void bgDisableAllInDb(ContentResolver contentResolver) {
-        List<ApnInfo> apns = getEnabledApnsMap(contentResolver);
+
+    private List<ApnInfo> createApnList(Cursor mCursor) {
+        List<ApnInfo> result = new ArrayList<ApnInfo>();
+        mCursor.moveToFirst();
+        while (!mCursor.isAfterLast()) {
+            String id = mCursor.getString(0);
+            String apn = mCursor.getString(1);
+            String type = mCursor.getString(2);
+            result.add(new ApnInfo(id, apn, type));
+            mCursor.moveToNext();
+        }
+        return result;
+    }
+
+    void disableAllInDb() {
+        List<ApnInfo> apns = getEnabledApnsMap();
+        final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
             String newApnName = NameUtil.addSuffixIfNotPresent(apnInfo.apn);
@@ -110,38 +143,38 @@ public final class DbUtil {
 
     /**
      * Calculates current apn state and perfroms switch to another (on -> off, off->on)
-     * @param contentResolver content resolver for queries
-     * @return new apn state ({@code true} if apn is now enabled, and {@code false} if apn is disabled) 
+     *
+     * @return new apn state ({@code true} if apn is now enabled, and {@code false} if apn is disabled)
      */
-    static boolean switchApnState(ContentResolver contentResolver){
-        boolean currentState = getApnState(contentResolver);
-        switchApnState(contentResolver, currentState);
+    boolean switchApnState() {
+        boolean currentState = getApnState();
+        switchApnState(currentState);
         return !currentState;
     }
 
     /**
      * Perorms switching apns work state according to passed state parameter
-     * @param contentResolver content resolver  for queries
+     *
      * @param enabled apn state. this method tries to make a switch to another state( enabled == true -> off, enabled == false -> on)
      */
-    static void switchApnState(ContentResolver contentResolver, boolean enabled) {
+    void switchApnState(boolean enabled) {
         if (enabled) {
-            bgDisableAllInDb(contentResolver);
+            disableAllInDb();
         } else {
-            bgEnableAllInDb(contentResolver);
+            enableAllInDb();
         }
     }
 
     /**
      * Calculates current apn state
-     * @param contentResolver content resolver for queries
+     *
      * @return current apn state;
      */
-    static boolean getApnState(ContentResolver contentResolver) {
-        return countDisabledApns(contentResolver) == 0;
+    boolean getApnState() {
+        return countDisabledApns() == 0;
     }
 
-    static int countAllApns(ContentResolver contentResolver) {
+    int countAllApns() {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "current is not null", null, null);
@@ -157,7 +190,7 @@ public final class DbUtil {
         }
     }
 
-    static int countEnabledApns(ContentResolver contentResolver) {
+    int countEnabledApns() {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "apn not like ? and type not like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX}, null);
@@ -173,7 +206,7 @@ public final class DbUtil {
         }
     }
 
-    static int countDisabledApns(ContentResolver contentResolver) {
+    int countDisabledApns() {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX}, null);
@@ -189,10 +222,26 @@ public final class DbUtil {
         }
     }
 
+    public boolean isModifyInternet() {
+        return modifyInternet;
+    }
+
+    public void setModifyInternet(boolean modifyInternet) {
+        this.modifyInternet = modifyInternet;
+    }
+
+    public boolean isModifyMms() {
+        return modifyMms;
+    }
+
+    public void setModifyMms(boolean modifyMms) {
+        this.modifyMms = modifyMms;
+    }
+
     /**
      * Selection of few interesting columns from APN table
      */
-    static class ApnInfo {
+    static final class ApnInfo {
 
         final String id;
         final String apn;
