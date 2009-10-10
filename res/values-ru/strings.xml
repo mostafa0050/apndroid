@@ -6,7 +6,10 @@
 	<string name="status_enabled">Доступ в Интернет включён</string>
 	<string name="status_disabled">Доступ в Интерент выключен. Однако уже существующие соединения всё ещё могут работать.\n\n\<i>apndroid</i> суффикс был добавлен к полям <b>APN</b> и <b>APN type</b> всех текущих провайдеров</string>
 	<string name="close">Закрыть</string>
-	
+	<string name="internet_label">Переключать интернет</string>
+    <string name="mms_label">Переключать MMS</string>
+    <string name="show_notification_label">Показывать уведомление</string>
+    <string name="switch_apn_label">Переключать</string>
 	<!-- Locale plug-in -->
 	<string name="help">Помощь</string>
     <string name="save">Сохранить</string>

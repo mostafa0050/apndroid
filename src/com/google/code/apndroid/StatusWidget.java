@@ -17,6 +17,7 @@
 
 package com.google.code.apndroid;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -25,7 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.RemoteViews;
-import android.app.PendingIntent;
 
 /**
  * @author Pavlov "Zelgadis" Dmitry
@@ -64,7 +64,7 @@ public class StatusWidget extends AppWidgetProvider {
         if (prefs.contains(WIDGET_STATUS)) {
             isNetEnabled = prefs.getBoolean(WIDGET_STATUS, true);
         } else {
-            isNetEnabled = DbUtil.getApnState(context.getContentResolver());
+            isNetEnabled = new ApnDao(context.getContentResolver()).getApnState();
         }
         showWidget(context, appWidgetManager, ints, isNetEnabled);
     }
@@ -80,7 +80,7 @@ public class StatusWidget extends AppWidgetProvider {
         views.setImageViewResource(R.id.widgetCanvas, iconId);
 
         Intent msg = new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS);
-        PendingIntent intent  = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent intent = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widgetCanvas, intent);
         return views;
     }
