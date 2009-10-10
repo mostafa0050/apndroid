@@ -22,6 +22,7 @@ import android.content.Intent;
 
 /**
  * Date: 30.09.2009
+ *
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class MessagingUtils {

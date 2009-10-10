@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * @author Pavlov "Zelgadis: Dmitry
+ * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class StatusReceiver extends BroadcastReceiver {
 

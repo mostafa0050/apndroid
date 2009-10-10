@@ -17,18 +17,16 @@
 
 package com.google.code.apndroid;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ContentResolver;
+import android.content.*;
 import android.util.Log;
 
 import java.text.MessageFormat;
 
 /**
  * Receiver that activated on locale event broadcast.
- * On receive of event try switch apn to a target state 
+ * On receive of event try switch apn to a target state
  * If current apn state equals target apn state then switch is not performed.
+ *
  * @author Julien Muniak <julien.muniak@gmail.com>
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
@@ -39,15 +37,19 @@ public class LocaleEventReceiver extends BroadcastReceiver {
         if (com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
             boolean targetState = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_STATE, true);
             ContentResolver contentResolver = context.getContentResolver();
-            boolean currentState = DbUtil.getApnState(contentResolver);
+            SharedPreferences prefs = context.getSharedPreferences(ApplicationConstants.AND_DROID_SETTINGS, Context.MODE_PRIVATE);
+            boolean internetEnabled = prefs.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, true);
+            boolean mmsEnabled = prefs.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, true);
+            ApnDao dao = new ApnDao(contentResolver, internetEnabled, mmsEnabled);
+            boolean currentState = dao.getApnState();
             if (currentState != targetState) {
-                if (Log.isLoggable(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, Log.INFO)){
+                if (Log.isLoggable(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, Log.INFO)) {
                     Log.i(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, MessageFormat.format("Switching apn state [{0} -> {1}]", currentState, targetState));
                 }
                 boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
 
-                DbUtil.switchApnState(contentResolver, currentState);
-                MessagingUtils.sendStatusMessage(context, targetState, showNotification);
+                boolean resultState = dao.switchApnState(currentState);
+                MessagingUtils.sendStatusMessage(context, resultState, showNotification);
             }
         }
     }

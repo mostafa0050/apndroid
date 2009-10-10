@@ -17,12 +17,11 @@
 
 package com.google.code.apndroid;
 
+import com.google.code.apndroid.ApnDao.ApnInfo;
+
 import java.util.Collection;
 
-import com.google.code.apndroid.DbUtil.ApnInfo;
-
 /**
- * 
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
 public final class NameUtil {
@@ -49,7 +48,7 @@ public final class NameUtil {
 
     /**
      * Checks if all names are without APNdroid's suffix
-     * 
+     *
      * @param apnInfos list of ApnInfos
      * @return true only if there is no name with APNdroid's suffix, false otherwise
      */
@@ -64,7 +63,7 @@ public final class NameUtil {
 
     /**
      * Checks if all names have APNdroid's suffix
-     * 
+     *
      * @param apnInfos list of ApnInfos
      * @return true only if all names in list have APNdroid's suffix, false otherwise
      */

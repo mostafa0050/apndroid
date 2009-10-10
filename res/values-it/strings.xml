@@ -6,8 +6,11 @@
 	<string name="status_enabled">Accesso Internet attivato.</string>
 	<string name="status_disabled">Accesso Internet disattivato. Comunque, le connessioni esistenti sono ancora attive.\n\n\Aggiunto il suffisso <i>apndroid</i> ad <b>APN</b> e il <b>tipo APN</b> di tutti i nomi dei Punti di Accesso nelle impostazioni del telefono.</string>
 	<string name="close">Chiudi</string>
-	
-	<!-- Locale plug-in -->
+    <string name="internet_label">Internet abilitato</string>
+    <string name="mms_label">MMS abilitati</string>
+    <string name="show_notification_label">Mostra notifiche</string>
+    <string name="switch_apn_label">Applica</string>
+    <!-- Locale plug-in -->
 	<string name="help">Aiuto</string>
     <string name="save">Salva</string>
     <string name="dontsave">Non salvare</string>
