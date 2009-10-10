@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">APNdroid</string>
+	<string name="title_enabled">3G/EDGE/GPRS Включены</string>
+	<string name="title_disabled">3G/EDGE/GPRS Выключены</string>
+	<string name="status_enabled">Доступ в Интернет включён</string>
+	<string name="status_disabled">Доступ в Интерент выключен. Однако уже существующие соединения всё ещё могут работать.\n\n\<i>apndroid</i> суффикс был добавлен к полям <b>APN</b> и <b>APN type</b> всех текущих провайдеров</string>
+	<string name="close">Закрыть</string>
+	
+	<!-- Locale plug-in -->
+	<string name="help">Помощь</string>
+    <string name="save">Сохранить</string>
+    <string name="dontsave">Не сохранять</string>
+    <string name="notification_hint">Показывать уведомление</string>
+    <string name="state_hint">Доступ в интернет </string>
+    <string name="local_state_enabled">Активирован</string>
+    <string name="local_state_disabled">Деактивирован</string>
+    <string-array name="state_labels">
+     	<item>Вкл.</item>
+        <item>Выкл.</item>
+    </string-array>
+</resources>

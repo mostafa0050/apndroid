@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>
+    <item
+        android:title="@string/dontsave"
+        android:icon="@drawable/icon_dontsave_color_40"
+        android:id="@+id/menu_dontsave" />
+    <item
+        android:title="@string/save"
+        android:icon="@drawable/icon_save_color_40"
+        android:id="@+id/menu_save" />
+</menu>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.google.code.apndroid"
+      android:versionName="1.3.0" android:versionCode="8">
+    <application android:label="@string/app_name" android:icon="@drawable/apndroid">
+        <activity android:name=".MainActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".InfoActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+        <activity android:name=".LocaleActivity"
+                  android:label="@string/app_name"
+                  android:icon="@drawable/icon_plugin_color_32"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </activity>
+        <receiver android:name=".LocaleEventReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".StatusReceiver" android:label="StatusReceiver">
+            <intent-filter>
+                <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="StatusWidget">
+            <meta-data android:name="android.appwidget.provider"
+                    android:resource="@xml/widget_configuration" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="SwitchStateReceiver">
+            <intent-filter>
+                <action android:name="com.google.code.apndroid.intent.action.CHANGE_STATUS" />                
+            </intent-filter>
+        </receiver>
+    </application>
+
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"></uses-permission>
+    
+	<uses-sdk android:minSdkVersion="3"></uses-sdk>
+</manifest>

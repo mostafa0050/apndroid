@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">APNdroid</string>
+	<string name="title_enabled">3G/EDGE/GPRS Enabled</string>
+	<string name="title_disabled">3G/EDGE/GPRS Disabled</string>
+	<string name="status_enabled">Internet access is enabled.</string>
+	<string name="status_disabled">Internet access is disabled. However, preexisting connections might be still alive.\n\n\<i>apndroid</i> suffix was added to <b>APN</b> and <b>APN type</b> of all Access Point Names in phone Settings.</string>
+	<string name="close">Close</string>
+
+    <string name="internet_label">Internet enabled</string>
+    <string name="mms_label">MMS enabled</string>
+    <string name="show_notification_label">Show notification</string>
+    <string name="switch_apn_label">Switch</string>
+	<!-- Locale plug-in -->
+	<string name="help">Help</string>
+    <string name="save">Save</string>
+    <string name="dontsave">Don\'t Save</string>
+    <string name="notification_hint">Show notification</string>
+    <string name="state_hint">Internet access </string>
+    <string name="local_state_enabled">Enabled</string>
+    <string name="local_state_disabled">Disabled</string>
+    <string-array name="state_labels">
+     	<item>Enabled</item>
+        <item>Disabled</item>
+    </string-array>
+</resources>
