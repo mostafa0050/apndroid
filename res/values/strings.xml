@@ -7,12 +7,17 @@
 	<string name="status_disabled">Internet access is disabled. However, preexisting connections might be still alive.\n\n\<i>apndroid</i> suffix was added to <b>APN</b> and <b>APN type</b> of all Access Point Names in phone Settings.</string>
 	<string name="close">Close</string>
 
-    <string name="internet_label">Internet enabled</string>
-    <string name="mms_label">MMS enabled</string>
-    <string name="show_notification_label">Show notification</string>
-    <string name="switch_apn_label">Switch</string>
-	<!-- Locale plug-in -->
-	<string name="help">Help</string>
+    <string name="prefernces_category">Preferences</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Keep mms enabled</string>
+    <string name="notification_property">Notifications</string>
+    <string name="notification_property_summary">Display state notifications</string>
+
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Hint: Add widget to the Home screen</string>
+
+    <!-- Locale plug-in -->
+    <string name="help">Help</string>
     <string name="save">Save</string>
     <string name="dontsave">Don\'t Save</string>
     <string name="notification_hint">Show notification</string>

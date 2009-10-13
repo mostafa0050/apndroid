@@ -38,10 +38,10 @@ public class StatusWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (ApplicationConstants.APN_DROID_STATUS.equals(intent.getAction())) {
+        if (ApplicationConstants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-            if (extras != null && extras.containsKey(ApplicationConstants.APN_DROID_STATUS_EXTRA)) {
-                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.APN_DROID_STATUS_EXTRA);
+            if (extras != null && extras.containsKey(ApplicationConstants.STATUS_EXTRA)) {
+                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
                 AppWidgetManager manager = AppWidgetManager.getInstance(context);
                 int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, StatusWidget.class));
                 showWidget(context, manager, widgetIds, isNetEnabled);
@@ -79,7 +79,7 @@ public class StatusWidget extends AppWidgetProvider {
         int iconId = status ? R.drawable.apndroid_widget_on : R.drawable.apndroid_widget_off;
         views.setImageViewResource(R.id.widgetCanvas, iconId);
 
-        Intent msg = new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS);
+        Intent msg = new Intent(ApplicationConstants.CHANGE_STATUS_ACTION);
         PendingIntent intent = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widgetCanvas, intent);
         return views;
