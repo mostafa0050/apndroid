@@ -4,6 +4,8 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.google.code.apndroid.TogglePreference android:key="toggle_preference"/>
+    
     <PreferenceCategory android:title="@string/prefernces_category">
 
         <CheckBoxPreference
@@ -19,6 +21,5 @@
                 android:defaultValue="false"/>
 
     </PreferenceCategory>
-    <com.google.code.apndroid.TogglePreference android:key="toggle_preference"/>
 
 </PreferenceScreen>
