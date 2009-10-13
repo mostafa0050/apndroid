@@ -28,51 +28,18 @@ public final class NameUtil {
 
     public static final String SUFFIX = "apndroid";
 
-    static String addSuffixIfNotPresent(String currentName) {
-        String result = currentName;
+    static String addSuffix(String currentName) {
+        String result;
         if (currentName == null) {
             result = SUFFIX;
-        } else if (!currentName.endsWith(SUFFIX)) {
+        } else {
             result = currentName + SUFFIX;
         }
         return result;
     }
 
-    static String removeSuffixIfPresent(String currentName) {
-        String result = currentName;
-        if (currentName != null && currentName.endsWith(SUFFIX)) {
-            result = currentName.substring(0, currentName.length() - SUFFIX.length());
-        }
-        return result;
+    static String removeSuffix(String currentName) {        
+        return currentName.substring(0, currentName.length() - SUFFIX.length());
     }
 
-    /**
-     * Checks if all names are without APNdroid's suffix
-     *
-     * @param apnInfos list of ApnInfos
-     * @return true only if there is no name with APNdroid's suffix, false otherwise
-     */
-    static boolean areAllEnabled(Collection<ApnInfo> apnInfos) {
-        for (ApnInfo apnInfo : apnInfos) {
-            if ((apnInfo.apn != null && apnInfo.apn.endsWith(SUFFIX)) || (apnInfo.type != null && apnInfo.type.endsWith(SUFFIX))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if all names have APNdroid's suffix
-     *
-     * @param apnInfos list of ApnInfos
-     * @return true only if all names in list have APNdroid's suffix, false otherwise
-     */
-    static boolean areAllDisabled(Collection<ApnInfo> apnInfos) {
-        for (ApnInfo apnInfo : apnInfos) {
-            if (apnInfo.apn == null || !apnInfo.apn.endsWith(SUFFIX) || apnInfo.type == null || !apnInfo.type.endsWith(SUFFIX)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

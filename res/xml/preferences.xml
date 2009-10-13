@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is an advanced example showing the custom preference types and manually handling
+     preference clicks. -->
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.code.apndroid.TogglePreference android:key="toggle_preference"/>
+    
+    <PreferenceCategory android:title="@string/prefernces_category">
+
+        <CheckBoxPreference
+                android:key="com.google.code.apndroid.preferences.KEEP_MMS_ENABLED"
+                android:title="@string/mms_property"
+                android:summary="@string/mms_property_summary"
+                android:defaultValue="true"
+                />
+        <CheckBoxPreference
+                android:key="com.google.code.apndroid.preferences.SHOW_NOTIFICATION"
+                android:title="@string/notification_property"
+                android:summary="@string/notification_property_summary"
+                android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -17,89 +17,46 @@
 
 package com.google.code.apndroid;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.SimpleAdapter;
+import android.widget.ToggleButton;
+import android.preference.*;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends PreferenceActivity implements View.OnClickListener {
 
     static final int NOTIFICATION_ID = 1;
-
-    private SharedPreferences sharedPreferences;
-
-    private SettingsPersister settingsPersister;
+    private TogglePreference togglePreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+            super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferences);
+        togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
+        togglePreference.setOnClickListener(this);
 
-        initSettingsListener();
-        findViewById(R.id.switch_button).setOnClickListener(this);
     }
 
-    private void initSettingsListener() {
-        sharedPreferences = getSharedPreferences(ApplicationConstants.AND_DROID_SETTINGS, Context.MODE_PRIVATE);
-        
-        SettingsPersister persister = settingsPersister = new SettingsPersister(sharedPreferences);
-
-        CheckBox checkBox = (CheckBox) findViewById(R.id.internet_enabled_button);
-        checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, true));
-        checkBox.setOnClickListener(persister);
-
-        checkBox = (CheckBox) findViewById(R.id.mms_enabled_button);
-        checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, true));
-        checkBox.setOnClickListener(persister);
-
-        checkBox = (CheckBox) findViewById(R.id.show_notification_button);
-        checkBox.setChecked(sharedPreferences.getBoolean(ApplicationConstants.APN_DROID_SHOW_NOTIFICATION, true));
-        checkBox.setOnClickListener(persister);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ApnDao apnDao = new ApnDao(this.getContentResolver());
+        boolean isEnabled = apnDao.getApnState();
+        togglePreference.setToggleButtonChecked(isEnabled);
     }
 
     public void onClick(View view) {
-        settingsPersister.persist();
-        sendBroadcast(new Intent(ApplicationConstants.APN_DROID_CHANGE_STATUS));
+        ToggleButton button = (ToggleButton) view;
+        boolean enabled = SwitchingAndMessagingUtils.switchAndNotify(this);
+        button.setChecked(enabled);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        settingsPersister.persist();
-    }
-
-    private static final class SettingsPersister implements View.OnClickListener {
-        
-        private SharedPreferences.Editor editor;
-
-        private SettingsPersister(SharedPreferences sharedPreferences) {
-            editor = sharedPreferences.edit();
-        }
-
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.internet_enabled_button:
-                    editor.putBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, ((CheckBox) view).isChecked());
-                    break;
-                case R.id.mms_enabled_button:
-                    editor.putBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, ((CheckBox) view).isChecked());
-                    break;
-                case R.id.show_notification_button:
-                    editor.putBoolean(ApplicationConstants.AND_DROID_SETTINGS_SHOW_NOTIFICATION, ((CheckBox) view).isChecked());
-                    break;
-            }
-        }
-
-        public void persist(){
-            editor.commit();
-        }
     }
 
 }

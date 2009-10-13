@@ -19,6 +19,7 @@ package com.google.code.apndroid;
 
 import android.content.*;
 import android.util.Log;
+import android.preference.PreferenceManager;
 
 import java.text.MessageFormat;
 
@@ -37,10 +38,9 @@ public class LocaleEventReceiver extends BroadcastReceiver {
         if (com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
             boolean targetState = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_STATE, true);
             ContentResolver contentResolver = context.getContentResolver();
-            SharedPreferences prefs = context.getSharedPreferences(ApplicationConstants.AND_DROID_SETTINGS, Context.MODE_PRIVATE);
-            boolean internetEnabled = prefs.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_INTERNET_ENABLED, true);
-            boolean mmsEnabled = prefs.getBoolean(ApplicationConstants.AND_DROID_SETTINGS_MMS_ENABLED, true);
-            ApnDao dao = new ApnDao(contentResolver, internetEnabled, mmsEnabled);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);            
+            boolean mmsEnabled = !prefs.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, false);
+            ApnDao dao = new ApnDao(contentResolver, mmsEnabled);
             boolean currentState = dao.getApnState();
             if (currentState != targetState) {
                 if (Log.isLoggable(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, Log.INFO)) {
@@ -49,7 +49,7 @@ public class LocaleEventReceiver extends BroadcastReceiver {
                 boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
 
                 boolean resultState = dao.switchApnState(currentState);
-                MessagingUtils.sendStatusMessage(context, resultState, showNotification);
+                SwitchingAndMessagingUtils.sendStatusMessage(context, resultState, showNotification);
             }
         }
     }

@@ -23,7 +23,6 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,12 +42,10 @@ public final class ApnDao {
 
     private ContentResolver contentResolver;
 
-    private boolean modifyInternet = true;
     private boolean modifyMms = true;
 
-    public ApnDao(ContentResolver contentResolver, boolean modifyInternet, boolean modifyMms) {
+    public ApnDao(ContentResolver contentResolver, boolean modifyMms) {
         this.contentResolver = contentResolver;
-        this.modifyInternet = modifyInternet;
         this.modifyMms = modifyMms;
     }
 
@@ -58,16 +55,11 @@ public final class ApnDao {
 
     List<ApnInfo> getEnabledApnsMap() {
         String query;
-        boolean modifyInternet = this.modifyInternet;
         boolean modifyMms = this.modifyMms;
-        if (modifyInternet && modifyMms) {
+        if (modifyMms) {
             query = "current is not null";
-        } else if (modifyInternet && !modifyMms) {
-            query = "(not lower(type)='mms' or type is null) and current is not null";
-        } else if (!modifyInternet && modifyMms) {
-            query = "lower(type)='mms' and current is not null";
         } else {
-            return Collections.EMPTY_LIST;
+            query = "(not lower(type)='mms' or type is null) and current is not null";
         }
         return selectApnInfo(query, null);
     }
@@ -103,9 +95,9 @@ public final class ApnDao {
         final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
-            String newApnName = NameUtil.removeSuffixIfPresent(apnInfo.apn);
+            String newApnName = NameUtil.removeSuffix(apnInfo.apn);
             values.put(APN, newApnName);
-            String newApnType = NameUtil.removeSuffixIfPresent(apnInfo.type);
+            String newApnType = NameUtil.removeSuffix(apnInfo.type);
             if ("".equals(newApnType)) {
                 values.putNull(TYPE);
             } else {
@@ -145,9 +137,9 @@ public final class ApnDao {
         final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
-            String newApnName = NameUtil.addSuffixIfNotPresent(apnInfo.apn);
+            String newApnName = NameUtil.addSuffix(apnInfo.apn);
             values.put(APN, newApnName);
-            String newApnType = NameUtil.addSuffixIfNotPresent(apnInfo.type);
+            String newApnType = NameUtil.addSuffix(apnInfo.type);
             values.put(TYPE, newApnType);
             contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
         }
@@ -243,14 +235,6 @@ public final class ApnDao {
                 cursor.close();
             }
         }
-    }
-
-    public boolean isModifyInternet() {
-        return modifyInternet;
-    }
-
-    public void setModifyInternet(boolean modifyInternet) {
-        this.modifyInternet = modifyInternet;
     }
 
     public boolean isModifyMms() {

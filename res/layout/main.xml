@@ -1,68 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                >
-    <TableLayout
-            android:id="@+id/settings_table"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="1"            >
-
-        <TableRow>
-            <TextView
-                android:layout_column="1"
-                android:text="@string/internet_label"
-                android:textSize="9pt"
-                android:padding="3dip"
-                    android:gravity="left|bottom"/>
-            <CheckBox
-                android:id="@+id/internet_enabled_button"
-                android:padding="10dp"
-                />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:layout_column="1"
-                android:text="@string/mms_label"
-                android:padding="3dip"
-                    android:textSize="9pt"
-                    android:gravity="left|bottom"/>
-            <CheckBox
-                android:id="@+id/mms_enabled_button"
-                android:padding="10dp"
-                />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:layout_column="1"
-                android:text="@string/show_notification_label"
-                android:padding="3dip"
-                    android:textSize="9pt"
-                    android:gravity="left|bottom"/>
-            <CheckBox
-                android:id="@+id/show_notification_button"
-                android:padding="10dp"
-                />
-        </TableRow>
-        <View
-                android:layout_height="2dip"
-                android:background="#FF909090" />
-
-    </TableLayout>
-    <Button
-            android:id="@+id/switch_button"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/settings_table"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dip"            
-            android:text="@string/switch_apn_label"
-            android:textSize="9pt"
-            />
-
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<ListView
+	android:id="@id/android:list"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+    />
+</LinearLayout>
