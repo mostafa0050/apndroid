@@ -7,10 +7,14 @@
 	<string name="status_disabled">Přístup k internetu byl zakázán, stávající datové přenosy z dřívějška však mohou být stále aktivní.\n\n\Přípona <i>apndroid</i> byla přídána ke každému <b>názvu</b> a <b>typu APN</b> v menu Názvy přístupových bodů v Nastavení telefonu.</string>
 	<string name="close">Zavřít</string>
 
-    <string name="internet_label">Internet povolen</string>
-    <string name="mms_label">MMS povoleny</string>
-    <string name="show_notification_label">Zobrazit notifikace</string>
-    <string name="switch_apn_label">Přepnout</string>
+    <string name="prefernces_category">Preferences</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Keep mms enabled</string>
+    <string name="notification_property">Notifications</string>
+    <string name="notification_property_summary">Display state notifications</string>
+
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Hint: Add widget to the Home screen</string>
 	<!-- Locale plug-in -->
 	<string name="help">Nápověda</string>
     <string name="save">Uložit</string>

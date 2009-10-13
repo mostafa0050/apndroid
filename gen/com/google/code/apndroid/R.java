@@ -69,10 +69,8 @@ public final class R {
  Locale plug-in 
          */
         public static final int help=0x7f06000d;
-        public static final int internet_label=0x7f060014;
         public static final int local_state_disabled=0x7f060013;
         public static final int local_state_enabled=0x7f060012;
-        public static final int mms_label=0x7f060015;
         public static final int mms_property=0x7f060007;
         public static final int mms_property_summary=0x7f060008;
         public static final int notification_hint=0x7f060010;
@@ -80,11 +78,9 @@ public final class R {
         public static final int notification_property_summary=0x7f06000a;
         public static final int prefernces_category=0x7f060006;
         public static final int save=0x7f06000e;
-        public static final int show_notification_label=0x7f060016;
         public static final int state_hint=0x7f060011;
         public static final int status_disabled=0x7f060004;
         public static final int status_enabled=0x7f060003;
-        public static final int switch_apn_label=0x7f060017;
         public static final int title_disabled=0x7f060002;
         public static final int title_enabled=0x7f060001;
         public static final int toggle_hint=0x7f06000c;
