@@ -34,10 +34,10 @@ public class StatusReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (ApplicationConstants.APN_DROID_STATUS.equals(intent.getAction())) {
+        if (ApplicationConstants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-            if (extras != null && extras.getBoolean(ApplicationConstants.APN_DROID_SHOW_NOTIFICATION, true)) {
-                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.APN_DROID_STATUS_EXTRA);
+            if (extras != null && extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true)) {
+                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
                 performNotificationStatusChange(context, isNetEnabled);
             }
         }
