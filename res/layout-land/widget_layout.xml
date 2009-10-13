@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main"
+        android:layout_width="68dip"
+        android:layout_height="68dip"
+        android:gravity="center"
+        android:background="@drawable/appwidget_bg" >
+        
+        <ImageButton
+            android:id="@+id/widgetCanvas"
+            android:layout_width="79dip"
+            android:layout_height="fill_parent"
+            android:background="@drawable/appwidget_inner"
+            android:layout_gravity="center_horizontal"
+        />
+        
+</LinearLayout>
