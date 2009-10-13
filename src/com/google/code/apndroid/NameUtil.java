@@ -17,9 +17,6 @@
 
 package com.google.code.apndroid;
 
-import com.google.code.apndroid.ApnDao.ApnInfo;
-
-import java.util.Collection;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
