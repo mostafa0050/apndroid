@@ -23,7 +23,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 /**
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
@@ -39,6 +41,11 @@ public class StatusReceiver extends BroadcastReceiver {
             if (extras != null && extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true)) {
                 boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
                 performNotificationStatusChange(context, isNetEnabled);
+            }
+            if (extras != null){
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                final boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
+                prefs.edit().putBoolean(ApplicationConstants.SETTINGS_TOGGLE_BUTTON, isNetEnabled).commit();
             }
         }
     }
