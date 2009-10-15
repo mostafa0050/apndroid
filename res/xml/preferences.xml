@@ -4,7 +4,7 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.code.apndroid.TogglePreference android:key="toggle_preference"/>
+    <com.google.code.apndroid.TogglePreference android:key="toggle_preference" android:persistent="true"/>
     
     <PreferenceCategory android:title="@string/prefernces_category">
 
