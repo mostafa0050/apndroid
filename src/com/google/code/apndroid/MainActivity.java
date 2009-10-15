@@ -25,7 +25,7 @@ import android.preference.*;
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends PreferenceActivity implements View.OnClickListener {
+public class MainActivity extends PreferenceActivity  {
 
     static final int NOTIFICATION_ID = 1;
     private TogglePreference togglePreference;
@@ -36,22 +36,17 @@ public class MainActivity extends PreferenceActivity implements View.OnClickList
             super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
-        togglePreference.setOnClickListener(this);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        ApnDao apnDao = new ApnDao(this.getContentResolver());
-        boolean isEnabled = apnDao.getApnState();
-        togglePreference.setToggleButtonChecked(isEnabled);
-    }
-
-    public void onClick(View view) {
-        ToggleButton button = (ToggleButton) view;
-        boolean enabled = SwitchingAndMessagingUtils.switchAndNotify(this);
-        button.setChecked(enabled);
+        if (!PreferenceManager.getDefaultSharedPreferences(this).contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)){
+            ApnDao apnDao = new ApnDao(this.getContentResolver());
+            boolean isEnabled = apnDao.getApnState();
+            togglePreference.setToggleButtonChecked(isEnabled);            
+        }
     }
 
     @Override
