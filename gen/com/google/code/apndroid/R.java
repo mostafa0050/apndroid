@@ -38,15 +38,16 @@ public final class R {
     }
     public static final class id {
         public static final int locale_ellipsizing_title_text=0x7f090001;
-        public static final int main=0x7f090006;
-        public static final int menu_dontsave=0x7f090008;
-        public static final int menu_save=0x7f090009;
-        public static final int notification=0x7f090003;
+        public static final int main=0x7f090007;
+        public static final int menu_dontsave=0x7f090009;
+        public static final int menu_save=0x7f09000a;
+        public static final int mms=0x7f090003;
+        public static final int notification=0x7f090004;
         public static final int screen=0x7f090000;
         public static final int statespinner=0x7f090002;
-        public static final int status_text=0x7f090004;
-        public static final int toggle_button=0x7f090005;
-        public static final int widgetCanvas=0x7f090007;
+        public static final int status_text=0x7f090005;
+        public static final int toggle_button=0x7f090006;
+        public static final int widgetCanvas=0x7f090008;
     }
     public static final class layout {
         public static final int locale_ellipsizing_title_text=0x7f030000;
@@ -69,8 +70,9 @@ public final class R {
  Locale plug-in 
          */
         public static final int help=0x7f06000d;
-        public static final int local_state_disabled=0x7f060013;
-        public static final int local_state_enabled=0x7f060012;
+        public static final int local_state_disabled=0x7f060014;
+        public static final int local_state_enabled=0x7f060013;
+        public static final int mms_hint=0x7f060011;
         public static final int mms_property=0x7f060007;
         public static final int mms_property_summary=0x7f060008;
         public static final int notification_hint=0x7f060010;
@@ -78,7 +80,7 @@ public final class R {
         public static final int notification_property_summary=0x7f06000a;
         public static final int prefernces_category=0x7f060006;
         public static final int save=0x7f06000e;
-        public static final int state_hint=0x7f060011;
+        public static final int state_hint=0x7f060012;
         public static final int status_disabled=0x7f060004;
         public static final int status_enabled=0x7f060003;
         public static final int title_disabled=0x7f060002;
