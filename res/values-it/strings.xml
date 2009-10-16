@@ -21,6 +21,7 @@
     <string name="save">Salva</string>
     <string name="dontsave">Non salvare</string>
     <string name="notification_hint">Mostra notifiche</string>
+    <string name="mms_hint">Keep MMS enabled</string>
     <string name="state_hint">Accesso Internet </string>
     <string name="local_state_enabled">Abilitato</string>
     <string name="local_state_disabled">Disabilitato</string>
