@@ -4,7 +4,7 @@
 	<string name="title_enabled">3G/EDGE/GPRS Povoleno</string>
 	<string name="title_disabled">3G/EDGE/GPRS Zakázáno</string>
 	<string name="status_enabled">Přístup k Internetu byl povolen.</string>
-	<string name="status_disabled">Přístup k Internetu byl zakázán, stávající datové přenosy z dřívějška však mohou být stále aktivní.\n\n\Přípona <i>apndroid</i> byla přídána ke každému <b>názvu</b> a <b>typu APN</b> v menu Názvy přístupových bodů v Nastavení telefonu.</string>
+	<string name="status_disabled">Přístup k Internetu byl zakázán, stávající datové přenosy z dřívějška však mohou být stále aktivní.\n\nPřípona <i>apndroid</i> byla přídána ke každému <b>názvu</b> a <b>typu APN</b> v menu Názvy přístupových bodů v Nastavení telefonu.</string>
 	<string name="close">Zavřít</string>
 
     <string name="prefernces_category">Nastavení</string>
