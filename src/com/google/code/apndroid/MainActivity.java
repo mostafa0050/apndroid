@@ -18,9 +18,8 @@
 package com.google.code.apndroid;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ToggleButton;
-import android.preference.*;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
