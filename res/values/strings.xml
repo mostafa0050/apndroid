@@ -9,7 +9,7 @@
 
     <string name="prefernces_category">Preferences</string>
     <string name="mms_property">MMS</string>
-    <string name="mms_property_summary">Keep mms enabled</string>
+    <string name="mms_property_summary">Keep MMS enabled</string>
     <string name="notification_property">Notifications</string>
     <string name="notification_property_summary">Display state notifications</string>
 
@@ -21,7 +21,7 @@
     <string name="save">Save</string>
     <string name="dontsave">Don\'t Save</string>
     <string name="notification_hint">Show notification</string>
-    <string name="mms_hint">Keep mms enabled</string>
+    <string name="mms_hint">Keep MMS enabled</string>
     <string name="state_hint">Internet access </string>
     <string name="local_state_enabled">Enabled</string>
     <string name="local_state_disabled">Disabled</string>
