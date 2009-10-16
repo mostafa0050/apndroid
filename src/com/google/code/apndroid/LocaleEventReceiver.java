@@ -20,6 +20,7 @@ package com.google.code.apndroid;
 import android.content.*;
 import android.util.Log;
 import android.preference.PreferenceManager;
+import android.os.Bundle;
 
 import java.text.MessageFormat;
 
@@ -36,10 +37,11 @@ public class LocaleEventReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
-            boolean targetState = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_STATE, true);
+            final Bundle bundle = intent.getExtras();
+            boolean targetState = bundle.getBoolean(LocaleConstants.INTENT_EXTRA_STATE, true);
+            boolean mmsEnabled = !bundle.getBoolean(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
+
             ContentResolver contentResolver = context.getContentResolver();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);            
-            boolean mmsEnabled = !prefs.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, false);
             ApnDao dao = new ApnDao(contentResolver, mmsEnabled);
             boolean currentState = dao.getApnState();
             if (currentState != targetState) {

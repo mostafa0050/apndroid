@@ -19,6 +19,7 @@
     <string name="save">Сохранить</string>
     <string name="dontsave">Не сохранять</string>
     <string name="notification_hint">Показывать уведомление</string>
+    <string name="mms_hint">Не выключать MMS</string>
     <string name="state_hint">Доступ в интернет </string>
     <string name="local_state_enabled">Активирован</string>
     <string name="local_state_disabled">Деактивирован</string>

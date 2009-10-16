@@ -49,7 +49,7 @@ public class SwitchingAndMessagingUtils {
         long start = System.currentTimeMillis();
 
         ApnDao dao = new ApnDao(context.getContentResolver(),
-                !preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, false));
+                !preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true));
         boolean enabled = dao.switchApnState();
 
         long end = System.currentTimeMillis();

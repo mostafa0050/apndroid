@@ -34,7 +34,7 @@ public class LocaleActivity extends Activity {
     private boolean mIsCancelled;
     private Spinner mStateSpinner;
     private CheckBox mNotificationCheckBox;
-
+    private CheckBox mMmsCheckbox;
 
     private Spinner getStateSpinner() {
         if (mStateSpinner == null) {
@@ -48,6 +48,13 @@ public class LocaleActivity extends Activity {
             mNotificationCheckBox = ((CheckBox) findViewById(R.id.notification));
         }
         return mNotificationCheckBox;
+    }
+
+    private CheckBox getMmsCheckBox(){
+        if (mMmsCheckbox == null){
+            mMmsCheckbox = (CheckBox) findViewById(R.id.mms);
+        }
+        return mMmsCheckbox;
     }
 
     private void setState(boolean state) {
@@ -66,6 +73,14 @@ public class LocaleActivity extends Activity {
         return getNotificationCheckBox().isChecked();
     }
 
+    private boolean getKeepMms(){
+        return getMmsCheckBox().isChecked();
+    }
+
+    private void setKeepMms(boolean keep){
+        getMmsCheckBox().setChecked(keep);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +89,8 @@ public class LocaleActivity extends Activity {
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.locale_ellipsizing_title_text);
 
-        String breadcrumbString = getIntent().getStringExtra(com.twofortyfouram.Intent.EXTRA_STRING_BREADCRUMB);
+        final Intent intent = getIntent();
+        String breadcrumbString = intent.getStringExtra(com.twofortyfouram.Intent.EXTRA_STRING_BREADCRUMB);
 
         if (breadcrumbString == null) {
             breadcrumbString = getString(R.string.app_name);
@@ -85,11 +101,12 @@ public class LocaleActivity extends Activity {
         setTitle(breadcrumbString);
 
         if (savedInstanceState == null) {
-            final boolean state = getIntent().getBooleanExtra(LocaleConstants.INTENT_EXTRA_STATE, true);
-            final boolean showNotification = getIntent().getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, false);
-
+            final boolean state = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_STATE, true);
+            final boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, false);
+            final boolean keepMms = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
             setState(state);
             setNotification(showNotification);
+            setKeepMms(keepMms);
         }
 
     }
@@ -109,6 +126,7 @@ public class LocaleActivity extends Activity {
             final Intent returnIntent = new Intent();
             returnIntent.putExtra(LocaleConstants.INTENT_EXTRA_STATE, state);
             returnIntent.putExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, getNotification());
+            returnIntent.putExtra(LocaleConstants.INTENT_EXTRA_KEEP_MMS, getKeepMms());
             returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB, state ? getString(R.string.local_state_enabled) : getString(R.string.local_state_disabled));
             setResult(RESULT_OK, returnIntent);
         }
