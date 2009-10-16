@@ -4,7 +4,7 @@
 	<string name="title_enabled">3G/EDGE/GPRS Enabled</string>
 	<string name="title_disabled">3G/EDGE/GPRS Disabled</string>
 	<string name="status_enabled">Internet access is enabled.</string>
-	<string name="status_disabled">Internet access is disabled. However, preexisting connections might be still alive.\n\n\<i>apndroid</i> suffix was added to <b>APN</b> and <b>APN type</b> of all Access Point Names in phone Settings.</string>
+	<string name="status_disabled">Internet access is disabled. However, preexisting connections might be still alive.\n\n<i>apndroid</i> suffix was added to <b>APN</b> and <b>APN type</b> of all Access Point Names in phone Settings.</string>
 	<string name="close">Close</string>
 
     <string name="prefernces_category">Preferences</string>
