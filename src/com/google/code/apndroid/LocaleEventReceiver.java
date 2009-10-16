@@ -17,12 +17,14 @@
 
 package com.google.code.apndroid;
 
-import android.content.*;
-import android.util.Log;
-import android.preference.PreferenceManager;
-import android.os.Bundle;
-
 import java.text.MessageFormat;
+
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Receiver that activated on locale event broadcast.
