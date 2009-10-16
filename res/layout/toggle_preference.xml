@@ -13,6 +13,7 @@
          	android:layout_height="wrap_content"
             android:layout_marginTop="21dip"
             android:textSize="21sp"
+            android:textColor="@android:color/white"
             />
 
     <ToggleButton
@@ -21,13 +22,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dip"
             android:layout_marginBottom="21dip"
+            android:focusable="true"
+            android:textOn="@string/toggle_on"
+            android:textOff="@string/toggle_off"
             />
             
     <TextView
     		android:text="@string/toggle_hint"
          	android:layout_width="wrap_content" 
          	android:layout_height="wrap_content"
-            android:layout_marginBottom="7dip"
+            android:layout_marginBottom="7dip"            
+            android:textColor="@android:color/white"
             />
 
 </LinearLayout>

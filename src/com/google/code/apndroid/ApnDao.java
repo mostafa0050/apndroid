@@ -82,33 +82,13 @@ public final class ApnDao {
 
     boolean enableAllInDb() {
         List<ApnInfo> apns = getDisabledApnsMap();
-        enableAllInDb(apns);
+        enableApnList(apns);
         return true;//we always return true because in any situation we can reset all apns to initial state
     }
 
     /**
-     * Use this one if you have fresh list of APNs already and you can save one query to DB
-     *
-     * @param apns list of apns data to modify
-     */
-    void enableAllInDb(List<ApnInfo> apns) {
-        final ContentResolver contentResolver = this.contentResolver;
-        for (ApnInfo apnInfo : apns) {
-            ContentValues values = new ContentValues();
-            String newApnName = NameUtil.removeSuffix(apnInfo.apn);
-            values.put(APN, newApnName);
-            String newApnType = NameUtil.removeSuffix(apnInfo.type);
-            if ("".equals(newApnType)) {
-                values.putNull(TYPE);
-            } else {
-                values.put(TYPE, newApnType);
-            }
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
-        }
-    }
-
-    /**
      * Creates list of apn dtos from a DB cursor
+     *
      * @param mCursor db cursor with select result set
      * @return list of APN dtos
      */
@@ -127,13 +107,39 @@ public final class ApnDao {
 
     /**
      * Tries to disable apn's according to user preferences.
+     *
      * @return {@code true} if one o more apns changed and {@code false} if all APNs did not changed their states
      */
     boolean disableAllInDb() {
         List<ApnInfo> apns = getEnabledApnsMap();
 
         if (apns.isEmpty()) return false;
-        
+
+        return disableApnList(apns);
+    }
+
+    /**
+     * Use this one if you have fresh list of APNs already and you can save one query to DB
+     *
+     * @param apns list of apns data to modify
+     */
+    private void enableApnList(List<ApnInfo> apns) {
+        final ContentResolver contentResolver = this.contentResolver;
+        for (ApnInfo apnInfo : apns) {
+            ContentValues values = new ContentValues();
+            String newApnName = NameUtil.removeSuffix(apnInfo.apn);
+            values.put(APN, newApnName);
+            String newApnType = NameUtil.removeSuffix(apnInfo.type);
+            if ("".equals(newApnType)) {
+                values.putNull(TYPE);
+            } else {
+                values.put(TYPE, newApnType);
+            }
+            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
+        }
+    }
+
+    private boolean disableApnList(List<ApnInfo> apns) {
         final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
@@ -155,13 +161,12 @@ public final class ApnDao {
      * then we switch to another state (off, with disabled APN's according to user preferences)
      *
      * @return new apn state ({@code true} if apn is now enabled, and {@code false} if apn is disabled).
-     *
      */
     boolean switchApnState() {
         boolean currentState = getApnState();
-        if (switchApnState(currentState)){
+        if (switchApnState(currentState)) {
             return !currentState;
-        }else{
+        } else {
             return currentState;
         }
     }
@@ -189,26 +194,30 @@ public final class ApnDao {
         return countDisabledApns() == 0;
     }
 
-    int countAllApns() {
-        Cursor cursor = null;
-        try {
-            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "current is not null", null, null);
-            if (cursor.moveToFirst()) {
-                return cursor.getInt(0);
-            } else {
-                return -1;
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
+    int countAllCurrentApns() {
+        return executeCountQuery("current is not null", null);
     }
 
     int countEnabledApns() {
+        return executeCountQuery("apn not like ? and type not like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
+    }
+
+    int countDisabledApns() {
+        return executeCountQuery("apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
+    }
+
+    public int countMmsApns() {
+        return executeCountQuery("type like ? or type like 'mms'", new String[]{"mms"+NameUtil.SUFFIX});
+    }
+
+    public int countDisabledMmsApns(){
+        return executeCountQuery("type like ?", new String[]{"mms"+NameUtil.SUFFIX});
+    }
+
+    private int executeCountQuery(String whereQuery, String[] whereParams) {
         Cursor cursor = null;
         try {
-            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "apn not like ? and type not like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX}, null);
+            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, whereQuery, whereParams, null);
             if (cursor.moveToFirst()) {
                 return cursor.getInt(0);
             } else {
@@ -221,20 +230,18 @@ public final class ApnDao {
         }
     }
 
-    int countDisabledApns() {
-        Cursor cursor = null;
-        try {
-            cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, "apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX}, null);
-            if (cursor.moveToFirst()) {
-                return cursor.getInt(0);
-            } else {
-                return -1;
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
+    public List<ApnInfo> selectDisabledMmsApns(){
+        return selectApnInfo("type like ?", new String[]{"mms"+NameUtil.SUFFIX});
+    }
+
+    public boolean enableMmsApns(){
+        List<ApnInfo> disabledList = selectDisabledMmsApns();
+        enableApnList(disabledList);
+        return true;
+    }
+
+    public boolean isMmsDisabled(){
+        return countMmsApns() > 0 && countDisabledMmsApns() > 0;
     }
 
     public boolean isModifyMms() {

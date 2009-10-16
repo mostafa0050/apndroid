@@ -15,7 +15,8 @@
 
     <string name="toggle_title">3G/EDGE/GPRS</string>
     <string name="toggle_hint">Suggerimento: Aggiungi un widget alla schermata iniziale</string>
-
+    <string name="toggle_on">On</string>
+    <string name="toggle_off">Off</string>
     <!-- Locale plug-in -->
 	<string name="help">Aiuto</string>
     <string name="save">Salva</string>

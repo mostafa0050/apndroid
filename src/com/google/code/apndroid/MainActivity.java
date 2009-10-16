@@ -18,14 +18,13 @@
 package com.google.code.apndroid;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ToggleButton;
-import android.preference.*;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends PreferenceActivity  {
+public class MainActivity extends PreferenceActivity {
 
     static final int NOTIFICATION_ID = 1;
     private TogglePreference togglePreference;
@@ -33,19 +32,18 @@ public class MainActivity extends PreferenceActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (!PreferenceManager.getDefaultSharedPreferences(this).contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)){
+        if (!PreferenceManager.getDefaultSharedPreferences(this).contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)) {
             ApnDao apnDao = new ApnDao(this.getContentResolver());
             boolean isEnabled = apnDao.getApnState();
-            togglePreference.setToggleButtonChecked(isEnabled);            
+            togglePreference.setToggleButtonChecked(isEnabled);
         }
     }
 
