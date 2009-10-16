@@ -15,11 +15,13 @@
 
     <string name="toggle_title">3G/EDGE/GPRS</string>
     <string name="toggle_hint">Tip: Widget lze přidat na plochu</string>
+    
 	<!-- Locale plug-in -->
 	<string name="help">Nápověda</string>
     <string name="save">Uložit</string>
     <string name="dontsave">Neuložit</string>
     <string name="notification_hint">Zobrazit notifikace</string>
+    <string name="mms_hint">Keep mms enabled</string>
     <string name="state_hint">Přístup k Internetu</string>
     <string name="local_state_enabled">Povolen</string>
     <string name="local_state_disabled">Zakázán</string>
