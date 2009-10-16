@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/locale_border"
+            android:scrollbars="horizontal"
+            android:layout_margin="5px">
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_margin="10px">
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="right">
+                <TextView
+                        android:text="@string/state_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5px"
+                        android:textColor="#004"
+                        android:textAppearance="?android:attr/textAppearanceButton">
+                </TextView>
+                <Spinner
+                        android:id="@+id/statespinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/state_labels" android:paddingLeft="10px"
+                        android:layout_marginLeft="12px" android:layout_gravity="center">
+                </Spinner>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_gravity="left">
+                <TextView
+                        android:text="@string/mms_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5px"
+                        android:textColor="#004"
+                        android:textAppearance="?android:attr/textAppearanceButton">
+                </TextView>
+                <CheckBox
+                        android:id="@+id/mms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#004" android:layout_gravity="center">
+                </CheckBox>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_gravity="left">
+                <TextView
+                        android:text="@string/notification_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5px"
+                        android:textColor="#004"
+                        android:textAppearance="?android:attr/textAppearanceButton">
+                </TextView>
+                <CheckBox
+                        android:id="@+id/notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#004" android:layout_gravity="center">
+                </CheckBox>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
