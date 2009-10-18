@@ -42,6 +42,7 @@ public class LocaleEventReceiver extends BroadcastReceiver {
             final Bundle bundle = intent.getExtras();
             boolean targetState = bundle.getBoolean(LocaleConstants.INTENT_EXTRA_STATE, true);
             boolean mmsEnabled = !bundle.getBoolean(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
+            boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
 
             ContentResolver contentResolver = context.getContentResolver();
             ApnDao dao = new ApnDao(contentResolver, mmsEnabled);
@@ -50,10 +51,15 @@ public class LocaleEventReceiver extends BroadcastReceiver {
                 if (Log.isLoggable(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, Log.INFO)) {
                     Log.i(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, MessageFormat.format("Switching apn state [{0} -> {1}]", currentState, targetState));
                 }
-                boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
 
                 boolean resultState = dao.switchApnState(currentState);
                 SwitchingAndMessagingUtils.sendStatusMessage(context, resultState, showNotification);
+            }else if (!currentState){//main apns disabled, but we should check if current and target mms state equals.
+                boolean currentMmsState = dao.getMmsState();
+                if (currentMmsState != mmsEnabled){
+                    dao.switchMmsState(currentMmsState);//current and target mms states are not equals lets switch only mms apns now.
+                    SwitchingAndMessagingUtils.sendStatusMessage(context, currentState, showNotification);
+                }
             }
         }
     }
