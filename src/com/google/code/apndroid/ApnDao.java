@@ -82,8 +82,7 @@ public final class ApnDao {
 
     boolean enableAllInDb() {
         List<ApnInfo> apns = getDisabledApnsMap();
-        enableApnList(apns);
-        return true;//we always return true because in any situation we can reset all apns to initial state
+        return enableApnList(apns);
     }
 
     /**
@@ -123,7 +122,7 @@ public final class ApnDao {
      *
      * @param apns list of apns data to modify
      */
-    private void enableApnList(List<ApnInfo> apns) {
+    private boolean enableApnList(List<ApnInfo> apns) {
         final ContentResolver contentResolver = this.contentResolver;
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
@@ -137,6 +136,7 @@ public final class ApnDao {
             }
             contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
         }
+        return true;//we always return true because in any situation we can reset all apns to initial state
     }
 
     private boolean disableApnList(List<ApnInfo> apns) {
@@ -172,7 +172,7 @@ public final class ApnDao {
     }
 
     /**
-     * Perorms switching apns work state according to passed state parameter
+     * Performs switching apns work state according to passed state parameter
      *
      * @param enabled apn state. this method tries to make a switch to another state( enabled == true -> off, enabled == false -> on)
      * @return {@code true} if switch was successfull (apn state changed) and {@code false} if apn state was not changed
@@ -182,6 +182,21 @@ public final class ApnDao {
             return disableAllInDb();
         } else {
             return enableAllInDb();
+        }
+    }
+
+    /**
+     * Performs switching apns with 'mms' type according to passed state parameter
+     *
+     * @param enabled apn state. this method tries to make a switch to another state( enabled == true -> off, enabled == false -> on)
+     * @return {@code true} if switch was successfull (apn state changed) and {@code false} if apn state was not changed
+     */
+    boolean switchMmsState(boolean enabled){
+        if (enabled){
+            final List<ApnInfo> mmsList = selectEnabledMmsApns();
+            return mmsList.size() != 0 && disableApnList(mmsList);
+        }else{
+            return enableApnList(selectDisabledMmsApns());
         }
     }
 
@@ -234,13 +249,17 @@ public final class ApnDao {
         return selectApnInfo("type like ?", new String[]{"mms"+NameUtil.SUFFIX});
     }
 
+    public List<ApnInfo> selectEnabledMmsApns(){
+        return selectApnInfo("type like ? and current is not null", new String[]{"mms"});
+    }
+
     public boolean enableMmsApns(){
         List<ApnInfo> disabledList = selectDisabledMmsApns();
         enableApnList(disabledList);
         return true;
     }
 
-    public boolean isMmsDisabled(){
+    public boolean getMmsState(){
         return countMmsApns() > 0 && countDisabledMmsApns() > 0;
     }
 

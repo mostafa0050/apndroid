@@ -38,14 +38,16 @@ public class StatusReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (ApplicationConstants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-            if (extras != null && extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true)) {
-                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
-                performNotificationStatusChange(context, isNetEnabled);
-            }
             if (extras != null){
+                //let's save current state in preferences
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 final boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
                 prefs.edit().putBoolean(ApplicationConstants.SETTINGS_TOGGLE_BUTTON, isNetEnabled).commit();
+
+                //check if we should show notification
+                if (extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true)) {
+                    performNotificationStatusChange(context, isNetEnabled);
+                }
             }
         }
     }
