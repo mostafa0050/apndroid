@@ -222,7 +222,7 @@ public final class ApnDao {
     }
 
     public int countMmsApns() {
-        return executeCountQuery("type like ? or type like 'mms'", new String[]{"mms"+NameUtil.SUFFIX});
+        return executeCountQuery("(type like ? or type like 'mms') and current is not null", new String[]{"mms"+NameUtil.SUFFIX});
     }
 
     public int countDisabledMmsApns(){
@@ -264,7 +264,7 @@ public final class ApnDao {
      * @return {@code true} if mms apns are enabled now and {@code false} otherwise
      */
     public boolean getMmsState(){
-        return countMmsApns() > 0 && countDisabledMmsApns() > 0;
+        return !(countMmsApns() > 0 && countDisabledMmsApns() > 0);
     }
 
     public boolean isModifyMms() {

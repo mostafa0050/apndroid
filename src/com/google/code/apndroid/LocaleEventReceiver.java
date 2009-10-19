@@ -42,11 +42,11 @@ public class LocaleEventReceiver extends BroadcastReceiver {
         if (com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
             final Bundle bundle = intent.getExtras();
             boolean targetState = bundle.getBoolean(LocaleConstants.INTENT_EXTRA_STATE, true);
-            boolean modifyMmsOnDisable = !bundle.getBoolean(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
+            boolean keepMmsState = bundle.getBoolean(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
             boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
 
             ContentResolver contentResolver = context.getContentResolver();
-            ApnDao dao = new ApnDao(contentResolver, modifyMmsOnDisable);
+            ApnDao dao = new ApnDao(contentResolver, !keepMmsState);
             boolean currentState = dao.getApnState();
             if (currentState != targetState) {
                 if (Log.isLoggable(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, Log.INFO)) {
@@ -57,14 +57,14 @@ public class LocaleEventReceiver extends BroadcastReceiver {
                 SwitchingAndMessagingUtils.sendStatusMessage(context, resultState, showNotification);
             }else if (!currentState){//main apns disabled, but we should check if current and target mms state equals.
                 boolean currentMmsState = dao.getMmsState();
-                if (currentMmsState != modifyMmsOnDisable){
+                if (currentMmsState != keepMmsState){
 
                     //current and target mms states are not equals lets switch only mms apns now.
                     if (dao.switchMmsState(currentMmsState)){
-                        //switch was successfull. lets change current stettings to synchronize it with switched state.
+                        //switch was successfull. lets change current settings to synchronize it with switched state.
                         PreferenceManager.getDefaultSharedPreferences(context)
                                 .edit()
-                                .putBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, !modifyMmsOnDisable)
+                                .putBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, keepMmsState)
                                 .commit();
                     }
                 }
