@@ -259,6 +259,10 @@ public final class ApnDao {
         return true;
     }
 
+    /**
+     *
+     * @return {@code true} if mms apns are enabled now and {@code false} otherwise
+     */
     public boolean getMmsState(){
         return countMmsApns() > 0 && countDisabledMmsApns() > 0;
     }
