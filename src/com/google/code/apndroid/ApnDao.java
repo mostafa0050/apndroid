@@ -209,14 +209,6 @@ public final class ApnDao {
         return countDisabledApns() == 0;
     }
 
-    int countAllCurrentApns() {
-        return executeCountQuery("current is not null", null);
-    }
-
-    int countEnabledApns() {
-        return executeCountQuery("apn not like ? and type not like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
-    }
-
     int countDisabledApns() {
         return executeCountQuery("apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
     }
@@ -251,12 +243,6 @@ public final class ApnDao {
 
     public List<ApnInfo> selectEnabledMmsApns(){
         return selectApnInfo("type like ? and current is not null", new String[]{"mms"});
-    }
-
-    public boolean enableMmsApns(){
-        List<ApnInfo> disabledList = selectDisabledMmsApns();
-        enableApnList(disabledList);
-        return true;
     }
 
     /**

@@ -65,6 +65,7 @@ public class LocaleEventReceiver extends BroadcastReceiver {
                         PreferenceManager.getDefaultSharedPreferences(context)
                                 .edit()
                                 .putBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, keepMmsState)
+                                .putBoolean(ApplicationConstants.SETTINGS_CHANGED, true)
                                 .commit();
                     }
                 }
