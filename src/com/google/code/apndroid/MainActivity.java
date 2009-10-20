@@ -20,6 +20,8 @@ package com.google.code.apndroid;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.preference.CheckBoxPreference;
+import android.content.SharedPreferences;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
@@ -29,27 +31,56 @@ public class MainActivity extends PreferenceActivity {
     static final int NOTIFICATION_ID = 1;
     private TogglePreference togglePreference;
 
+    private boolean wasStopped = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
+
+        resetSettingsChangedFlag();
+    }
+
+    /**
+     * Performs resetting of a "settings changed externally" flag.
+     * <br>
+     */
+    private void resetSettingsChangedFlag() {
+        getPreferenceManager().getSharedPreferences().edit().putBoolean(ApplicationConstants.SETTINGS_CHANGED, false);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (!PreferenceManager.getDefaultSharedPreferences(this).contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)) {
             ApnDao apnDao = new ApnDao(this.getContentResolver());
             boolean isEnabled = apnDao.getApnState();
             togglePreference.setToggleButtonChecked(isEnabled);
+        }
+        if (wasStopped && sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_CHANGED, false)){
+            //settings changed outside when we left main activity for some time 
+
+            CheckBoxPreference keepMmsCheckbox = (CheckBoxPreference) getPreferenceManager()
+                    .findPreference(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE);
+
+            keepMmsCheckbox.setChecked(
+                    sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true)
+            );
+
+            togglePreference.setToggleButtonChecked(
+                    sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_TOGGLE_BUTTON, true)
+            );
+            
+            this.wasStopped = false;
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        this.wasStopped = true;
     }
-
 }

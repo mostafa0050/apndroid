@@ -33,5 +33,12 @@ public final class ApplicationConstants {
     static final String SETTINGS_TOGGLE_BUTTON = "toggle_preference";
     static final String SETTINGS_KEEP_MMS_ACTIVE = "com.google.code.apndroid.preferences.KEEP_MMS_ENABLED";
     static final String SETTINGS_SHOW_NOTIFICATION = "com.google.code.apndroid.preferences.SHOW_NOTIFICATION";
+    /**
+     * Special flag setting that signals about changing app settings not from main ui (for example from some plugin)
+     * <br>
+     * In case when main ui was started before that and stopped (user exit activity), but it was not killed and restored
+     * this flag set to {@code true} signals that we should refresh our ui.
+     */
+    static final String SETTINGS_CHANGED = "com.google.com.apndroid.preferences.SETTINGS_CHANGED";
 
 }
