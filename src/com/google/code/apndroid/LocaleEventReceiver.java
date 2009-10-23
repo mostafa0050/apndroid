@@ -53,8 +53,8 @@ public class LocaleEventReceiver extends BroadcastReceiver {
                     Log.i(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, MessageFormat.format("Switching apn state [{0} -> {1}]", currentState, targetState));
                 }
 
-                boolean resultState = dao.switchApnState(currentState);
-                SwitchingAndMessagingUtils.sendStatusMessage(context, resultState, showNotification);
+                boolean changeSuccessfull = dao.switchApnState(currentState);
+                SwitchingAndMessagingUtils.sendStatusMessage(context, changeSuccessfull ? targetState : currentState, showNotification);
             }else if (!currentState){//main apns disabled, but we should check if current and target mms state equals.
                 boolean currentMmsState = dao.getMmsState();
                 if (currentMmsState != keepMmsState){
