@@ -21,6 +21,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public final class ApnDao {
     private ContentResolver contentResolver;
 
     private boolean modifyMms = true;
+    private static final String DAO_LOG = "apndroid_dao";
 
     public ApnDao(ContentResolver contentResolver, boolean modifyMms) {
         this.contentResolver = contentResolver;
@@ -61,10 +63,12 @@ public final class ApnDao {
         } else {
             query = "(not lower(type)='mms' or type is null) and current is not null";
         }
+        Log.d(DAO_LOG, "selecting enabled apns list");
         return selectApnInfo(query, null);
     }
 
     List<ApnInfo> getDisabledApnsMap() {
+        Log.d(DAO_LOG, "selecting disabled apns map");
         return selectApnInfo("apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
     }
 
@@ -81,6 +85,7 @@ public final class ApnDao {
     }
 
     boolean enableAllInDb() {
+        Log.d(DAO_LOG, "trying to enable apns");
         List<ApnInfo> apns = getDisabledApnsMap();
         return enableApnList(apns);
     }
@@ -101,6 +106,7 @@ public final class ApnDao {
             result.add(new ApnInfo(id, apn, type));
             mCursor.moveToNext();
         }
+        Log.d(DAO_LOG, "created "+result.size()+" dtos");
         return result;
     }
 
@@ -110,9 +116,13 @@ public final class ApnDao {
      * @return {@code true} if one o more apns changed and {@code false} if all APNs did not changed their states
      */
     boolean disableAllInDb() {
+        Log.d(DAO_LOG, "trying to disable apns");
         List<ApnInfo> apns = getEnabledApnsMap();
 
-        if (apns.isEmpty()) return false;
+        if (apns.isEmpty()) {
+            Log.d(DAO_LOG, "enabled apn list is empty. disable operation failed");
+            return false;
+        }
 
         return disableApnList(apns);
     }
@@ -134,7 +144,8 @@ public final class ApnDao {
             } else {
                 values.put(TYPE, newApnType);
             }
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
+            boolean updated = contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id}) == 1;
+            Log.d(DAO_LOG, "Enabled apn:[id=" + apnInfo.id + ",apn=" + apnInfo.apn + ",type=" + apnInfo.type + "]" + (updated ? "success" : "fail"));
         }
         return true;//we always return true because in any situation we can reset all apns to initial state
     }
@@ -147,7 +158,8 @@ public final class ApnDao {
             values.put(APN, newApnName);
             String newApnType = NameUtil.addSuffix(apnInfo.type);
             values.put(TYPE, newApnType);
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
+            boolean updated = contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id}) == 1;
+            Log.d(DAO_LOG, "Disabled apn:[id="+apnInfo.id+",apn="+apnInfo.apn+",type="+apnInfo.type+"] "+(updated?"success":"fail"));
         }
         return true;
     }
@@ -163,10 +175,14 @@ public final class ApnDao {
      * @return new apn state ({@code true} if apn is now enabled, and {@code false} if apn is disabled).
      */
     boolean switchApnState() {
+        Log.d(DAO_LOG, "trying to switch apn state");
         boolean currentState = getApnState();
+        Log.d(DAO_LOG, "current state is "+(currentState ? "on" : "off"));
         if (switchApnState(currentState)) {
+            Log.d(DAO_LOG, "switch successfull");
             return !currentState;
         } else {
+            Log.d(DAO_LOG, "switch unsuccessfull");
             return currentState;
         }
     }
@@ -178,10 +194,15 @@ public final class ApnDao {
      * @return {@code true} if switch was successfull (apn state changed) and {@code false} if apn state was not changed
      */
     boolean switchApnState(boolean enabled) {
+        Log.d(DAO_LOG, "trying to switch apn from " + (enabled ? "on" : "off") +" to "+(!enabled ? "on" : "off"));
         if (enabled) {
-            return disableAllInDb();
+            final boolean resultState = disableAllInDb();
+            Log.d(DAO_LOG, "result apn state after switch try is "+(resultState ? "on" : "off"));
+            return resultState;
         } else {
-            return enableAllInDb();
+            final boolean resultState = enableAllInDb();
+            Log.d(DAO_LOG, "result apn state after switch try is "+(resultState ? "on" : "off"));
+            return resultState;
         }
     }
 
@@ -192,9 +213,12 @@ public final class ApnDao {
      * @return {@code true} if switch was successfull (apn state changed) and {@code false} if apn state was not changed
      */
     boolean switchMmsState(boolean enabled){
+        Log.d(DAO_LOG, "trying to switch mms from " + (enabled ? "on" : "off") +" to "+(!enabled ? "on" : "off"));
         if (enabled){
             final List<ApnInfo> mmsList = selectEnabledMmsApns();
-            return mmsList.size() != 0 && disableApnList(mmsList);
+            final boolean resultState = mmsList.size() != 0 && disableApnList(mmsList);
+            Log.d(DAO_LOG, "result mms state after switch try is "+(resultState ? "on" : "off"));
+            return resultState;
         }else{
             return enableApnList(selectDisabledMmsApns());
         }
@@ -210,14 +234,17 @@ public final class ApnDao {
     }
 
     int countDisabledApns() {
+        Log.d(DAO_LOG, "counting disabled apns");
         return executeCountQuery("apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
     }
 
     public int countMmsApns() {
+        Log.d(DAO_LOG, "counting current mms apns");
         return executeCountQuery("(type like ? or type like 'mms') and current is not null", new String[]{"mms"+NameUtil.SUFFIX});
     }
 
     public int countDisabledMmsApns(){
+        Log.d(DAO_LOG, "counting disabled mms apns");
         return executeCountQuery("type like ?", new String[]{"mms"+NameUtil.SUFFIX});
     }
 
@@ -226,7 +253,9 @@ public final class ApnDao {
         try {
             cursor = contentResolver.query(CONTENT_URI, new String[]{"count(*)"}, whereQuery, whereParams, null);
             if (cursor.moveToFirst()) {
-                return cursor.getInt(0);
+                final int count = cursor.getInt(0);
+                Log.d(DAO_LOG,"query count="+count);
+                return count;
             } else {
                 return -1;
             }
