@@ -23,6 +23,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.text.MessageFormat;
+
 /**
  * Date: 30.09.2009
  *
@@ -37,28 +39,111 @@ public class SwitchingAndMessagingUtils {
     }
 
     /**
-     * Convinience method for switching apn state. It performs switch and send notification about
-     * it by throwing broadcast. As a result method also returns current apn state.
+     * Convinience method for switching apn state to another state (based on current system state).
+     * It performs switch and send notification about
+     * it by sending broadcast message. As a result method also returns current apn state.
      * If you does not need some special logic for switching it's the best way.
+     *
      * @param context current application context
      * @return current apn state after switch procedure.
      */
-    public static boolean switchAndNotify(Context context){
+    public static boolean switchAndNotify(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        long start = System.currentTimeMillis();
-
-        ApnDao dao = new ApnDao(context.getContentResolver(),
-                !preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true));
-        boolean enabled = dao.switchApnState();
-
-        long end = System.currentTimeMillis();
-
-        if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
-            Log.i(ApplicationConstants.APP_LOG, "Switched in " + (end - start) + " ms");
-        }
         boolean showNotification = preferences.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, true);
-        sendStatusMessage(context,enabled, showNotification);
-        return enabled;
+        boolean keepMms = !preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true);
+
+        ApnDao dao = new ApnDao(context.getContentResolver());
+        boolean currentState = dao.getApnState();
+
+        return switchAndNotify(!currentState, keepMms, showNotification, context, dao)
+                ? !currentState
+                : currentState;
+    }
+
+    /**
+     * Performs "smart" switching. It defines current apn state and if it does not equal desired state,
+     * then it performs switch.
+     * <br>
+     * This method also set the flag for updating UI (mms state)
+     *
+     * @param targetState      target state
+     * @param modifyMms        if need to modify mms (active only if passed target state is false)
+     * @param showNotification show notification on success switch
+     * @param context          application context
+     * @param dao              apn dao.
+     * @return
+     */
+    public static boolean switсhIfNecessaryAndNotify(boolean targetState, boolean modifyMms,
+                                                     boolean showNotification,
+                                                     Context context, ApnDao dao) {
+        boolean currentState = dao.getApnState();
+        if (currentState != targetState) {
+            return SwitchingAndMessagingUtils.switchAndNotify(targetState, modifyMms, showNotification, context, dao);
+        } else if (!targetState) {//main states are equals but let check what is up with mms states
+            boolean currentMmsState = dao.getMmsState();
+            if (currentMmsState != modifyMms) {
+                //current and target mms states are not equals lets switch only mms apns now.
+                boolean success = dao.switchMmsState(currentMmsState);
+                if (success) {
+                    storeMmsSettings(context, modifyMms);
+                }
+                return success;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Performs direct switching to passed target state. This method should be used if you already has apnDao.
+     * Passing existing dao helps to avoid creating a new one
+     *
+     * @param isTargerStateOn  target state
+     * @param modifyMms        if need to modify mms (active only if passed target state is false)
+     * @param showNotification show notification on success switch
+     * @param context          application context
+     * @param dao              apn dao.
+     * @return {@code true} if switch was successfull and {@code false} otherwise
+     */
+    public static boolean switchAndNotify(boolean isTargerStateOn, boolean modifyMms, boolean showNotification,
+                                          Context context, ApnDao dao) {
+        if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
+            Log.i(ApplicationConstants.APP_LOG,
+                    MessageFormat.format("switching apn state [target={0}, modifyMms={1}, showNotification={2}]",
+                            isTargerStateOn, modifyMms, showNotification));
+        }
+        dao.setModifyMms(modifyMms);
+        boolean success = dao.switchApnState(!isTargerStateOn);
+        if (success) {
+            sendStatusMessage(context, isTargerStateOn, showNotification);
+            if (!isTargerStateOn) {
+                storeMmsSettings(context, modifyMms);
+            }
+        }
+        if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
+            Log.i(ApplicationConstants.APP_LOG, "switch success=" + success);
+        }
+        return success;
+    }
+
+    private static void storeMmsSettings(Context context, boolean modifyMms) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, !modifyMms)
+                .putBoolean(ApplicationConstants.SETTINGS_CHANGED, true)
+                .commit();
+    }
+
+    /**
+     * Performs direct switching to passed target state
+     *
+     * @param isTargerStateOn  target state
+     * @param modifyMms        if need to modify mms (active only if passed target state is false)
+     * @param showNotification show notification on success switch
+     * @param context          application context
+     * @return {@code true} if switch was successfull and {@code false} otherwise
+     */
+    public static boolean switchAndNotify(boolean isTargerStateOn, boolean modifyMms, boolean showNotification, Context context) {
+        return switchAndNotify(isTargerStateOn, modifyMms, showNotification, context, new ApnDao(context.getContentResolver()));
     }
 }

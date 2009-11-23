@@ -112,7 +112,10 @@ public final class ApnDao {
     boolean disableAllInDb() {
         List<ApnInfo> apns = getEnabledApnsMap();
 
-        if (apns.isEmpty()) return false;
+        //when selected apns is empty
+        if (apns.isEmpty()){
+            return countDisabledApns() > 0;
+        }
 
         return disableApnList(apns);
     }
