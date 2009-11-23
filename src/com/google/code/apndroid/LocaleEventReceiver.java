@@ -47,29 +47,9 @@ public class LocaleEventReceiver extends BroadcastReceiver {
 
             ContentResolver contentResolver = context.getContentResolver();
             ApnDao dao = new ApnDao(contentResolver, !keepMmsState);
-            boolean currentState = dao.getApnState();
-            if (currentState != targetState) {
-                if (Log.isLoggable(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, Log.INFO)) {
-                    Log.i(LocaleConstants.LOCALE_PLUGIN_LOG_TAG, MessageFormat.format("Switching apn state [{0} -> {1}]", currentState, targetState));
-                }
-
-                boolean changeSuccessfull = dao.switchApnState(currentState);
-                SwitchingAndMessagingUtils.sendStatusMessage(context, changeSuccessfull ? targetState : currentState, showNotification);
-            }else if (!currentState){//main apns disabled, but we should check if current and target mms state equals.
-                boolean currentMmsState = dao.getMmsState();
-                if (currentMmsState != keepMmsState){
-
-                    //current and target mms states are not equals lets switch only mms apns now.
-                    if (dao.switchMmsState(currentMmsState)){
-                        //switch was successfull. lets change current settings to synchronize it with switched state.
-                        PreferenceManager.getDefaultSharedPreferences(context)
-                                .edit()
-                                .putBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, keepMmsState)
-                                .putBoolean(ApplicationConstants.SETTINGS_CHANGED, true)
-                                .commit();
-                    }
-                }
-            }
+            SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(
+                    targetState, !keepMmsState, showNotification, context, dao
+            );
         }
     }
 }

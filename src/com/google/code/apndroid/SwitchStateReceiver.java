@@ -20,6 +20,9 @@ package com.google.code.apndroid;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 /**
  * Broadcast receiver that performs switching current apn state and performs notification about this through sending
@@ -30,8 +33,21 @@ import android.content.Intent;
 public class SwitchStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (ApplicationConstants.CHANGE_STATUS_ACTION.equals(intent.getAction())) {
-            SwitchingAndMessagingUtils.switchAndNotify(context);
+        if (ApplicationConstants.CHANGE_STATUS_REQUEST.equals(intent.getAction())) {
+            Bundle bundle = intent.getExtras();
+            boolean targetState;
+            boolean modifyMms;
+            boolean showNotification;
+            if (bundle == null || bundle.size() == 0){//no params
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                final ApnDao apnDao = new ApnDao(context.getContentResolver());
+                targetState = !apnDao.getApnState();
+                modifyMms = !preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true);
+                showNotification = preferences.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, true);
+                SwitchingAndMessagingUtils.switchAndNotify(targetState, modifyMms, showNotification, context, apnDao);
+            }else{
+//                targetState = bundle.getString()
+            }
         }
     }
 }
