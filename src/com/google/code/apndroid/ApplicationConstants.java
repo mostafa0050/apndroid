@@ -17,11 +17,14 @@
 
 package com.google.code.apndroid;
 
+import android.content.Intent;
+
 /**
  * @author Pavlov Dmitry
  * @since 03.10.2009
  */
 public final class ApplicationConstants {
+
     public static final String STATUS_EXTRA = "com.google.code.apndroid.intent.extra.STATUS";
     /**
      * Intent name for send to request current apn state.
@@ -34,6 +37,28 @@ public final class ApplicationConstants {
 
 
     public static final String SHOW_NOTIFICATION = "com.google.code.apndroid.intent.extra.SHOW_NOTIFICATION";
+
+    public static final String KEEP_MMS = "com.google.code.apndroid.intent.extra.KEEP_MMS";
+
+    public static final String TARGET_STATE = "com.google.code.apndroid.intent.extra.TARGET_STATE";
+
+    /**
+     * Intent name for returned result
+     */
+    public static final String APN_DROID_RESULT = "com.google.code.apdroid.intent.REQUEST_RESULT";
+    /**
+     * Extra name that holds main apn state
+     */
+    public static final String RESPONSE_APN_STATE = "APN_STATE";
+    /**
+     * Extra name that holds mms state. This extra set only if main apn state is 'off' (result == false)
+     */
+    public static final String RESPONSE_MMS_STATE = "MMS_STATE";
+    /**
+     * Intent name that holds switch result. It is {@code true} if the resulted switched request performed succesfully
+     * and {@code false} otherwise.
+     */
+    public static final String RESPONSE_SWITCH_SUCCESS = "SWITCH_SUCCESS";
 
     static final String STATUS_CHANGED_MESSAGE = "com.google.code.apndroid.intent.action.STATUS_CHANGED";
 

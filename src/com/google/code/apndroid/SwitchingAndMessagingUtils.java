@@ -72,7 +72,7 @@ public class SwitchingAndMessagingUtils {
      * @param showNotification show notification on success switch
      * @param context          application context
      * @param dao              apn dao.
-     * @return
+     * @return {@code true} if switch was sucessfull and {@code false} otherwise.
      */
     public static boolean switсhIfNecessaryAndNotify(boolean targetState, boolean modifyMms,
                                                      boolean showNotification,
