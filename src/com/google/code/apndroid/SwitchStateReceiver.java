@@ -35,18 +35,14 @@ public class SwitchStateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (ApplicationConstants.CHANGE_STATUS_REQUEST.equals(intent.getAction())) {
             Bundle bundle = intent.getExtras();
-            boolean targetState;
-            boolean modifyMms;
-            boolean showNotification;
             if (bundle == null || bundle.size() == 0){//no params
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                final ApnDao apnDao = new ApnDao(context.getContentResolver());
-                targetState = !apnDao.getApnState();
-                modifyMms = !preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true);
-                showNotification = preferences.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, true);
-                SwitchingAndMessagingUtils.switchAndNotify(targetState, modifyMms, showNotification, context, apnDao);
+                SwitchingAndMessagingUtils.switchAndNotify(context);
             }else{
-//                targetState = bundle.getString()
+                boolean targetState = bundle.getBoolean(ApplicationConstants.TARGET_STATE,true);
+                boolean modifyMms = !bundle.getBoolean(ApplicationConstants.KEEP_MMS,true);
+                boolean showNotification = bundle.getBoolean(ApplicationConstants.SHOW_NOTIFICATION,true);
+                SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, modifyMms,
+                        showNotification, context, new ApnDao(context.getContentResolver()));
             }
         }
     }
