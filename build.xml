@@ -67,7 +67,7 @@
 
     <!-- =========== Clean section ============================ -->
     <target name="clean" depends="init" description="Clean project">
-        <delete dir="${build.dir}"/>
+        <delete dir="${build.root}"/>
         <delete dir="${dist.dir}"/>        
     </target>
 </project>
