@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">APNdroid</string>
+    <string name="title_enabled">3G/EDGE/GPRS Abilitato</string>
+    <string name="title_disabled">3G/EDGE/GPRS Disabilitato</string>
+    <string name="status_enabled">Accesso Internet abilitato.</string>
+    <string name="status_disabled">Accesso Internet disabilitato. Comunque, le connessioni esistenti sono ancora
+        attive.\n\nAggiunto il suffisso
+        <i>apndroid</i>
+        agli
+        <b>APN</b>
+        e al
+        <b>tipo di APN</b>
+        di tutti i nomi dei Punti di Accesso nelle impostazioni del telefono.
+    </string>
+    <string name="close">Chiudi</string>
+
+    <string name="prefernces_category">Preferenze</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Mantieni MMS abilitati</string>
+    <string name="notification_property">Notifiche</string>
+    <string name="notification_property_summary">Mostra notifiche di stato</string>
+
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Suggerimento: Aggiungi un widget alla schermata iniziale</string>
+    <string name="toggle_on">Attiva</string>
+    <string name="toggle_off">Disattiva</string>
+    <!-- Locale plug-in -->
+    <string name="help">Aiuto</string>
+    <string name="save">Salva</string>
+    <string name="dontsave">Non salvare</string>
+    <string name="notification_hint">Mostra notifiche</string>
+    <string name="mms_hint">Mantieni MMS abilitati</string>
+    <string name="state_hint">Accesso Internet</string>
+    <string name="local_state_enabled">Abilitato</string>
+    <string name="local_state_disabled">Disabilitato</string>
+    <string-array name="state_labels">
+        <item>Abilitato</item>
+        <item>Disabilitato</item>
+    </string-array>
+</resources>
+
