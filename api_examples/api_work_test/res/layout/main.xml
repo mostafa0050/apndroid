@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<Button android:id="@+id/state_request"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="request state"
+    />
+<Button android:id="@+id/switch_request"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="switch"/>
+<CheckBox android:id="@+id/target_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="target state"/>
+<CheckBox android:id="@+id/keep_mms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="keep mms"
+        android:checked="false"/>
+<CheckBox android:id="@+id/show_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show notification"/>
+</LinearLayout>

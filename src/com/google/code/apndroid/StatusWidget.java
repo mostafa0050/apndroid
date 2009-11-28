@@ -83,7 +83,7 @@ public class StatusWidget extends AppWidgetProvider {
         int iconId = status ? R.drawable.apndroid_widget_on : R.drawable.apndroid_widget_off;
         views.setImageViewResource(R.id.widgetCanvas, iconId);
 
-        Intent msg = new Intent(CHANGE_STATUS_ACTION);
+        Intent msg = new Intent(ApplicationConstants.CHANGE_STATUS_REQUEST);
         PendingIntent intent = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widgetCanvas, intent);
         return views;

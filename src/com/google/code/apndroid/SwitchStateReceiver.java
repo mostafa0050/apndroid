@@ -20,6 +20,9 @@ package com.google.code.apndroid;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 /**
  * Broadcast receiver that performs switching current apn state and performs notification about this through sending
@@ -30,8 +33,17 @@ import android.content.Intent;
 public class SwitchStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (ApplicationConstants.CHANGE_STATUS_ACTION.equals(intent.getAction())) {
-            SwitchingAndMessagingUtils.switchAndNotify(context);
+        if (ApplicationConstants.CHANGE_STATUS_REQUEST.equals(intent.getAction())) {
+            Bundle bundle = intent.getExtras();
+            if (bundle == null || bundle.size() == 0){//no params
+                SwitchingAndMessagingUtils.switchAndNotify(context);
+            }else{
+                boolean targetState = bundle.getBoolean(ApplicationConstants.TARGET_STATE,true);
+                boolean modifyMms = !bundle.getBoolean(ApplicationConstants.KEEP_MMS,true);
+                boolean showNotification = bundle.getBoolean(ApplicationConstants.SHOW_NOTIFICATION,true);
+                SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, modifyMms,
+                        showNotification, context, new ApnDao(context.getContentResolver()));
+            }
         }
     }
 }

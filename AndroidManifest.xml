@@ -25,6 +25,14 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ActionActivity"
+                  android:exported="true" android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="com.google.code.apndroid.intent.action.STATUS_REQUEST"/>
+                <action android:name="com.google.code.apndroid.intent.action.CHANGE_REQUEST"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <receiver android:name=".LocaleEventReceiver">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
@@ -46,7 +54,7 @@
         </receiver>
         <receiver android:name="SwitchStateReceiver">
             <intent-filter>
-                <action android:name="com.google.code.apndroid.intent.action.CHANGE_STATUS" />                
+                <action android:name="com.google.code.apndroid.intent.action.CHANGE_REQUEST" />
             </intent-filter>
         </receiver>
     </application>

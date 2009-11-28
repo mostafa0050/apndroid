@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="APNdroid" default="default" basedir=".">
+    <description>Builds, tests and runs Project</description>
+    <property name="build.root" value="api_build"/>
+    <property name="build.dir" value="${build.root}/build"/>
+    <property name="build.src" value="${build.root}/src"/>
+    <property name="dist.dir" value="api_dist"/>
+    <!--<property name="dist-std" value="dist/jconf-standalone"/>-->
+
+    <!-- ============= Default front targets ================== -->
+    <target name="default" depends="dist" description="Performs API compilation and packs it into JAR"/>    
+
+    <target name="rebuild" depends="clean, dist" description="Rebuilds project"/>
+
+    <!-- ============= Initialization section ================== -->
+    <target name="init">
+        <!--init target-->
+        <path id="build.classpath">
+            <pathelement location="${build.dir}"/>
+        </path>
+    </target>
+
+    <!-- =========== Compilation section =================== -->
+    <target name="compile" depends="compile.init"
+            description="Perfroms compilation of project and it's tests">
+        <!--compile project classes-->
+        <copy todir="${build.src}">
+            <fileset dir="src">
+                <include name="**/ApplicationConstants.java"/>
+            </fileset>
+        </copy>
+        <javac srcdir="${build.src}" destdir="${build.dir}" debug="false"
+               deprecation="false" source="1.5" target="1.5" includeantruntime="false" encoding="UTF-8">
+        </javac>
+    </target>
+
+    <target name="compile.init" depends="init">
+        <mkdir dir="${build.root}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.src}"/>
+    </target>
+
+    <!-- =========== Dist building section =================== -->
+
+    <target name="dist"
+            depends="dist.init"
+            description="Make distribution">
+        <jar jarfile="${dist.dir}/apndroid_api.jar" compress="true">
+            <fileset dir="${build.dir}"/>
+        </jar>
+    </target>
+
+    <target name="dist.init" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <!-- =========== JavaDoc section ========================= -->
+    <target name="javadoc" depends="init" description="Generate Javadoc">
+        <mkdir dir="${dist.dir}/javadoc"/>
+        <javadoc destdir="${dist.dir}/javadoc" notree="false" use="true"
+                 nonavbar="false" noindex="false" splitindex="true" author="false"
+                 version="false" private="false" failonerror="true">
+            <classpath refid="build.classpath"/>
+            <fileset dir="${build.src}" includes="**/*.java"/>
+        </javadoc>
+    </target>
+
+    <!-- =========== Clean section ============================ -->
+    <target name="clean" depends="init" description="Clean project">
+        <delete dir="${build.root}"/>
+        <delete dir="${dist.dir}"/>        
+    </target>
+</project>

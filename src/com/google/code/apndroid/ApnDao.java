@@ -119,9 +119,10 @@ public final class ApnDao {
         Log.d(DAO_LOG, "trying to disable apns");
         List<ApnInfo> apns = getEnabledApnsMap();
 
+        //when selected apns is empty
         if (apns.isEmpty()) {
             Log.d(DAO_LOG, "enabled apn list is empty. disable operation failed");
-            return false;
+            return countDisabledApns() > 0;
         }
 
         return disableApnList(apns);
@@ -288,6 +289,46 @@ public final class ApnDao {
 
     public void setModifyMms(boolean modifyMms) {
         this.modifyMms = modifyMms;
+    }
+
+    public static void printApnTable(ContentResolver contentResolver){
+        Cursor cursor = null;
+        try{
+            cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
+            int columnCount = cursor.getColumnCount();
+            Log.d(DAO_LOG, makeApnTableHeader(columnCount, cursor));
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Log.d(DAO_LOG, makeApnEntryString(columnCount, cursor));
+                cursor.moveToNext();
+            }
+        }finally{
+            if (cursor != null){
+                cursor.close();
+            }
+        }
+    }
+
+    private static String makeApnTableHeader(int columnCount, Cursor cursor) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i<columnCount;i++){
+            builder.append(cursor.getColumnName(i));
+            if (i != columnCount -1){
+                builder.append("\t\t");
+            }
+        }
+        return builder.toString();
+    }
+
+    private static String makeApnEntryString(int columnCount, Cursor cursor){
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i<columnCount;i++){
+            builder.append(cursor.getString(i));
+            if (i != columnCount-1){
+                builder.append("\t\t");
+            }
+        }
+        return builder.toString();
     }
 
     /**
