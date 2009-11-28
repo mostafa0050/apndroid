@@ -12,6 +12,7 @@ public class ActionActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         Intent intent = getIntent();
         if (intent != null){
             if (intent.getAction().equals(ApplicationConstants.STATUS_REQUEST)){
@@ -24,9 +25,10 @@ public class ActionActivity extends Activity{
                 }
                 setResult(RESULT_OK, response);
             }else if (intent.getAction().equals(ApplicationConstants.CHANGE_STATUS_REQUEST)){
-                boolean targetState = bundle.getBoolean(ApplicationConstants.TARGET_STATE,true);
-                boolean modifyMms = !bundle.getBoolean(ApplicationConstants.KEEP_MMS,true);
-                boolean showNotification = bundle.getBoolean(ApplicationConstants.SHOW_NOTIFICATION,true);
+                Bundle extras = intent.getExtras();
+                boolean targetState = extras.getBoolean(ApplicationConstants.TARGET_STATE,true);
+                boolean modifyMms = !extras.getBoolean(ApplicationConstants.KEEP_MMS,true);
+                boolean showNotification = extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION,true);
                 boolean success = SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, modifyMms,
                         showNotification, this, new ApnDao(this.getContentResolver()));
                 Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);
