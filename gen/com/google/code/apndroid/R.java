@@ -68,6 +68,8 @@ public final class R {
  Locale plug-in 
  Locale plug-in 
  Locale plug-in 
+ Locale plug-in 
+ Locale plug-in 
          */
         public static final int help=0x7f06000f;
         public static final int local_state_disabled=0x7f060016;
