@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ActionActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
                   android:exported="true" android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="com.google.code.apndroid.intent.action.STATUS_REQUEST"/>
