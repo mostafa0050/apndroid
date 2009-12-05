@@ -41,6 +41,7 @@ public class MainActivity extends PreferenceActivity {
         togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
 
         resetSettingsChangedFlag();
+        ApnDao.printApnTable(this.getContentResolver());        
     }
 
     /**

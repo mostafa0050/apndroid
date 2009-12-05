@@ -26,6 +26,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.RemoteViews;
+import android.util.Log;
+import static com.google.code.apndroid.ApplicationConstants.*;
 
 /**
  * @author Pavlov "Zelgadis" Dmitry
@@ -38,10 +40,11 @@ public class StatusWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (ApplicationConstants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
+        if (STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
+            Log.d(APP_LOG, "Got status change message");
             Bundle extras = intent.getExtras();
-            if (extras != null && extras.containsKey(ApplicationConstants.STATUS_EXTRA)) {
-                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
+            if (extras != null && extras.containsKey(STATUS_EXTRA)) {
+                boolean isNetEnabled = extras.getBoolean(STATUS_EXTRA);
                 AppWidgetManager manager = AppWidgetManager.getInstance(context);
                 int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, StatusWidget.class));
                 showWidget(context, manager, widgetIds, isNetEnabled);
@@ -70,6 +73,7 @@ public class StatusWidget extends AppWidgetProvider {
     }
 
     private void showWidget(Context context, AppWidgetManager manager, int[] widgetIds, boolean status) {
+        Log.d(APP_LOG, "Target status is "+(status ? "on" : "off"));
         RemoteViews views = createRemoteViews(context, status);
         manager.updateAppWidget(widgetIds, views);
     }
