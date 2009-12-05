@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
@@ -34,23 +33,19 @@ import android.util.Log;
 public class StatusReceiver extends BroadcastReceiver {
 
     private static final int NOTIFICATION_ID = 1;
-    private static final String APNDROID_STAT_RCVR = "apndroid_stat_rcvr";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ApplicationConstants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
-            Log.d(APNDROID_STAT_RCVR, "Got status change message");
             Bundle extras = intent.getExtras();
             if (extras != null){
                 //let's save current state in preferences
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 final boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
-                Log.d(APNDROID_STAT_RCVR, "Switching current state to " + (isNetEnabled ? "on":"off"));
                 prefs.edit().putBoolean(ApplicationConstants.SETTINGS_TOGGLE_BUTTON, isNetEnabled).commit();
 
                 //check if we should show notification
                 if (extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true)) {
-                    Log.d(APNDROID_STAT_RCVR, "Show notification is on");
                     performNotificationStatusChange(context, isNetEnabled);
                 }
             }
