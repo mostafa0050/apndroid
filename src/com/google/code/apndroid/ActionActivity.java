@@ -15,21 +15,22 @@ public class ActionActivity extends Activity{
         super.onCreate(bundle);
         Intent intent = getIntent();
         if (intent != null){
+            int onState = ApplicationConstants.State.ON;
             if (intent.getAction().equals(ApplicationConstants.STATUS_REQUEST)){
                 ApnDao dao = new ApnDao(this.getContentResolver());
                 Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);
-                boolean apnState = dao.getApnState();
+                int apnState = dao.getApnState();
                 response.putExtra(ApplicationConstants.RESPONSE_APN_STATE, apnState);
-                if (!apnState){
+                if (apnState != onState){
                     response.putExtra(ApplicationConstants.RESPONSE_MMS_STATE, dao.getMmsState());
                 }
                 setResult(RESULT_OK, response);
             }else if (intent.getAction().equals(ApplicationConstants.CHANGE_STATUS_REQUEST)){
                 Bundle extras = intent.getExtras();
-                boolean targetState = extras.getBoolean(ApplicationConstants.TARGET_STATE,true);
-                boolean modifyMms = !extras.getBoolean(ApplicationConstants.KEEP_MMS,true);
+                int targetState = extras.getInt(ApplicationConstants.TARGET_APN_STATE,onState);
+                int mmsTarget = extras.getInt(ApplicationConstants.TARGET_MMS_STATE,onState);
                 boolean showNotification = extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION,true);
-                boolean success = SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, modifyMms,
+                boolean success = SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, mmsTarget,
                         showNotification, this, new ApnDao(this.getContentResolver()));
                 Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);
                 response.putExtra(ApplicationConstants.RESPONSE_SWITCH_SUCCESS, success);

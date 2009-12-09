@@ -28,7 +28,7 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 /**
- * @author Pavlov "Zelgadis" Dmitry
+ * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class StatusWidget extends AppWidgetProvider {
 
@@ -64,7 +64,7 @@ public class StatusWidget extends AppWidgetProvider {
         if (prefs.contains(WIDGET_STATUS)) {
             isNetEnabled = prefs.getBoolean(WIDGET_STATUS, true);
         } else {
-            isNetEnabled = new ApnDao(context.getContentResolver()).getApnState();
+            isNetEnabled = new ApnDao(context.getContentResolver()).getApnState() == ApplicationConstants.State.ON;
         }
         showWidget(context, appWidgetManager, ints, isNetEnabled);
     }

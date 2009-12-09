@@ -26,7 +26,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ToggleButton;
 
-public class TogglePreference extends Preference implements View.OnClickListener{
+public class TogglePreference extends Preference implements View.OnClickListener {
     private Boolean enabled;
 
     public TogglePreference(Context context) {
@@ -47,7 +47,7 @@ public class TogglePreference extends Preference implements View.OnClickListener
     protected void onBindView(View view) {
         super.onBindView(view);
         ToggleButton button = (ToggleButton) view.findViewById(R.id.toggle_button);
-        button.setOnClickListener(this);        
+        button.setOnClickListener(this);
         if (enabled != null) {
             button.setChecked(enabled);
         }
@@ -55,7 +55,7 @@ public class TogglePreference extends Preference implements View.OnClickListener
 
     public void onClick(View view) {
         ToggleButton button = (ToggleButton) view;
-        boolean enabled = SwitchingAndMessagingUtils.switchAndNotify(view.getContext());
+        boolean enabled = SwitchingAndMessagingUtils.switchAndNotify(view.getContext()) == ApplicationConstants.State.ON;
         button.setChecked(enabled);
         setToggleButtonChecked(enabled);
         notifyChanged();
@@ -63,13 +63,11 @@ public class TogglePreference extends Preference implements View.OnClickListener
 
     public void setToggleButtonChecked(boolean enabled) {
         this.enabled = enabled;
-        persistBoolean(enabled);        
+        persistBoolean(enabled);
     }
 
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        // This preference type's value type is Integer, so we read the default
-        // value from the attributes as an Integer.
         return a.getBoolean(index, true);
     }
 
