@@ -40,15 +40,16 @@ public class LocaleEventReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
+            int onState = ApplicationConstants.State.ON;
             final Bundle bundle = intent.getExtras();
-            boolean targetState = bundle.getBoolean(LocaleConstants.INTENT_EXTRA_STATE, true);
-            boolean keepMmsState = bundle.getBoolean(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
-            boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, true);
+            int targetState = bundle.getInt(ApplicationConstants.TARGET_APN_STATE, onState);
+            int mmsTarget = bundle.getInt(ApplicationConstants.TARGET_MMS_STATE, onState);
+            boolean showNotification = intent.getBooleanExtra(ApplicationConstants.SHOW_NOTIFICATION, true);
 
             ContentResolver contentResolver = context.getContentResolver();
-            ApnDao dao = new ApnDao(contentResolver, !keepMmsState);
+            ApnDao dao = new ApnDao(contentResolver, mmsTarget);
             SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(
-                    targetState, !keepMmsState, showNotification, context, dao
+                    targetState, mmsTarget, showNotification, context, dao
             );
         }
     }
