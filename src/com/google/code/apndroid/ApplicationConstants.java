@@ -36,9 +36,9 @@ public final class ApplicationConstants {
 
     public static final String SHOW_NOTIFICATION = "com.google.code.apndroid.intent.extra.SHOW_NOTIFICATION";
 
-    public static final String KEEP_MMS = "com.google.code.apndroid.intent.extra.KEEP_MMS";
+    public static final String TARGET_MMS_STATE = "com.google.code.apndroid.intent.extra.TARGET_MMS_STATE";
 
-    public static final String TARGET_STATE = "com.google.code.apndroid.intent.extra.TARGET_STATE";
+    public static final String TARGET_APN_STATE = "com.google.code.apndroid.intent.extra.TARGET_STATE";
 
     /**
      * Intent name for returned result
@@ -58,19 +58,17 @@ public final class ApplicationConstants {
      */
     public static final String RESPONSE_SWITCH_SUCCESS = "SWITCH_SUCCESS";
 
+    public static final class State{
+        public static final int OFF = 0;
+        public static final int ON = 1;
+    }
+
     static final String STATUS_CHANGED_MESSAGE = "com.google.code.apndroid.intent.action.STATUS_CHANGED";
 
     static final String SETTINGS_TOGGLE_BUTTON = "toggle_preference";
 
     static final String SETTINGS_KEEP_MMS_ACTIVE = "com.google.code.apndroid.preferences.KEEP_MMS_ENABLED";
     static final String SETTINGS_SHOW_NOTIFICATION = "com.google.code.apndroid.preferences.SHOW_NOTIFICATION";
-    /**
-     * Special flag setting that signals about changing app settings not from main ui (for example from some plugin)
-     * <br>
-     * In case when main ui was started before that and stopped (user exit activity), but it was not killed and restored
-     * this flag set to {@code true} signals that we should refresh our ui.
-     */
-    static final String SETTINGS_CHANGED = "com.google.com.apndroid.preferences.SETTINGS_CHANGED";
 
     /**
      * Common log tag

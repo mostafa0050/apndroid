@@ -17,52 +17,41 @@
 
 package com.google.code.apndroid;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.preference.Preference;
 import android.preference.CheckBoxPreference;
-import android.content.SharedPreferences;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends PreferenceActivity {
+public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     static final int NOTIFICATION_ID = 1;
     private TogglePreference togglePreference;
-
-    private boolean wasStopped = false;
-
+    private boolean wasChanged = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
-
-        resetSettingsChangedFlag();
-        ApnDao.printApnTable(this.getContentResolver());        
-    }
-
-    /**
-     * Performs resetting of a "settings changed externally" flag.
-     * <br>
-     */
-    private void resetSettingsChangedFlag() {
-        getPreferenceManager().getSharedPreferences().edit().putBoolean(ApplicationConstants.SETTINGS_CHANGED, false);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int onState = ApplicationConstants.State.ON;
         if (!sharedPreferences.contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)) {
             ApnDao apnDao = new ApnDao(this.getContentResolver());
-            boolean isEnabled = apnDao.getApnState();
-            togglePreference.setToggleButtonChecked(isEnabled);
+            int state = apnDao.getApnState();
+            togglePreference.setToggleButtonChecked(state == onState);
         }
-        if (wasStopped && sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_CHANGED, false)){
-            //settings changed outside when we left main activity for some time 
+        if (wasChanged){
+            //settings changed outside when we left main activity for some time
 
             CheckBoxPreference keepMmsCheckbox = (CheckBoxPreference) getPreferenceManager()
                     .findPreference(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE);
@@ -74,14 +63,30 @@ public class MainActivity extends PreferenceActivity {
             togglePreference.setToggleButtonChecked(
                     sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_TOGGLE_BUTTON, true)
             );
-            
-            this.wasStopped = false;
+
+            this.wasChanged = false;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        this.wasStopped = true;
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        wasChanged = true;
     }
 }
