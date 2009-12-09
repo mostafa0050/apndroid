@@ -65,16 +65,20 @@ public class LocaleActivity extends Activity {
         getNotificationCheckBox().setChecked(notify);
     }
 
-    private boolean getState() {
-        return getStateSpinner().getSelectedItemPosition() == 0;
+    private int getTargetState() {
+        return getStateSpinner().getSelectedItemPosition() == 0
+                ? ApplicationConstants.State.ON
+                : ApplicationConstants.State.OFF;
     }
 
     private boolean getNotification() {
         return getNotificationCheckBox().isChecked();
     }
 
-    private boolean getKeepMms(){
-        return getMmsCheckBox().isChecked();
+    private int getTargetMmsState(){
+        return getMmsCheckBox().isChecked()
+                ? ApplicationConstants.State.ON
+                : ApplicationConstants.State.OFF;
     }
 
     private void setKeepMms(boolean keep){
@@ -101,12 +105,13 @@ public class LocaleActivity extends Activity {
         setTitle(breadcrumbString);
 
         if (savedInstanceState == null) {
-            final boolean state = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_STATE, true);
-            final boolean showNotification = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, false);
-            final boolean keepMms = intent.getBooleanExtra(LocaleConstants.INTENT_EXTRA_KEEP_MMS, true);
-            setState(state);
+            int onState = ApplicationConstants.State.ON;
+            final int state = intent.getIntExtra(ApplicationConstants.TARGET_APN_STATE, onState);
+            final int mmsTarget = intent.getIntExtra(ApplicationConstants.TARGET_MMS_STATE, onState);
+            final boolean showNotification = intent.getBooleanExtra(ApplicationConstants.SHOW_NOTIFICATION, false);
+            setState(state == onState);
+            setKeepMms(mmsTarget == onState);
             setNotification(showNotification);
-            setKeepMms(keepMms);
         }
 
     }
@@ -122,12 +127,15 @@ public class LocaleActivity extends Activity {
         if (mIsCancelled)
             setResult(RESULT_CANCELED);
         else {
-            final boolean state = getState();
+            final int targetState = getTargetState();
             final Intent returnIntent = new Intent();
-            returnIntent.putExtra(LocaleConstants.INTENT_EXTRA_STATE, state);
-            returnIntent.putExtra(LocaleConstants.INTENT_EXTRA_SHOW_NOTIFICATION, getNotification());
-            returnIntent.putExtra(LocaleConstants.INTENT_EXTRA_KEEP_MMS, getKeepMms());
-            returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB, state ? getString(R.string.local_state_enabled) : getString(R.string.local_state_disabled));
+            returnIntent.putExtra(ApplicationConstants.TARGET_APN_STATE, targetState);
+            returnIntent.putExtra(ApplicationConstants.TARGET_MMS_STATE, getTargetMmsState());
+            returnIntent.putExtra(ApplicationConstants.SHOW_NOTIFICATION, getNotification());
+            returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB,
+                    targetState == ApplicationConstants.State.ON
+                            ? getString(R.string.local_state_enabled)
+                            : getString(R.string.local_state_disabled));
             setResult(RESULT_OK, returnIntent);
         }
         super.finish();
