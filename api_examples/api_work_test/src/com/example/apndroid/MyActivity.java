@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 import com.google.code.apndroid.ApplicationConstants;
-import com.google.code.apndroid.api.example.R;
 
 /**
  * User: Zelgadis
