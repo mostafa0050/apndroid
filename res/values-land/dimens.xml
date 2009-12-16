@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  should be used from layout-land/widget_layout.xml, but it throws exception on 1.5 -->
+<resources>
+    <dimen name="appwidget_width">68dip</dimen>
+    <dimen name="appwidget_height">68dip</dimen>
+</resources>
