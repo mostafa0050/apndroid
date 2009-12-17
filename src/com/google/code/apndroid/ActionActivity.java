@@ -62,7 +62,7 @@ public class ActionActivity extends Activity {
             } else {
                 showNotification = extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true);
             }
-            success = SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, mmsTarget,
+            success = SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(targetState, mmsTarget,
                     showNotification, this, new ApnDao(this.getContentResolver()));
         }
         Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);

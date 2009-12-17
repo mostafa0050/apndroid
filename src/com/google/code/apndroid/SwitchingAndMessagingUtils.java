@@ -77,7 +77,7 @@ public class SwitchingAndMessagingUtils {
      * @param dao              apn dao.
      * @return {@code true} if switch was sucessfull and {@code false} otherwise.
      */
-    public static boolean switсhIfNecessaryAndNotify(int targetState, int mmsTarget,
+    public static boolean switchIfNecessaryAndNotify(int targetState, int mmsTarget,
                                                      boolean showNotification,
                                                      Context context, ApnDao dao) {
         int currentState = dao.getApnState();

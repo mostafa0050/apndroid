@@ -40,7 +40,7 @@ public class SwitchStateReceiver extends BroadcastReceiver {
                 int targetState = bundle.getInt(ApplicationConstants.TARGET_APN_STATE, onState);
                 int mmsTarget = bundle.getInt(ApplicationConstants.TARGET_MMS_STATE, onState);
                 boolean showNotification = bundle.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true);
-                SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(targetState, mmsTarget,
+                SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(targetState, mmsTarget,
                         showNotification, context, new ApnDao(context.getContentResolver()));
             }
         }
