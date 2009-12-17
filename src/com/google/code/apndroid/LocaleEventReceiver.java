@@ -48,7 +48,7 @@ public class LocaleEventReceiver extends BroadcastReceiver {
 
             ContentResolver contentResolver = context.getContentResolver();
             ApnDao dao = new ApnDao(contentResolver, mmsTarget);
-            SwitchingAndMessagingUtils.switсhIfNecessaryAndNotify(
+            SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(
                     targetState, mmsTarget, showNotification, context, dao
             );
         }

@@ -21,20 +21,16 @@ public final class R {
         public static final int apndroid=0x7f020000;
         public static final int apndroid_widget_off=0x7f020001;
         public static final int apndroid_widget_on=0x7f020002;
-        public static final int appwidget_bg=0x7f020003;
-        public static final int appwidget_inner=0x7f020004;
-        public static final int appwidget_inner_default=0x7f020005;
-        public static final int appwidget_inner_pressed=0x7f020006;
-        public static final int appwidget_inner_selected=0x7f020007;
-        public static final int background=0x7f020008;
-        public static final int icon_dontsave_color_40=0x7f020009;
-        public static final int icon_help_color_40=0x7f02000a;
-        public static final int icon_plugin_color_32=0x7f02000b;
-        public static final int icon_save_color_40=0x7f02000c;
-        public static final int locale_border=0x7f02000d;
-        public static final int pattern_carbon_fiber_dark=0x7f02000e;
-        public static final int stat_apndroid_off=0x7f02000f;
-        public static final int stat_apndroid_on=0x7f020010;
+        public static final int appwidget_inner=0x7f020003;
+        public static final int background=0x7f020004;
+        public static final int icon_dontsave_color_40=0x7f020005;
+        public static final int icon_help_color_40=0x7f020006;
+        public static final int icon_plugin_color_32=0x7f020007;
+        public static final int icon_save_color_40=0x7f020008;
+        public static final int locale_border=0x7f020009;
+        public static final int pattern_carbon_fiber_dark=0x7f02000a;
+        public static final int stat_apndroid_off=0x7f02000b;
+        public static final int stat_apndroid_on=0x7f02000c;
     }
     public static final class id {
         public static final int locale_ellipsizing_title_text=0x7f090001;
