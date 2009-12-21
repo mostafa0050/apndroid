@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 /**
  * Broadcast receiver that performs switching current apn state and performs notification about this through sending
@@ -40,8 +41,11 @@ public class SwitchStateReceiver extends BroadcastReceiver {
                 int targetState = bundle.getInt(ApplicationConstants.TARGET_APN_STATE, onState);
                 int mmsTarget = bundle.getInt(ApplicationConstants.TARGET_MMS_STATE, onState);
                 boolean showNotification = bundle.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true);
+                boolean disableAll = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
+                ApnDao apnDao = new ApnDao(context.getContentResolver());
+                apnDao.setDisableAllApns(disableAll);
                 SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(targetState, mmsTarget,
-                        showNotification, context, new ApnDao(context.getContentResolver()));
+                        showNotification, context, apnDao);
             }
         }
     }
