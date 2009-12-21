@@ -43,6 +43,8 @@ public final class ApnDao {
     private ContentResolver contentResolver;
 
     private int mmsTarget = ApplicationConstants.State.ON;
+    private boolean disableAll = false;
+    private static final String[] MMS_SUFFIX = new String[]{"mms" + NameUtil.SUFFIX};
 
     public ApnDao(ContentResolver contentResolver, int mmsTarget) {
         this.contentResolver = contentResolver;
@@ -55,10 +57,15 @@ public final class ApnDao {
 
     List<ApnInfo> getEnabledApnsMap() {
         String query;
+        boolean disableAll = this.disableAll;
+        String disableAllQuery = disableAll ? null : "current is not null";
         if (mmsTarget == ApplicationConstants.State.OFF) {
-            query = "current is not null";
+            query = disableAllQuery;
         } else {
-            query = "(not lower(type)='mms' or type is null) and current is not null";
+            query = "(not lower(type)='mms' or type is null)";
+            if (!disableAll){
+                query += " and " +disableAllQuery;
+            }
         }
         return selectApnInfo(query, null);
     }
@@ -202,11 +209,11 @@ public final class ApnDao {
     }
 
     public int countMmsApns() {
-        return executeCountQuery("(type like ? or type like 'mms') and current is not null", new String[]{"mms" + NameUtil.SUFFIX});
+        return executeCountQuery("(type like ? or type like 'mms')"+getCurrentCriteria(), MMS_SUFFIX);
     }
 
     public int countDisabledMmsApns() {
-        return executeCountQuery("type like ?", new String[]{"mms" + NameUtil.SUFFIX});
+        return executeCountQuery("type like ?", MMS_SUFFIX);
     }
 
     private int executeCountQuery(String whereQuery, String[] whereParams) {
@@ -226,11 +233,15 @@ public final class ApnDao {
     }
 
     public List<ApnInfo> selectDisabledMmsApns() {
-        return selectApnInfo("type like ?", new String[]{"mms" + NameUtil.SUFFIX});
+        return selectApnInfo("type like ?", MMS_SUFFIX);
     }
 
     public List<ApnInfo> selectEnabledMmsApns() {
-        return selectApnInfo("type like ? and current is not null", new String[]{"mms"});
+        return selectApnInfo("type like ?"+getCurrentCriteria(), new String[]{"mms"});
+    }
+
+    public String getCurrentCriteria(){
+        return disableAll ? "" : " and current is not null";
     }
 
     /**
@@ -242,27 +253,16 @@ public final class ApnDao {
                 : ApplicationConstants.State.ON;
     }
 
-    public ContentResolver getContentResolver() {
-        return contentResolver;
-    }
-
-    public void setContentResolver(ContentResolver contentResolver) {
-        this.contentResolver = contentResolver;
-    }
-
-    public int getMmsTarget() {
-        return mmsTarget;
-    }
-
     public void setMmsTarget(int mmsTarget) {
         this.mmsTarget = mmsTarget;
     }
 
-    private void checkState(int state) {
-        if (state != ApplicationConstants.State.ON &&
-                state != ApplicationConstants.State.OFF) {
-            throw new IllegalArgumentException("illegal state value");
-        }
+    public boolean getDisableAllApns(){
+        return disableAll;
+    }
+
+    public void setDisableAllApns(boolean disableAll){
+        this.disableAll = disableAll;
     }
 
     /**

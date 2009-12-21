@@ -10,6 +10,8 @@
     <string name="prefernces_category">Preferences</string>
     <string name="mms_property">MMS</string>
     <string name="mms_property_summary">Keep MMS enabled</string>
+    <string name="disable_all_property">Disable all APNs</string>
+    <string name="disable_all_property_summary">Check if disabling does not work</string>
     <string name="notification_property">Notifications</string>
     <string name="notification_property_summary">Display state notifications</string>
 

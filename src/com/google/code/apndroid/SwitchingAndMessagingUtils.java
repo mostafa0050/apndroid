@@ -55,8 +55,9 @@ public class SwitchingAndMessagingUtils {
 
         boolean showNotification = preferences.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, true);
         int mmsTarget= preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true) ? onState : offState;
-
+        boolean disableAll = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
         ApnDao dao = new ApnDao(context.getContentResolver());
+        dao.setDisableAllApns(disableAll);
         int currentState = dao.getApnState();
         int targetState = currentState == onState ? offState : onState;
         return switchAndNotify(targetState, mmsTarget, showNotification, context, dao)
@@ -148,6 +149,9 @@ public class SwitchingAndMessagingUtils {
      * @return {@code true} if switch was successfull and {@code false} otherwise
      */
     public static boolean switchAndNotify(int targetState, int mmsTarget, boolean showNotification, Context context) {
-        return switchAndNotify(targetState, mmsTarget, showNotification, context, new ApnDao(context.getContentResolver()));
+        boolean disableAll = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
+        ApnDao apnDao = new ApnDao(context.getContentResolver());
+        apnDao.setDisableAllApns(disableAll);
+        return switchAndNotify(targetState, mmsTarget, showNotification, context, apnDao);
     }
 }

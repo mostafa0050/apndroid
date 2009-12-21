@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This is an advanced example showing the custom preference types and manually handling
-     preference clicks. -->
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -19,7 +17,11 @@
                 android:title="@string/notification_property"
                 android:summary="@string/notification_property_summary"
                 android:defaultValue="false"/>
-
+        <CheckBoxPreference
+                android:key="com.google.code.apndroid.preferences.DISABLE_ALL"
+                android:title="@string/disable_all_property"
+                android:summary="@string/disable_all_property_summary"
+                android:defaultValue="false"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
