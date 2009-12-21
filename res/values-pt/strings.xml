@@ -12,6 +12,8 @@
     <string name="mms_property_summary">Manter os MMS activados</string>
     <string name="notification_property">Notificações</string>
     <string name="notification_property_summary">Exibir notificações de estado</string>
+    <string name="disable_all_property">Desactivar todos os APN</string>
+    <string name="disable_all_property_summary">Verificar se a possovel desactivar</string>
 
     <string name="toggle_title">3G/EDGE/GPRS</string>
     <string name="toggle_hint">Sugestão: Adicione o widget ao ecrã inicial</string>
