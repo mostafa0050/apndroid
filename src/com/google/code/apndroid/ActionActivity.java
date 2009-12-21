@@ -41,6 +41,7 @@ public class ActionActivity extends Activity {
             success = currentState != SwitchingAndMessagingUtils.switchAndNotify(this);
         } else {
             //check what parameters specified by api caller
+            boolean disableAll = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
             boolean mmsTargetIncluded = extras.containsKey(ApplicationConstants.TARGET_MMS_STATE);
             boolean notificationIncluded = extras.containsKey(ApplicationConstants.SHOW_NOTIFICATION);
             int targetState = extras.getInt(ApplicationConstants.TARGET_APN_STATE);
@@ -62,8 +63,10 @@ public class ActionActivity extends Activity {
             } else {
                 showNotification = extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true);
             }
+            ApnDao apnDao = new ApnDao(this.getContentResolver());
+            apnDao.setDisableAllApns(disableAll);
             success = SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(targetState, mmsTarget,
-                    showNotification, this, new ApnDao(this.getContentResolver()));
+                    showNotification, this, apnDao);
         }
         Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);
         response.putExtra(ApplicationConstants.RESPONSE_SWITCH_SUCCESS, success);

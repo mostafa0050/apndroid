@@ -45,9 +45,10 @@ public class LocaleEventReceiver extends BroadcastReceiver {
             int targetState = bundle.getInt(ApplicationConstants.TARGET_APN_STATE, onState);
             int mmsTarget = bundle.getInt(ApplicationConstants.TARGET_MMS_STATE, onState);
             boolean showNotification = intent.getBooleanExtra(ApplicationConstants.SHOW_NOTIFICATION, true);
-
+            boolean disableAll = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
             ContentResolver contentResolver = context.getContentResolver();
             ApnDao dao = new ApnDao(contentResolver, mmsTarget);
+            dao.setDisableAllApns(disableAll);
             SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(
                     targetState, mmsTarget, showNotification, context, dao
             );
