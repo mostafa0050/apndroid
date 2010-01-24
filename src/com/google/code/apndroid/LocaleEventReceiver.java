@@ -17,14 +17,11 @@
 
 package com.google.code.apndroid;
 
-import java.text.MessageFormat;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.preference.PreferenceManager;
 
 /**

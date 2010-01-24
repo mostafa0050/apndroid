@@ -38,6 +38,10 @@ public final class ApnDao {
     // from frameworks/base/core/java/android/provider/Telephony.java
     static final Uri CONTENT_URI = Uri.parse("content://telephony/carriers");
 
+    // from packages/providers/TelephonyProvider/TelephonyProvider.java
+    static final Uri PREFERRED_APN_URI = Uri.parse("content://telephony/carriers/preferapn");
+    private static final String PREFER_APN_ID_KEY = "apn_id";
+
     private static final String DB_LIKE_SUFFIX = "%" + NameUtil.SUFFIX;
 
     private ContentResolver contentResolver;
@@ -73,6 +77,21 @@ public final class ApnDao {
     List<ApnInfo> getDisabledApnsMap() {
         String suffix = DB_LIKE_SUFFIX;
         return selectApnInfo("apn like ? or type like ?", new String[]{suffix, suffix});
+    }
+
+    long getPreferredApnId(){
+        Cursor cursor = contentResolver.query(PREFERRED_APN_URI, new String[]{ID}, null, null, null);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()){
+            return cursor.getLong(0);
+        }
+        return -1L;
+    }
+
+    void restorePreferredApn(long id){
+        ContentValues cv = new ContentValues();
+        cv.put(PREFER_APN_ID_KEY, id);
+        contentResolver.insert(PREFERRED_APN_URI, cv);
     }
 
     private List<ApnInfo> selectApnInfo(String whereQuery, String[] whereParams) {
@@ -263,6 +282,22 @@ public final class ApnDao {
 
     public void setDisableAllApns(boolean disableAll){
         this.disableAll = disableAll;
+    }
+
+    public long getRandomCurrentDataApn() {
+        Cursor cursor = null;
+        try{
+            cursor = contentResolver.query(CONTENT_URI, new String[]{ID}, "(not lower(type)='mms' or type is null) and current is not null", null, null);
+            cursor.moveToFirst();
+            if (!cursor.isAfterLast()) {
+                return cursor.getLong(0);
+            }
+        }finally{
+            if (cursor != null){
+                cursor.close();
+            }
+        }
+        return -1;
     }
 
     /**
