@@ -19,19 +19,19 @@ package com.google.code.apndroid;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.preference.Preference;
-import android.preference.CheckBoxPreference;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     static final int NOTIFICATION_ID = 1;
     private TogglePreference togglePreference;
     private boolean wasChanged = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,7 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
             int state = apnDao.getApnState();
             togglePreference.setToggleButtonChecked(state == onState);
         }
-        if (wasChanged){
+        if (wasChanged) {
             //settings changed outside when we left main activity for some time
 
             CheckBoxPreference keepMmsCheckbox = (CheckBoxPreference) getPreferenceManager()

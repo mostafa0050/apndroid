@@ -70,6 +70,9 @@ public final class ApplicationConstants {
     static final String SETTINGS_KEEP_MMS_ACTIVE = "com.google.code.apndroid.preferences.KEEP_MMS_ENABLED";
     static final String SETTINGS_SHOW_NOTIFICATION = "com.google.code.apndroid.preferences.SHOW_NOTIFICATION";
     static final String SETTINGS_DISABLE_ALL = "com.google.code.apndroid.preferences.DISABLE_ALL";
+
+    static final String SETTING_PREFERRED_APN= "preferred_apn_id";
+
     /**
      * Common log tag
      */
