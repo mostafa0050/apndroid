@@ -20,14 +20,12 @@ package com.google.code.apndroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.text.MessageFormat;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
@@ -126,9 +124,11 @@ public class SwitchingAndMessagingUtils {
         }
         int onState = ApplicationConstants.State.ON;
         dao.setMmsTarget(mmsTarget);
+        //this var is used for storing preferred apn in switch on->off, and as a container for restoring id in switch off->on
         long preferredApnId = -1;
         if (targetState == onState) {
-            registerDataStateListener(context, dao);
+            preferredApnId = PreferenceManager.getDefaultSharedPreferences(context).
+                    getLong(ApplicationConstants.SETTING_PREFERRED_APN, -1);
         } else {
             preferredApnId = dao.getPreferredApnId();
         }
@@ -137,10 +137,16 @@ public class SwitchingAndMessagingUtils {
             sendStatusMessage(context, targetState == onState, showNotification);
             if (targetState != onState) {
                 storeMmsSettings(context, mmsTarget);
-            }
-            if (preferredApnId != -1) {
+                //storing preferred apn id
                 PreferenceManager.getDefaultSharedPreferences(context).
                         edit().putLong(ApplicationConstants.SETTING_PREFERRED_APN, preferredApnId).commit();
+            } else {
+                long currentPreferredApn = dao.getPreferredApnId();
+                Log.d(ApplicationConstants.APP_LOG, "Current Preferred APN="+currentPreferredApn+", stored preferred APN="+preferredApnId);
+                if (currentPreferredApn == -1L){
+                    //no preferred apn now. let's make it explicitly
+                    tryFixConnection(dao, preferredApnId);
+                }
             }
         }
         if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
@@ -157,8 +163,10 @@ public class SwitchingAndMessagingUtils {
         long preferredApn = PreferenceManager.getDefaultSharedPreferences(context).
                 getLong(ApplicationConstants.SETTING_PREFERRED_APN, -1);
 
-        Timer timer = new Timer();
-        timer.schedule(new DataConnectionChecker(listener, dao, preferredApn), DATA_CONNECTION_CHECK_TIME);
+        long currentPreferredApn = dao.getPreferredApnId();
+        if (currentPreferredApn == -1L){
+            tryFixConnection(dao, preferredApn);
+        }
     }
 
     private static void storeMmsSettings(Context context, int mmsTarget) {
