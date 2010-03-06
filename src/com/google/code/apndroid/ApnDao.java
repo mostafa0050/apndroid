@@ -121,7 +121,7 @@ public final class ApnDao {
         List<ApnInfo> result = new ArrayList<ApnInfo>();
         mCursor.moveToFirst();
         while (!mCursor.isAfterLast()) {
-            String id = mCursor.getString(0);
+            long id = mCursor.getLong(0);
             String apn = mCursor.getString(1);
             String type = mCursor.getString(2);
             result.add(new ApnInfo(id, apn, type));
@@ -164,7 +164,7 @@ public final class ApnDao {
             } else {
                 values.put(TYPE, newApnType);
             }
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
+            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{String.valueOf(apnInfo.id)});
 
         }
         return true;//we always return true because in any situation we can reset all apns to initial state
@@ -178,7 +178,7 @@ public final class ApnDao {
             values.put(APN, newApnName);
             String newApnType = NameUtil.addSuffix(apnInfo.type);
             values.put(TYPE, newApnType);
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{apnInfo.id});
+            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[]{String.valueOf(apnInfo.id)});
         }
         return true;
     }
@@ -301,15 +301,30 @@ public final class ApnDao {
     }
 
     /**
+     * Select current active apn. Now this method just select preferred apn
+     * @return current apn in use or {@code null} if there is no such apn
+     */
+    public ApnInfo getCurrentApnInUse(){
+        Cursor cursor = contentResolver.query(PREFERRED_APN_URI, new String[]{ID, APN, TYPE},null, null, null );
+        cursor.moveToFirst();
+        if (cursor.isAfterLast()){
+            return null;
+        }
+
+        return new ApnInfo(/*id*/cursor.getLong(0), /*apn*/cursor.getString(1), /*name*/cursor.getString(2));
+
+    }
+
+    /**
      * Selection of few interesting columns from APN table
      */
     static final class ApnInfo {
 
-        final String id;
+        final long id;
         final String apn;
         final String type;
 
-        public ApnInfo(String id, String apn, String type) {
+        public ApnInfo(long id, String apn, String type) {
             this.id = id;
             this.apn = apn;
             this.type = type;

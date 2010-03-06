@@ -143,10 +143,8 @@ public class SwitchingAndMessagingUtils {
             } else {
                 long currentPreferredApn = dao.getPreferredApnId();
                 Log.d(ApplicationConstants.APP_LOG, "Current Preferred APN="+currentPreferredApn+", stored preferred APN="+preferredApnId);
-                if (currentPreferredApn == -1L){
-                    //no preferred apn now. let's make it explicitly
-                    tryFixConnection(dao, preferredApnId);
-                }
+                //reinitializing preferred apn
+                tryFixConnection(dao, preferredApnId);
             }
         }
         if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
