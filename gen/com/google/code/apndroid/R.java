@@ -35,18 +35,17 @@ public final class R {
         public static final int stat_apndroid_on=0x7f02000e;
     }
     public static final class id {
-        public static final int current_apn=0x7f090007;
         public static final int locale_ellipsizing_title_text=0x7f090001;
-        public static final int main=0x7f090008;
-        public static final int menu_dontsave=0x7f09000a;
-        public static final int menu_save=0x7f09000b;
+        public static final int main=0x7f090007;
+        public static final int menu_dontsave=0x7f090009;
+        public static final int menu_save=0x7f09000a;
         public static final int mms=0x7f090003;
         public static final int notification=0x7f090004;
         public static final int screen=0x7f090000;
         public static final int statespinner=0x7f090002;
         public static final int status_text=0x7f090005;
         public static final int toggle_button=0x7f090006;
-        public static final int widgetCanvas=0x7f090009;
+        public static final int widgetCanvas=0x7f090008;
     }
     public static final class layout {
         public static final int locale_ellipsizing_title_text=0x7f030000;
