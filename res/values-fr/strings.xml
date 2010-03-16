@@ -16,7 +16,7 @@
     <string name="notification_property_summary">Afficher les notifications d\'état</string>
 
     <string name="toggle_title">3G/EDGE/GPRS</string>
-    <string name="toggle_hint">Astuce: Ajouter le widget à l\'écran d'\Accueil</string>
+    <string name="toggle_hint">Astuce: Ajouter le widget à l\'écran d\'Accueil</string>
     <string name="toggle_on">On</string>
     <string name="toggle_off">Off</string>
     <!-- Locale plug-in -->

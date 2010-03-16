@@ -26,17 +26,19 @@ public final class NameUtil {
     public static final String SUFFIX = "apndroid";
 
     static String addSuffix(String currentName) {
-        String result;
         if (currentName == null) {
-            result = SUFFIX;
+            return SUFFIX;
         } else {
-            result = currentName + SUFFIX;
+            return currentName + SUFFIX;
         }
-        return result;
     }
 
-    static String removeSuffix(String currentName) {        
-        return currentName.substring(0, currentName.length() - SUFFIX.length());
+    static String removeSuffix(String currentName) {
+        if (currentName.endsWith(SUFFIX)){
+            return currentName.substring(0, currentName.length() - SUFFIX.length());
+        }else{
+            return currentName;
+        }
     }
 
 }
