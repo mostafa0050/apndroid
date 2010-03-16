@@ -90,8 +90,10 @@ public final class ApnDao {
 
     void restorePreferredApn(long id){
         ContentValues cv = new ContentValues();
+        cv.putNull(PREFER_APN_ID_KEY);
+        contentResolver.update(PREFERRED_APN_URI, cv, null, null);
         cv.put(PREFER_APN_ID_KEY, id);
-        contentResolver.insert(PREFERRED_APN_URI, cv);
+        contentResolver.update(PREFERRED_APN_URI, cv, null, null);
     }
 
     private List<ApnInfo> selectApnInfo(String whereQuery, String[] whereParams) {
