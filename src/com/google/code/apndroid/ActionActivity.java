@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * User: Zelgadis
@@ -61,6 +62,10 @@ public class ActionActivity extends Activity {
             boolean disableAll = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
             boolean mmsTargetIncluded = extras.containsKey(ApplicationConstants.TARGET_MMS_STATE);
             boolean notificationIncluded = extras.containsKey(ApplicationConstants.SHOW_NOTIFICATION);
+
+            Log.d(ApplicationConstants.APP_LOG, "MMS target state is " + (mmsTargetIncluded ? "specified" : "unspecified"));
+            Log.d(ApplicationConstants.APP_LOG, "Show notification icon setting is " + (notificationIncluded ? "specified" : "unspecified"));
+            
             int targetState = extras.getInt(ApplicationConstants.TARGET_APN_STATE);
             int mmsTarget;
             boolean showNotification;
@@ -76,10 +81,11 @@ public class ActionActivity extends Activity {
                 mmsTarget = extras.getInt(ApplicationConstants.TARGET_MMS_STATE, onState);
             }
             if (!notificationIncluded) {
-                showNotification = sp.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, true);
+                showNotification = sp.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, false);
             } else {
                 showNotification = extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true);
             }
+
             ApnDao apnDao = new ApnDao(this.getContentResolver());
             apnDao.setDisableAllApns(disableAll);
             success = SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(targetState, mmsTarget,
