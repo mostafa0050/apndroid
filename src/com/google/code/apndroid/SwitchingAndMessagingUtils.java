@@ -59,7 +59,7 @@ public class SwitchingAndMessagingUtils {
         int onState = ApplicationConstants.State.ON;
         int offState = ApplicationConstants.State.OFF;
 
-        boolean showNotification = preferences.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, true);
+        boolean showNotification = preferences.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, false);
         int mmsTarget = preferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true) ? onState : offState;
         boolean disableAll = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
         ApnDao dao = new ApnDao(context.getContentResolver());
