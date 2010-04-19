@@ -35,7 +35,8 @@ public class MainActivity extends PreferenceActivity implements SharedPreference
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
+
+        // whole UI of main activity is constructed as Preferences
         addPreferencesFromResource(R.xml.preferences);
         togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
     }
