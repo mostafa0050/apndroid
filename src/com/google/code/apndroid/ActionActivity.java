@@ -63,8 +63,8 @@ public class ActionActivity extends Activity {
             boolean mmsTargetIncluded = extras.containsKey(ApplicationConstants.TARGET_MMS_STATE);
             boolean notificationIncluded = extras.containsKey(ApplicationConstants.SHOW_NOTIFICATION);
 
-            Log.d(ApplicationConstants.APP_LOG, "MMS target state is " + (mmsTargetIncluded ? "specified" : "unspecified"));
-            Log.d(ApplicationConstants.APP_LOG, "Show notification icon setting is " + (notificationIncluded ? "specified" : "unspecified"));
+            Log.i(ApplicationConstants.APP_LOG, "MMS target state is " + (mmsTargetIncluded ? "specified" : "unspecified"));
+            Log.i(ApplicationConstants.APP_LOG, "Show notification icon setting is " + (notificationIncluded ? "specified" : "unspecified"));
             
             int targetState = extras.getInt(ApplicationConstants.TARGET_APN_STATE);
             int mmsTarget;
