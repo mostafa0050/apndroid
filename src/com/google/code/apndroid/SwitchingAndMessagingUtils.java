@@ -119,7 +119,7 @@ public class SwitchingAndMessagingUtils {
                                           Context context, ApnDao dao) {
         if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
             Log.i(ApplicationConstants.APP_LOG,
-                    MessageFormat.format("switching apn state [target={0}, modifyMms={1}, showNotification={2}]",
+                    MessageFormat.format("switching apn state [target={0}, mmsTarget={1}, showNotification={2}]",
                             targetState, mmsTarget, showNotification));
         }
         int onState = ApplicationConstants.State.ON;
