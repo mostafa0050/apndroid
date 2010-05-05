@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class SwitchStateReceiver extends BroadcastReceiver {
+   
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ApplicationConstants.CHANGE_STATUS_REQUEST.equals(intent.getAction())) {
@@ -49,4 +50,5 @@ public class SwitchStateReceiver extends BroadcastReceiver {
             }
         }
     }
+    
 }
