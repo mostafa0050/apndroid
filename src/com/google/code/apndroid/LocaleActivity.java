@@ -31,6 +31,7 @@ import android.widget.TextView;
  * @author Julien Muniak <julien.muniak@gmail.com>
  */
 public class LocaleActivity extends Activity {
+    
     private boolean mIsCancelled;
     private Spinner mStateSpinner;
     private CheckBox mNotificationCheckBox;
@@ -123,6 +124,7 @@ public class LocaleActivity extends Activity {
         return true;
     }
 
+    @Override
     public void finish() {
         if (mIsCancelled)
             setResult(RESULT_CANCELED);
@@ -156,4 +158,5 @@ public class LocaleActivity extends Activity {
         }
         return super.onMenuItemSelected(featureId, item);
     }
+    
 }

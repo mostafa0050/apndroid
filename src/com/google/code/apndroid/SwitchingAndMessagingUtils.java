@@ -17,17 +17,13 @@
 
 package com.google.code.apndroid;
 
+import java.text.MessageFormat;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-
-import java.text.MessageFormat;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Date: 30.09.2009
@@ -35,7 +31,6 @@ import java.util.concurrent.TimeUnit;
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class SwitchingAndMessagingUtils {
-    private static final int DATA_CONNECTION_CHECK_TIME = (int) TimeUnit.SECONDS.toMillis(10);
 
     public static void sendStatusMessage(Context context, boolean isEnabled, boolean showNotification) {
         Intent message = new Intent(ApplicationConstants.STATUS_CHANGED_MESSAGE);
@@ -115,7 +110,7 @@ public class SwitchingAndMessagingUtils {
      * @param dao              apn dao.
      * @return {@code true} if switch was successfull and {@code false} otherwise
      */
-    public static boolean switchAndNotify(int targetState, int mmsTarget, boolean showNotification,
+    private static boolean switchAndNotify(int targetState, int mmsTarget, boolean showNotification,
                                           Context context, ApnDao dao) {
         if (Log.isLoggable(ApplicationConstants.APP_LOG, Log.INFO)) {
             Log.i(ApplicationConstants.APP_LOG,
@@ -153,20 +148,6 @@ public class SwitchingAndMessagingUtils {
         return success;
     }
 
-    private static void registerDataStateListener(Context context, ApnDao dao) {
-        final TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        DataConnectionListener listener = new DataConnectionListener(telephonyManager);
-        telephonyManager.listen(listener, PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
-
-        long preferredApn = PreferenceManager.getDefaultSharedPreferences(context).
-                getLong(ApplicationConstants.SETTING_PREFERRED_APN, -1);
-
-        long currentPreferredApn = dao.getPreferredApnId();
-        if (currentPreferredApn == -1L){
-            tryFixConnection(dao, preferredApn);
-        }
-    }
-
     private static void storeMmsSettings(Context context, int mmsTarget) {
         boolean keepMmsActive = mmsTarget == ApplicationConstants.State.ON;
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -175,23 +156,7 @@ public class SwitchingAndMessagingUtils {
                 .commit();
     }
 
-    /**
-     * Performs direct switching to passed target state
-     *
-     * @param targetState      target state
-     * @param mmsTarget        mms target state
-     * @param showNotification show notification on success switch
-     * @param context          application context
-     * @return {@code true} if switch was successful and {@code false} otherwise
-     */
-    public static boolean switchAndNotify(int targetState, int mmsTarget, boolean showNotification, Context context) {
-        boolean disableAll = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
-        ApnDao apnDao = new ApnDao(context.getContentResolver());
-        apnDao.setDisableAllApns(disableAll);
-        return switchAndNotify(targetState, mmsTarget, showNotification, context, apnDao);
-    }
-
-    static void tryFixConnection(ApnDao dao, long preferredApn) {
+    private static void tryFixConnection(ApnDao dao, long preferredApn) {
         Log.d(ApplicationConstants.APP_LOG, "trying to fix connection");
         if (preferredApn != -1) {
             dao.restorePreferredApn(preferredApn);
@@ -206,49 +171,4 @@ public class SwitchingAndMessagingUtils {
         }
     }
 
-    private static class DataConnectionChecker extends TimerTask {
-        private DataConnectionListener listener;
-        private ApnDao dao;
-        private long preferredApn;
-
-        public DataConnectionChecker(DataConnectionListener listener, ApnDao dao, long preferredApn) {
-            this.listener = listener;
-            this.dao = dao;
-            this.preferredApn = preferredApn;
-        }
-
-        public void run() {
-            Log.d(ApplicationConstants.APP_LOG, "data connection checker task started");
-            listener.cancelListeningProcess();
-            if (!listener.apnForConnectionFound) {
-                tryFixConnection(dao, preferredApn);
-            }
-        }
-    }
-
-    private static class DataConnectionListener extends PhoneStateListener {
-
-        boolean apnForConnectionFound = false;
-        private TelephonyManager telephonyManager;
-        private boolean listenerCanceled;
-
-        private DataConnectionListener(TelephonyManager manager) {
-            this.telephonyManager = manager;
-        }
-
-        @Override
-        public void onDataConnectionStateChanged(int state) {
-            Log.d(ApplicationConstants.APP_LOG, "data connection state changed");
-            if (state == TelephonyManager.DATA_CONNECTED) {
-                Log.d(ApplicationConstants.APP_LOG, "state switched to connected... ok!");
-                cancelListeningProcess();
-                apnForConnectionFound = true;
-            }
-        }
-
-        public void cancelListeningProcess() {
-            Log.d(ApplicationConstants.APP_LOG, "canceling listener");
-            telephonyManager.listen(this, LISTEN_NONE);
-        }
-    }
 }

@@ -36,19 +36,21 @@ public final class ApnDao {
     private static final String TYPE = "type";
 
     // from frameworks/base/core/java/android/provider/Telephony.java
-    static final Uri CONTENT_URI = Uri.parse("content://telephony/carriers");
+    private static final Uri CONTENT_URI = Uri.parse("content://telephony/carriers");
 
     // from packages/providers/TelephonyProvider/TelephonyProvider.java
-    static final Uri PREFERRED_APN_URI = Uri.parse("content://telephony/carriers/preferapn");
+    private static final Uri PREFERRED_APN_URI = Uri.parse("content://telephony/carriers/preferapn");
+    
     private static final String PREFER_APN_ID_KEY = "apn_id";
 
     private static final String DB_LIKE_SUFFIX = "%" + NameUtil.SUFFIX;
 
-    private ContentResolver contentResolver;
+    private static final String[] MMS_SUFFIX = new String[]{"mms" + NameUtil.SUFFIX};
+    
+    private final ContentResolver contentResolver;
 
     private int mmsTarget = ApplicationConstants.State.ON;
     private boolean disableAll = false;
-    private static final String[] MMS_SUFFIX = new String[]{"mms" + NameUtil.SUFFIX};
 
     public ApnDao(ContentResolver contentResolver, int mmsTarget) {
         this.contentResolver = contentResolver;
@@ -59,7 +61,7 @@ public final class ApnDao {
         this.contentResolver = contentResolver;
     }
 
-    List<ApnInfo> getEnabledApnsMap() {
+    private List<ApnInfo> getEnabledApnsMap() {
         String query;
         boolean disableAll = this.disableAll;
         String disableAllQuery = disableAll ? null : "current is not null";
@@ -74,7 +76,7 @@ public final class ApnDao {
         return selectApnInfo(query, null);
     }
 
-    List<ApnInfo> getDisabledApnsMap() {
+    private List<ApnInfo> getDisabledApnsMap() {
         String suffix = DB_LIKE_SUFFIX;
         return selectApnInfo("apn like ? or type like ?", new String[]{suffix, suffix});
     }
@@ -108,7 +110,7 @@ public final class ApnDao {
         }
     }
 
-    boolean enableAllInDb() {
+    private boolean enableAllInDb() {
         List<ApnInfo> apns = getDisabledApnsMap();
         return enableApnList(apns);
     }
@@ -137,7 +139,7 @@ public final class ApnDao {
      *
      * @return {@code true} if one o more apns changed and {@code false} if all APNs did not changed their states
      */
-    boolean disableAllInDb() {
+    private boolean disableAllInDb() {
         List<ApnInfo> apns = getEnabledApnsMap();
 
         //when selected apns is empty
@@ -225,15 +227,15 @@ public final class ApnDao {
                 : ApplicationConstants.State.OFF;
     }
 
-    int countDisabledApns() {
+    private int countDisabledApns() {
         return executeCountQuery("apn like ? or type like ?", new String[]{DB_LIKE_SUFFIX, DB_LIKE_SUFFIX});
     }
 
-    public int countMmsApns() {
+    private int countMmsApns() {
         return executeCountQuery("(type like ? or type like 'mms')"+getCurrentCriteria(), MMS_SUFFIX);
     }
 
-    public int countDisabledMmsApns() {
+    private int countDisabledMmsApns() {
         return executeCountQuery("type like ?", MMS_SUFFIX);
     }
 
@@ -253,15 +255,15 @@ public final class ApnDao {
         }
     }
 
-    public List<ApnInfo> selectDisabledMmsApns() {
+    private List<ApnInfo> selectDisabledMmsApns() {
         return selectApnInfo("type like ?", MMS_SUFFIX);
     }
 
-    public List<ApnInfo> selectEnabledMmsApns() {
+    private List<ApnInfo> selectEnabledMmsApns() {
         return selectApnInfo("type like ?"+getCurrentCriteria(), new String[]{"mms"});
     }
 
-    public String getCurrentCriteria(){
+    private String getCurrentCriteria(){
         return disableAll ? "" : " and current is not null";
     }
 
@@ -276,10 +278,6 @@ public final class ApnDao {
 
     public void setMmsTarget(int mmsTarget) {
         this.mmsTarget = mmsTarget;
-    }
-
-    public boolean getDisableAllApns(){
-        return disableAll;
     }
 
     public void setDisableAllApns(boolean disableAll){
@@ -303,24 +301,9 @@ public final class ApnDao {
     }
 
     /**
-     * Select current active apn. Now this method just select preferred apn
-     * @return current apn in use or {@code null} if there is no such apn
-     */
-    public ApnInfo getCurrentApnInUse(){
-        Cursor cursor = contentResolver.query(PREFERRED_APN_URI, new String[]{ID, APN, TYPE},null, null, null );
-        cursor.moveToFirst();
-        if (cursor.isAfterLast()){
-            return null;
-        }
-
-        return new ApnInfo(/*id*/cursor.getLong(0), /*apn*/cursor.getString(1), /*name*/cursor.getString(2));
-
-    }
-
-    /**
      * Selection of few interesting columns from APN table
      */
-    static final class ApnInfo {
+    private static final class ApnInfo {
 
         final long id;
         final String apn;

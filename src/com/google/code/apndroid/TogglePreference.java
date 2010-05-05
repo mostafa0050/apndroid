@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 public class TogglePreference extends Preference implements View.OnClickListener {
+    
     private Boolean enabled;
 
     public TogglePreference(Context context) {
@@ -118,10 +119,6 @@ public class TogglePreference extends Preference implements View.OnClickListener
         notifyChanged();
     }
 
-    public void fireStateChanged() {
-        this.notifyChanged();
-    }
-
     /**
      * SavedState, a subclass of {@link BaseSavedState}, will store the state
      * of MyPreference, a subclass of Preference.
@@ -129,6 +126,7 @@ public class TogglePreference extends Preference implements View.OnClickListener
      * It is important to always call through to super methods.
      */
     private static final class SavedState extends BaseSavedState {
+        
         boolean enabled;
 
         public SavedState(Parcel source) {
