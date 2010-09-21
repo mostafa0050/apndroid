@@ -13,7 +13,8 @@
     <string name="disable_all_property_summary">Включите эту опцию если интернет не деактивируется</string>
     <string name="notification_property">Уведомления</string>
     <string name="notification_property_summary">Показывать при переключении</string>
-
+    <string name="switch_with_notification">Переключать иконкой</string>
+    <string name="switch_with_notification_summary">Переключать соединение при нажатии на иконку уведомления</string>
     <string name="toggle_title">3G/EDGE/GPRS</string>
     <string name="toggle_hint">Совет: Добавьте виджет на рабочий стол</string>
     <string name="toggle_on">Вкл.</string>

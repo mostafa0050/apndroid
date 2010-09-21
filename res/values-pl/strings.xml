@@ -9,7 +9,7 @@
 
     <string name="prefernces_category">Ustawienia</string>
     <string name="mms_property">MMS</string>
-    <string name="mms_property_summary">Pozostaw MMS'y działające</string>
+    <string name="mms_property_summary">Pozostaw MMS\'y działające</string>
     <string name="disable_all_property">Wyłącz wszystkie APNy</string>
     <string name="disable_all_property_summary">Zaznacz jeśli wyłączenienie działa</string>    
     <string name="notification_property">Powiadomienia</string>
@@ -24,7 +24,7 @@
     <string name="save">Zapisz</string>
     <string name="dontsave">Nie zapisuj</string>
     <string name="notification_hint">Wyświetlaj powiadomienie</string>
-    <string name="mms_hint">Pozostaw MMS'y działające</string>
+    <string name="mms_hint">Pozostaw MMS\'y działające</string>
     <string name="state_hint">Dostęp do internetu </string>
     <string name="local_state_enabled">Włączony</string>
     <string name="local_state_disabled">Wyłączony</string>

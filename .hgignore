@@ -16,3 +16,6 @@ derby\.log
 /gensrc$
 
 glob:out/production
+glob:*ipr
+glob:*iws
+glob:*iml

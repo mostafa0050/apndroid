@@ -2,26 +2,81 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.code.apndroid.TogglePreference android:key="toggle_preference" android:persistent="true"/>
-    
-    <PreferenceCategory android:title="@string/prefernces_category">
+	<Preference
+	    android:title="Tip:"
+	    android:summary="Turn data ON to enable option below"
+	    android:key="com.google.code.apndroid.preferences.HELP" />
+    <Preference
+        android:title="Only system toggle available"
+        android:summary="For CDMA phones only native toogle works"
+        android:key="com.google.code.apndroid.preferences.CDMA_TIP"/>
+	<CheckBoxPreference
+	        android:key="com.google.code.apndroid.preferences.NATIVE_SWITCH"
+	        android:title="Use system toggle"
+	        android:summary="Use Android built-in switch"
+	        android:defaultValue="true"
+	        android:disableDependentsState="true"
+	        />
 
+	<PreferenceScreen
+               android:key="pref_screen_notifications"
+               android:title="Notifications"
+               android:summary="Notification icon behaviour">
+           
+		<CheckBoxPreference
+		        android:key="com.google.code.apndroid.preferences.SHOW_NOTIFICATION"
+		        android:title="@string/notification_property"
+		        android:summary="@string/notification_property_summary"
+		        android:defaultValue="true"
+		        android:disableDependentsState="false"
+		        />
+		
+		<CheckBoxPreference
+		    android:key="com.google.code.apndroid.preferences.SETTINGS_USE_SWITCH_NOTIFICATION"
+		    android:title="@string/switch_with_notification"
+		    android:summary="@string/switch_with_notification_summary"
+		    android:defaultValue="false"
+		    android:dependency="com.google.code.apndroid.preferences.SHOW_NOTIFICATION"
+		    />
+               
+    </PreferenceScreen>	
+
+	<PreferenceScreen
+               android:key="pref_screen_apn_modifications"
+               android:title="APN modifications"
+               android:summary="Used when switching is performed using APN modifications instead of system built-in toggle"
+	           android:dependency="com.google.code.apndroid.preferences.NATIVE_SWITCH"
+	           >
+            
         <CheckBoxPreference
                 android:key="com.google.code.apndroid.preferences.KEEP_MMS_ENABLED"
                 android:title="@string/mms_property"
                 android:summary="@string/mms_property_summary"
                 android:defaultValue="true"
                 />
-        <CheckBoxPreference
-                android:key="com.google.code.apndroid.preferences.SHOW_NOTIFICATION"
-                android:title="@string/notification_property"
-                android:summary="@string/notification_property_summary"
-                android:defaultValue="false"/>
+                
         <CheckBoxPreference
                 android:key="com.google.code.apndroid.preferences.DISABLE_ALL"
                 android:title="@string/disable_all_property"
                 android:summary="@string/disable_all_property_summary"
-                android:defaultValue="false"/>
-    </PreferenceCategory>
+                android:defaultValue="false"
+	            />
+	            
+    </PreferenceScreen>
+
+	<PreferenceScreen
+               android:key="pref_screen_ads"
+               android:title="Ads"
+               android:summary="Ads make this application possible, but..."
+	           >
+            
+        <CheckBoxPreference
+                android:key="com.google.code.apndroid.preferences.ADS_ENABLED"
+                android:title="Display Ads"
+                android:summary="Ads make this application possible. But you can still turn them off, if you wish. They will appear again after 2 weeks and you can decide again :-)"
+                android:defaultValue="true"
+                />
+                
+    </PreferenceScreen>
 
 </PreferenceScreen>

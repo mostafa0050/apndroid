@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="APNdroid" default="default" basedir=".">
+<project name="APNdroid" default="default" basedir="." xmlns:android="antlib:com.googlecode.autoandroid.ant">
     <description>Builds, tests and runs Project</description>
+	<taskdef uri="antlib:com.googlecode.autoandroid.ant" classpath="buildtime_libs/android-ant-1.0-rc5.jar"/>	
     <property name="build.root" value="api_build"/>
-    <property name="build.dir" value="${build.root}/build"/>
+    <property name="build.dir" value="${build.root}/build"/>                                   
     <property name="build.src" value="${build.root}/src"/>
     <property name="dist.dir" value="api_dist"/>
-    <!--<property name="dist-std" value="dist/jconf-standalone"/>-->
+
+	<android:home/>
 
     <!-- ============= Default front targets ================== -->
-    <target name="default" depends="dist" description="Performs API compilation and packs it into JAR"/>    
+    <target name="default" depends="clean,dist" description="Performs API compilation and packs it into JAR"/>    
 
     <target name="rebuild" depends="clean, dist" description="Rebuilds project"/>
 
@@ -17,19 +19,20 @@
         <!--init target-->
         <path id="build.classpath">
             <pathelement location="${build.dir}"/>
+        	<pathelement location ="${android-home}/android.jar"/>
         </path>
     </target>
 
     <!-- =========== Compilation section =================== -->
-    <target name="compile" depends="compile.init"
+    <target name="compile" depends="compile.init, aidl"
             description="Perfroms compilation of project and it's tests">
         <!--compile project classes-->
         <copy todir="${build.src}">
             <fileset dir="src">
-                <include name="**/ApplicationConstants.java"/>
+                <include name="**/Constants.java"/>
             </fileset>
         </copy>
-        <javac srcdir="${build.src}" destdir="${build.dir}" debug="false"
+        <javac classpathref="build.classpath" srcdir="${build.src}" destdir="${build.dir}" debug="false"
                deprecation="false" source="1.5" target="1.5" includeantruntime="false" encoding="UTF-8">
         </javac>
     </target>
@@ -39,6 +42,14 @@
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.src}"/>
     </target>
+	
+	<target name="aidl" depends="compile.init">
+		<android:aidl>
+			<arg value="-p${android-home}/framework.aidl"/>
+			<arg value="-o${build.src}"/>
+			<arg value="src/com/google/code/apndroid/IActionService.aidl"/>
+		</android:aidl>
+	</target>
 
     <!-- =========== Dist building section =================== -->
 
