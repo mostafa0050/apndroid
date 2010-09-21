@@ -17,77 +17,121 @@
 
 package com.google.code.apndroid;
 
-import android.content.SharedPreferences;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.google.code.apndroid.dao.ConnectionDao;
+import com.google.code.apndroid.dao.DaoFactory;
+import com.google.code.apndroid.internal.AdSpecFactory;
+import com.google.code.apndroid.preferences.SettingsActivity;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  */
-public class MainActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends Activity {
 
-    static final int NOTIFICATION_ID = 1;
-    private TogglePreference togglePreference;
-    private boolean wasChanged = false;
+    private static final int MENU_SETTINGS = 1;
+    public static final int CHANGE_REQUEST = 1;
+    
+    private ConnectivityHandler mConnectivityHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // whole UI of main activity is constructed as Preferences
-        addPreferencesFromResource(R.xml.preferences);
-        togglePreference = (TogglePreference) getPreferenceManager().findPreference(ApplicationConstants.SETTINGS_TOGGLE_BUTTON);
+        // give up any internal focus before we switch layouts
+        final View focused = getCurrentFocus();
+        if (focused != null) {
+            focused.clearFocus();
+        }
+
+        setContentView(R.layout.main);
+
+        // take care about data icon
+
+        View indicatorData = findViewById(R.id.indicator_data);
+        boolean isConnectedOrConnecting = Utils.isConnectedOrConnecting(this,false);
+
+        // Set the initial resource for the bar image.
+        final ImageView barOnOff = (ImageView) indicatorData.findViewById(R.id.bar_data_onoff);
+        barOnOff.setImageResource(isConnectedOrConnecting ? R.drawable.ic_indicator_on : R.drawable.ic_indicator_off);
+
+        // Set the initial state of the clock "checkbox"
+        final CheckBox dataOnOff = (CheckBox) indicatorData.findViewById(R.id.data_onoff);
+        dataOnOff.setChecked(isConnectedOrConnecting);
+
+        TextView infoText = (TextView) findViewById(R.id.info_text);
+        TextView reconnectText = (TextView) findViewById(R.id.reconnect_text);
+        mConnectivityHandler = new ConnectivityHandler(this, infoText, reconnectText, barOnOff);
+        
+        // Clicking outside the "checkbox" should also change the state.
+
+        indicatorData.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                dataOnOff.toggle();
+                boolean enable = dataOnOff.isChecked();
+                updateIndicatorAndData(getBaseContext(), enable, barOnOff);
+            }
+        });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int onState = ApplicationConstants.State.ON;
-        if (!sharedPreferences.contains(ApplicationConstants.SETTINGS_TOGGLE_BUTTON)) {
-            ApnDao apnDao = new ApnDao(this.getContentResolver());
-            int state = apnDao.getApnState();
-            togglePreference.setToggleButtonChecked(state == onState);
-        }
-        if (wasChanged) {
-            //settings changed outside when we left main activity for some time
+    protected void onResume() {
+        super.onResume();
 
-            CheckBoxPreference keepMmsCheckbox = (CheckBoxPreference) getPreferenceManager()
-                    .findPreference(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE);
-
-            keepMmsCheckbox.setChecked(
-                    sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true)
-            );
-
-            togglePreference.setToggleButtonChecked(
-                    sharedPreferences.getBoolean(ApplicationConstants.SETTINGS_TOGGLE_BUTTON, true)
-            );
-
-            this.wasChanged = false;
-        }
+        mConnectivityHandler.resume();
+        
+        refreshAll();
+        
+        // Set up GoogleAdView
+        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
+        AdSpecFactory.create(this, mainLayout);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        
+        mConnectivityHandler.pause();
     }
-
+    
     @Override
-    protected void onStop() {
-        super.onStop();
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, MENU_SETTINGS, 0, R.string.settings).setIcon(android.R.drawable.ic_menu_preferences);
+        return true;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    /* Handles item selections */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case MENU_SETTINGS:
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return false;
     }
 
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        wasChanged = true;
+    static void updateIndicatorAndData(Context context, boolean enable, ImageView bar) {
+        bar.setImageResource(enable ? R.drawable.ic_indicator_on : R.drawable.ic_indicator_off);
+        //todo it is better to use Utils method here because it contains extra logic for apn dao switcher
+        ConnectionDao connectionDao = DaoFactory.getDao(context);
+        connectionDao.setDataEnabled(enable);
+        Utils.broadcastStatusChange(context, enable);
     }
+
+    private void refreshAll() {
+    	mConnectivityHandler.refresh();
+    }
+
 }

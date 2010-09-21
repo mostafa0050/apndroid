@@ -19,27 +19,28 @@ package com.google.code.apndroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
- * User: Zelgadis
- * Date: 26.11.2009
+ * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class ActionActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+
+        // todo use separate thread for switch operations
         Intent intent = getIntent();
         if (intent != null) {
-            int onState = ApplicationConstants.State.ON;
-            if (intent.getAction().equals(ApplicationConstants.STATUS_REQUEST)) {
-                processStatusRequest(onState);
-            } else if (intent.getAction().equals(ApplicationConstants.CHANGE_STATUS_REQUEST)) {
-                processSwitchRequest(intent, onState);
+            Intent response = new Intent(Constants.APN_DROID_RESULT);
+
+            if (intent.getAction().equals(Constants.STATUS_REQUEST)) {
+                Bundle responseExtras = ActionUtils.processStatusRequest(this);
+                setResult(RESULT_OK, response.putExtras(responseExtras));
+            } else if (intent.getAction().equals(Constants.CHANGE_STATUS_REQUEST)) {
+                Bundle responseExtras = ActionUtils.processSwitchRequest(this, intent.getExtras());
+                setResult(RESULT_OK, response.putExtras(responseExtras));
             } else {
                 setResult(Activity.RESULT_CANCELED);
             }
@@ -49,61 +50,4 @@ public class ActionActivity extends Activity {
         finish();
     }
 
-    private void processSwitchRequest(Intent intent, int onState) {
-        Bundle extras = intent.getExtras();
-        boolean success;
-        if (extras == null) {
-            //no parameters specified. switch to another state with default settings
-            //todo this place can be optimized for one status request (now 2 performed)
-            int currentState = new ApnDao(this.getContentResolver()).getApnState();
-            success = currentState != SwitchingAndMessagingUtils.switchAndNotify(this);
-        } else {
-            //check what parameters specified by api caller
-            boolean disableAll = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ApplicationConstants.SETTINGS_DISABLE_ALL, false);
-            boolean mmsTargetIncluded = extras.containsKey(ApplicationConstants.TARGET_MMS_STATE);
-            boolean notificationIncluded = extras.containsKey(ApplicationConstants.SHOW_NOTIFICATION);
-
-            Log.i(ApplicationConstants.APP_LOG, "MMS target state is " + (mmsTargetIncluded ? "specified" : "unspecified"));
-            Log.i(ApplicationConstants.APP_LOG, "Show notification icon setting is " + (notificationIncluded ? "specified" : "unspecified"));
-            
-            int targetState = extras.getInt(ApplicationConstants.TARGET_APN_STATE);
-            int mmsTarget;
-            boolean showNotification;
-            //if some parameters not specified, load default shared preferences
-            SharedPreferences sp = (!mmsTargetIncluded || !notificationIncluded)
-                    ? PreferenceManager.getDefaultSharedPreferences(this)
-                    : null;
-            if (!mmsTargetIncluded) {
-                mmsTarget = sp.getBoolean(ApplicationConstants.SETTINGS_KEEP_MMS_ACTIVE, true)
-                        ? ApplicationConstants.State.ON
-                        : ApplicationConstants.State.OFF;
-            } else {
-                mmsTarget = extras.getInt(ApplicationConstants.TARGET_MMS_STATE, onState);
-            }
-            if (!notificationIncluded) {
-                showNotification = sp.getBoolean(ApplicationConstants.SETTINGS_SHOW_NOTIFICATION, false);
-            } else {
-                showNotification = extras.getBoolean(ApplicationConstants.SHOW_NOTIFICATION, true);
-            }
-
-            ApnDao apnDao = new ApnDao(this.getContentResolver());
-            apnDao.setDisableAllApns(disableAll);
-            success = SwitchingAndMessagingUtils.switchIfNecessaryAndNotify(targetState, mmsTarget,
-                    showNotification, this, apnDao);
-        }
-        Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);
-        response.putExtra(ApplicationConstants.RESPONSE_SWITCH_SUCCESS, success);
-        setResult(RESULT_OK, response);
-    }
-
-    private void processStatusRequest(int onState) {
-        ApnDao dao = new ApnDao(this.getContentResolver());
-        Intent response = new Intent(ApplicationConstants.APN_DROID_RESULT);
-        int apnState = dao.getApnState();
-        response.putExtra(ApplicationConstants.RESPONSE_APN_STATE, apnState);
-        if (apnState != onState) {
-            response.putExtra(ApplicationConstants.RESPONSE_MMS_STATE, dao.getMmsState());
-        }
-        setResult(RESULT_OK, response);
-    }
 }

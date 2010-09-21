@@ -23,48 +23,54 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.google.code.apndroid.dao.DaoFactory;
+import com.google.code.apndroid.preferences.Prefs;
 
 /**
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
 public class StatusWidget extends AppWidgetProvider {
 
-    private static final String WIDGET_SETTINGS = "com.google.code.apndroid.widget.SETTINGS";
-    private static final String WIDGET_STATUS = "com.google.code.apndroid.widget.STATUS";
-
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (ApplicationConstants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
+
+        if (Constants.STATUS_CHANGED_MESSAGE.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-            if (extras != null && extras.containsKey(ApplicationConstants.STATUS_EXTRA)) {
-                boolean isNetEnabled = extras.getBoolean(ApplicationConstants.STATUS_EXTRA);
+            if (extras != null && extras.containsKey(Constants.STATUS_EXTRA)) {
+                boolean isNetEnabled = extras.getBoolean(Constants.STATUS_EXTRA);
+                
                 AppWidgetManager manager = AppWidgetManager.getInstance(context);
                 int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, StatusWidget.class));
                 showWidget(context, manager, widgetIds, isNetEnabled);
                 storeStatus(context, isNetEnabled);
             }
+        } else if (Constants.STATUS_SWITCH_IN_PROGRESS_MESSAGE.equals(intent.getAction())) {
+            Log.d(Constants.APP_LOG, "sending switch in progress broadcast received in widget handler");
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, StatusWidget.class));
+            showInProgressWidget(context, manager, widgetIds);
         }
     }
 
     private void storeStatus(Context context, boolean netEnabled) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(WIDGET_SETTINGS, Context.MODE_PRIVATE).edit();
-        editor.putBoolean(WIDGET_STATUS, netEnabled);
-        editor.commit();
+        Prefs prefs = new Prefs(context);
+        prefs.setLastStatus(netEnabled);
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] ints) {
         super.onUpdate(context, appWidgetManager, ints);
-        SharedPreferences prefs = context.getSharedPreferences(WIDGET_SETTINGS, Context.MODE_PRIVATE);
+        Prefs prefs = new Prefs(context);
         boolean isNetEnabled;
-        if (prefs.contains(WIDGET_STATUS)) {
-            isNetEnabled = prefs.getBoolean(WIDGET_STATUS, true);
+        if (prefs.hasLastStatus()) {
+            isNetEnabled = prefs.isLastStatusConnected();
         } else {
-            isNetEnabled = new ApnDao(context.getContentResolver()).getApnState() == ApplicationConstants.State.ON;
+            isNetEnabled = DaoFactory.getDao(context).isDataEnabled();
         }
         showWidget(context, appWidgetManager, ints, isNetEnabled);
     }
@@ -74,13 +80,23 @@ public class StatusWidget extends AppWidgetProvider {
         manager.updateAppWidget(widgetIds, views);
     }
 
+    private void showInProgressWidget(Context context, AppWidgetManager manager, int[] widgetIds) {
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        int iconId = R.drawable.data_in_progress;
+        views.setImageViewResource(R.id.widgetCanvas, iconId);
+        views.setTextViewText(R.id.widgetButton, "");
+        manager.updateAppWidget(widgetIds, views);
+    }
+
     private RemoteViews createRemoteViews(Context context, boolean status) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        int iconId = status ? R.drawable.apndroid_widget_on : R.drawable.apndroid_widget_off;
+        int iconId = status ? R.drawable.data_on : R.drawable.data_off;
+        String text = status ? "DATA\nON" : "DATA\nOFF";
         views.setImageViewResource(R.id.widgetCanvas, iconId);
+        views.setTextViewText(R.id.widgetButton, text);
 
-        Intent msg = new Intent(ApplicationConstants.CHANGE_STATUS_REQUEST);
-        PendingIntent intent = PendingIntent.getBroadcast(context, -1 /*not used*/, msg, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent msg = new Intent(Constants.CHANGE_STATUS_REQUEST);
+        PendingIntent intent = PendingIntent.getBroadcast(context, -1 /* not used */, msg, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widgetCanvas, intent);
         return views;
     }
