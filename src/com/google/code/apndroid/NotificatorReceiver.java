@@ -32,7 +32,7 @@ import android.os.Bundle;
  * 
  * It is also setting toggle button property, which I don't like, should be removed probably.
  * 
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public class NotificatorReceiver extends BroadcastReceiver {
 
@@ -83,6 +83,6 @@ public class NotificatorReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(NOTIFICATION_ID, notification);
-    }..
+    }
 
 }

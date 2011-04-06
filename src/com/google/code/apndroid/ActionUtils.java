@@ -12,7 +12,7 @@ import com.google.code.apndroid.preferences.Prefs;
  * Utils for public API needs. It is contains common code that is used by service an ActionActivity
  * 
  * @author wingphil
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  * 
  * @see com.google.code.apndroid.ActionActivity
  * @see com.google.code.apndroid.ActionService

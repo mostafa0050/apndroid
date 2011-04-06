@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public class ActionActivity extends Activity {
 

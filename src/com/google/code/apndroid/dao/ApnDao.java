@@ -31,7 +31,7 @@ import com.google.code.apndroid.Constants;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public final class ApnDao implements ConnectionDao {
 

@@ -34,7 +34,7 @@ import java.text.MessageFormat;
  * Broadcast receiver that performs switching current apn state and performs notification about this through sending a
  * broadcast message {@link com.google.code.apndroid.Constants#STATUS_CHANGED_MESSAGE}
  *
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public class SwitcherReceiver extends BroadcastReceiver {
 

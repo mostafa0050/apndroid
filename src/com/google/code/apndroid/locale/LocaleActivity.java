@@ -26,12 +26,16 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.google.code.apndroid.Constants;
 import com.google.code.apndroid.R;
+import com.twofortyfouram.locale.BreadCrumber;
 
 /**
+ * Activity for setting up locale plugin settings. It's called by locale application for setting up
+ * work parameters.
+ *
  * @author Julien Muniak <julien.muniak@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public class LocaleActivity extends Activity {
 
@@ -88,31 +92,46 @@ public class LocaleActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent intent = getIntent();
+
+        performSerializeProtectionChecks(intent);
+
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.localemain);
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.locale_ellipsizing_title_text);
 
-        final Intent intent = getIntent();
-        String breadcrumbString = intent.getStringExtra(com.twofortyfouram.locale.Intent.EXTRA_STRING_BREADCRUMB);
+        CharSequence breadcrumbString = BreadCrumber.generateBreadcrumb(
+                getApplicationContext(),
+                intent,
+                getString(R.string.app_name)
+        );
 
-        if (breadcrumbString == null) {
-            breadcrumbString = getString(R.string.app_name);
-        } else {
-            breadcrumbString = String.format("%s%s%s", breadcrumbString, com.twofortyfouram.locale.Intent.EXTRA_STRING_BREADCRUMB, getString(R.string.app_name));
-        }
         ((TextView) findViewById(R.id.locale_ellipsizing_title_text)).setText(breadcrumbString);
         setTitle(breadcrumbString);
 
         if (savedInstanceState == null) {
-            final int state = intent.getIntExtra(Constants.TARGET_APN_STATE, Constants.STATE_ON);
-            final int mmsTarget = intent.getIntExtra(Constants.TARGET_MMS_STATE, Constants.STATE_ON);
-            final boolean showNotification = intent.getBooleanExtra(Constants.SHOW_NOTIFICATION, false);
-            setState(state == Constants.STATE_ON);
-            setKeepMms(mmsTarget == Constants.STATE_ON);
-            setNotification(showNotification);
+            Bundle localeBundle = intent.getBundleExtra(com.twofortyfouram.locale.Intent.EXTRA_BUNDLE);
+            if (localeBundle != null){
+                final int state = localeBundle.getInt(Constants.TARGET_APN_STATE, Constants.STATE_ON);
+                final int mmsTarget = localeBundle.getInt(Constants.TARGET_MMS_STATE, Constants.STATE_ON);
+                final boolean showNotification = localeBundle.getBoolean(Constants.SHOW_NOTIFICATION, false);
+
+                setState(state == Constants.STATE_ON);
+                setKeepMms(mmsTarget == Constants.STATE_ON);
+                setNotification(showNotification);
+            }
         }
 
+    }
+
+    private void performSerializeProtectionChecks(Intent intent) {
+        if (LocaleSerializeProtectionUtil.checkForCustomSerializableAttack(intent)){
+            intent.replaceExtras((Bundle) null);
+        }
+        if (LocaleSerializeProtectionUtil.checkForCustomSerializableAttackInExtraBundle(intent)){
+            intent.putExtra(com.twofortyfouram.locale.Intent.EXTRA_BUNDLE, (Bundle) null);
+        }
     }
 
     @Override
@@ -129,10 +148,18 @@ public class LocaleActivity extends Activity {
         else {
             final int targetState = getTargetState();
             final Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constants.TARGET_APN_STATE, targetState);
-            returnIntent.putExtra(Constants.TARGET_MMS_STATE, getTargetMmsState());
-            returnIntent.putExtra(Constants.SHOW_NOTIFICATION, getNotification());
-            returnIntent.putExtra(com.twofortyfouram.locale.Intent.EXTRA_STRING_BLURB, targetState == Constants.STATE_ON ? getString(R.string.local_state_enabled) : getString(R.string.local_state_disabled));
+
+            Bundle extraBundle = new Bundle();
+            extraBundle.putInt(Constants.TARGET_APN_STATE, targetState);
+            extraBundle.putInt(Constants.TARGET_MMS_STATE, getTargetMmsState());
+            extraBundle.putBoolean(Constants.SHOW_NOTIFICATION, getNotification());
+
+            returnIntent.putExtra(com.twofortyfouram.locale.Intent.EXTRA_BUNDLE, extraBundle);
+            returnIntent.putExtra(com.twofortyfouram.locale.Intent.EXTRA_STRING_BLURB,
+                    targetState == Constants.STATE_ON
+                            ? getString(R.string.local_state_enabled)
+                            : getString(R.string.local_state_disabled));
+
             setResult(RESULT_OK, returnIntent);
         }
         super.finish();
@@ -141,15 +168,15 @@ public class LocaleActivity extends Activity {
     @Override
     public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_dontsave: {
-            mIsCancelled = true;
-            finish();
-            return true;
-        }
-        case R.id.menu_save: {
-            finish();
-            return true;
-        }
+            case R.id.menu_dontsave: {
+                mIsCancelled = true;
+                finish();
+                return true;
+            }
+            case R.id.menu_save: {
+                finish();
+                return true;
+            }
         }
         return super.onMenuItemSelected(featureId, item);
     }
