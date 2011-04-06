@@ -21,7 +21,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.google.code.apndroid.Constants;
 import com.google.code.apndroid.Utils;
 import com.google.code.apndroid.dao.ConnectionDao;
@@ -31,7 +30,7 @@ import com.google.code.apndroid.dao.DaoFactory;
  * Receiver that activated on locale event broadcast. On receive of event try
  * switch apn to a target state If current apn state equals target apn state
  * then switch is not performed.
- * 
+ *
  * @author Julien Muniak <julien.muniak@gmail.com>
  * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
  */
@@ -39,8 +38,11 @@ public class LocaleEventReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
-            final Bundle bundle = intent.getExtras();
+        if (com.twofortyfouram.locale.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
+            if (LocaleSerializeProtectionUtil.checkForCustomSerializableAttack(intent)) return;
+
+            final Bundle bundle = intent.getBundleExtra(com.twofortyfouram.locale.Intent.EXTRA_BUNDLE);
+
             boolean targetDataEnabled = bundle.getInt(Constants.TARGET_APN_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean targetMmsEnabled = bundle.getInt(Constants.TARGET_MMS_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean showNotification = intent.getBooleanExtra(Constants.SHOW_NOTIFICATION, true);

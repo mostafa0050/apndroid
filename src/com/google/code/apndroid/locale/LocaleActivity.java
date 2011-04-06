@@ -94,12 +94,12 @@ public class LocaleActivity extends Activity {
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.locale_ellipsizing_title_text);
 
         final Intent intent = getIntent();
-        String breadcrumbString = intent.getStringExtra(com.twofortyfouram.Intent.EXTRA_STRING_BREADCRUMB);
+        String breadcrumbString = intent.getStringExtra(com.twofortyfouram.locale.Intent.EXTRA_STRING_BREADCRUMB);
 
         if (breadcrumbString == null) {
             breadcrumbString = getString(R.string.app_name);
         } else {
-            breadcrumbString = String.format("%s%s%s", breadcrumbString, com.twofortyfouram.Intent.BREADCRUMB_SEPARATOR, getString(R.string.app_name));
+            breadcrumbString = String.format("%s%s%s", breadcrumbString, com.twofortyfouram.locale.Intent.EXTRA_STRING_BREADCRUMB, getString(R.string.app_name));
         }
         ((TextView) findViewById(R.id.locale_ellipsizing_title_text)).setText(breadcrumbString);
         setTitle(breadcrumbString);
@@ -132,7 +132,7 @@ public class LocaleActivity extends Activity {
             returnIntent.putExtra(Constants.TARGET_APN_STATE, targetState);
             returnIntent.putExtra(Constants.TARGET_MMS_STATE, getTargetMmsState());
             returnIntent.putExtra(Constants.SHOW_NOTIFICATION, getNotification());
-            returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB, targetState == Constants.STATE_ON ? getString(R.string.local_state_enabled) : getString(R.string.local_state_disabled));
+            returnIntent.putExtra(com.twofortyfouram.locale.Intent.EXTRA_STRING_BLURB, targetState == Constants.STATE_ON ? getString(R.string.local_state_enabled) : getString(R.string.local_state_disabled));
             setResult(RESULT_OK, returnIntent);
         }
         super.finish();
