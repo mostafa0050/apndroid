@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">APNdroid</string>
+	<string name="title_enabled">3G/EDGE/GPRS habilitat</string>
+	<string name="title_disabled">3G/EDGE/GPRS inhabilitat</string>
+	<string name="status_enabled">L\'accés a Internet es troba habilitat.</string>
+	<string name="status_disabled">L\'accés a Internet es troba inhabilitat. Tot i això, les connexions prèvies encara poden estar actives.\n\nS\'ha afegit el sufix <i>apndroid</i> a tots els <b>APN</b> i <b>tipus d\'APN</b> de tots els Noms de Punt d\'Accés (Access Point Names) a la configuració del telèfon.</string>
+	<string name="close">Tanca</string>
+
+    <string name="prefernces_category">Preferències</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Deixa els MMS habilitats</string>
+    <string name="disable_all_property">Inhabilita tots els APN</string>
+    <string name="disable_all_property_summary">Verifica que la inhabilitació funciona</string>
+    <string name="notification_property">Notificacions</string>
+    <string name="notification_property_summary">Mostra les notificacions d\'estat</string>
+
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Consell: Afegiu un giny a la pantalla d\'Inici</string>
+    <string name="toggle_on">Actiu</string>
+    <string name="toggle_off">Inactiu</string>
+    <!-- Locale plug-in -->
+    <string name="help">Ajuda</string>
+    <string name="save">Desa</string>
+    <string name="dontsave">No desis</string>
+    <string name="notification_hint">Mostra les notificacions</string>
+    <string name="mms_hint">Deixa els MMS habilitats</string>
+    <string name="state_hint">Accés a Internet </string>
+    <string name="local_state_enabled">Habilitat</string>
+    <string name="local_state_disabled">Inhabilitat</string>
+    <string-array name="state_labels">
+     	<item>Habilitat</item>
+        <item>Inhabilitat</item>
+    </string-array>
+</resources>

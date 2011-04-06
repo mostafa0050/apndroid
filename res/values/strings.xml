@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">APNdroid</string>
+	<string name="title_enabled">3G/EDGE/GPRS Enabled</string>
+	<string name="title_disabled">3G/EDGE/GPRS Disabled</string>
+	<string name="status_enabled">Internet access is enabled.</string>
+	<string name="status_disabled">Internet access is disabled. However, preexisting connections might be still alive.\n\n<i>apndroid</i> suffix was added to <b>APN</b> and <b>APN type</b> of all Access Point Names in phone Settings.</string>
+	<string name="close">Close</string>
+
+	<!-- Main activity menu -->
+	<string name="settings">Settings</string>
+
+    <string name="prefernces_category">Preferences</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Keep MMS enabled</string>
+    <string name="disable_all_property">Disable All APNs</string>
+    <string name="disable_all_property_summary">Check if disabling does not work</string>
+    <string name="notification_property">Show notifications</string>
+    <string name="notification_property_summary">Display state notifications</string>
+    <string name="switch_with_notification">Notification Toggle</string>
+    <string name="switch_with_notification_summary">Tap notification to toggle data</string>
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Hint: Add widget to the Home screen</string>
+    <string name="toggle_on">On</string>
+    <string name="toggle_off">Off</string>
+    <!-- Locale plug-in -->
+    <string name="help">Help</string>
+    <string name="save">Save</string>
+    <string name="dontsave">Don\'t Save</string>
+    <string name="notification_hint">Show notification</string>
+    <string name="mms_hint">Keep MMS enabled</string>
+    <string name="state_hint">Internet access </string>
+    <string name="local_state_enabled">Enabled</string>
+    <string name="local_state_disabled">Disabled</string>
+    <string-array name="state_labels">
+     	<item>Enabled</item>
+        <item>Disabled</item>
+    </string-array>
+
+</resources>

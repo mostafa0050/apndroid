@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">APNdroid</string>
+	<string name="title_enabled">3G/EDGE/GPRS Povoleno</string>
+	<string name="title_disabled">3G/EDGE/GPRS Zakázáno</string>
+	<string name="status_enabled">Přístup k Internetu byl povolen.</string>
+	<string name="status_disabled">Přístup k Internetu byl zakázán, stávající datové přenosy z dřívějška však mohou být stále aktivní.\n\nPřípona <i>apndroid</i> byla přídána ke každému <b>názvu</b> a <b>typu APN</b> v menu Názvy přístupových bodů v Nastavení telefonu.</string>
+	<string name="close">Zavřít</string>
+
+    <string name="prefernces_category">Nastavení</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Zachovat MMS aktivní</string>
+    <string name="disable_all_property">Zakázat všechna APN</string>
+    <string name="disable_all_property_summary">Pro případ, že deaktivace nefunguje</string>
+    <string name="notification_property">Upozornění</string>
+    <string name="notification_property_summary">Zobrazit upozornění o stavu</string>
+
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Tip: Widget lze přidat na plochu</string>
+
+    <string name="toggle_on">On</string>
+    <string name="toggle_off">Off</string>
+	<!-- Locale plug-in -->
+	<string name="help">Nápověda</string>
+    <string name="save">Uložit</string>
+    <string name="dontsave">Neuložit</string>
+    <string name="notification_hint">Zobrazit notifikace</string>
+    <string name="mms_hint">Zachovat MMS aktivní</string>
+    <string name="state_hint">Přístup k Internetu</string>
+    <string name="local_state_enabled">Povolen</string>
+    <string name="local_state_disabled">Zakázán</string>
+    <string-array name="state_labels">
+     	<item>Povolen</item>
+        <item>Zakázán</item>
+    </string-array>
+</resources>

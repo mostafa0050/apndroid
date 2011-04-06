@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">APNdroid</string>
+    <string name="title_enabled">3G/EDGE/GPRS aktiviert</string>
+    <string name="title_disabled">3G/EDGE/GPRS deaktiviert</string>
+    <string name="status_enabled">Internetzugang ist aktiviert.</string>
+
+    <string name="status_disabled">Internetzugang ist deaktiviert. Vorhandene Verbindungen können aber noch aktiv sein.\n\nDas Suffix <i>apndroid</i> wurde an alle Einstellungen <b>APN</b> und<b>APN Typ</b> aller Zugangspunkte angehängt.</string>
+    <string name="close">Schließen</string>
+    <string name="prefernces_category">Einstellungen</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">MMS aktiviert lassen</string>
+    <string name="disable_all_property">Deaktiviere alle APNs</string>
+    <string name="disable_all_property_summary">Prüfen, warum das Deaktivieren nicht funktioniert</string>
+    <string name="notification_property">Benachrichtigungen</string>
+    <string name="notification_property_summary">Benachrichtigung auf dem Display</string>
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Hinweis: Füge Sie das Widget dem Home-Screen hinzu</string>
+    <string name="toggle_on">An</string>
+    <string name="toggle_off">Aus</string>
+    <!-- Locale plug-in -->
+    <string name="help">Hilfe</string>
+    <string name="save">Speichern</string>
+    <string name="dontsave">Nicht speichern</string>
+    <string name="notification_hint">zeige Benachrichtigungen</string>
+    <string name="mms_hint">MMS aktiviert lassen</string>
+    <string name="state_hint">Internet Zugriff</string>
+    <string name="local_state_enabled">Aktiviert</string>
+    <string name="local_state_disabled">Deaktiviert</string>
+
+    <string-array name="state_labels">
+        <item>Aktiviert</item>
+        <item>Deaktiviert</item>
+    </string-array>
+</resources>
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">APNdroid</string>
+    <string name="title_enabled">3G/EDGE/GPRS Activé</string>
+    <string name="title_disabled">3G/EDGE/GPRS Désactivé</string>
+    <string name="status_enabled">L\'accès à internet est activé.</string>
+    <string name="status_disabled">L\'accès à internet est désactivé. Cependant, les connexions pré-éxistantes seront encore conservées.\n\nLe suffixe <i>apndroid</i> a été ajouté aux <b>APN</b> et au <b>type APN</b> de tous les Noms de Points d\'Accèss dans les Paramètres du téléphone.</string>
+    <string name="close">Fermer</string>
+
+    <string name="prefernces_category">Préférences</string>
+    <string name="mms_property">MMS</string>
+    <string name="mms_property_summary">Garder les MMS activés</string>
+    <string name="disable_all_property">Désactiver tous les APNs</string>
+    <string name="disable_all_property_summary">Cochez si la désactivation ne fonctionne pas</string>
+    <string name="notification_property">Notifications</string>
+    <string name="notification_property_summary">Afficher les notifications d\'état</string>
+
+    <string name="toggle_title">3G/EDGE/GPRS</string>
+    <string name="toggle_hint">Astuce: Ajouter le widget à l\'écran d\'Accueil</string>
+    <string name="toggle_on">On</string>
+    <string name="toggle_off">Off</string>
+    <!-- Locale plug-in -->
+    <string name="help">Aide</string>
+    <string name="save">Sauver</string>
+    <string name="dontsave">Ne pas sauver</string>
+    <string name="notification_hint">Montrer les notifications</string>
+    <string name="mms_hint">Garder les MMS activés</string>
+    <string name="state_hint">Accès internet </string>
+    <string name="local_state_enabled">Activé</string>
+    <string name="local_state_disabled">Désactivé</string>
+    <string-array name="state_labels">
+        <item>Activé</item>
+        <item>Désactivé</item>
+    </string-array>
+</resources>
