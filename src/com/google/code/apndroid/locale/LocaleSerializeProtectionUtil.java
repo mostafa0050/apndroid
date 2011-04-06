@@ -17,12 +17,17 @@ public class LocaleSerializeProtectionUtil {
      * @return {@code true} if attack detected and {@code false} otherwise
      */
     public static boolean checkForCustomSerializableAttack(Intent intent) {
+        return checkForCustomSerializableAttack(intent.getExtras());
+    }
 
-//     This is a hack to work around a custom serializable classloader attack. This check must come before any of the Intent
-//     extras are examined.
+    public static boolean checkForCustomSerializableAttackInExtraBundle(Intent intent) {
+        return checkForCustomSerializableAttack(intent.getBundleExtra(com.twofortyfouram.locale.Intent.EXTRA_BUNDLE));
+    }
+
+    public static boolean checkForCustomSerializableAttack(Bundle extras) {
+        //     This is a hack to work around a custom serializable classloader attack. This check must come before any of the bundle
+        //     content are examined.
         try {
-            final Bundle extras = intent.getExtras();
-
             if (extras != null) {
                 // if a custom serializable exists, this will throw an exception
                 extras.containsKey(null);

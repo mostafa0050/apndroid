@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import com.google.code.apndroid.Constants;
 import com.google.code.apndroid.Utils;
 import com.google.code.apndroid.dao.ConnectionDao;
@@ -32,7 +33,7 @@ import com.google.code.apndroid.dao.DaoFactory;
  * then switch is not performed.
  *
  * @author Julien Muniak <julien.muniak@gmail.com>
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public class LocaleEventReceiver extends BroadcastReceiver {
 
@@ -42,6 +43,13 @@ public class LocaleEventReceiver extends BroadcastReceiver {
             if (LocaleSerializeProtectionUtil.checkForCustomSerializableAttack(intent)) return;
 
             final Bundle bundle = intent.getBundleExtra(com.twofortyfouram.locale.Intent.EXTRA_BUNDLE);
+
+            if (bundle == null){
+                Log.w(Constants.APP_LOG, "Locale bundle is null, can't perform switching");
+                return;
+            }
+
+            if (LocaleSerializeProtectionUtil.checkForCustomSerializableAttack(bundle)) return;
 
             boolean targetDataEnabled = bundle.getInt(Constants.TARGET_APN_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean targetMmsEnabled = bundle.getInt(Constants.TARGET_MMS_STATE, Constants.STATE_ON) == Constants.STATE_ON;

@@ -31,7 +31,7 @@ import com.google.code.apndroid.dao.DaoFactory;
 import com.google.code.apndroid.preferences.Prefs;
 
 /**
- * @author Pavlov Dmitry <pavlov.dmitry.n@gmail.com>
+ * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
 public class StatusWidget extends AppWidgetProvider {
 
