@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="twofortyfouram_locale_application_not_available">Programmet är inte installerat.</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_title"><i>Locale</i> Krävs</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_button_install">Installera</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_primary_message"><i>Locale</i> krävs för att använda denna plugin. Vill du installera <i>Locale</i>?</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_secondary_message">Tryck på \"Installera\" för att leta upp <i>Locale</i> på Android Market.</string> <!-- "Install" should match up with the twofortyfouram_locale_marketactivity_dialog_button_install string -->
+</resources>
