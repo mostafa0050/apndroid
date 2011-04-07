@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="twofortyfouram_locale_application_not_available">Aplikace není v telefonu nainstalována.</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_title">Aplikace <i>Locale</i> je vyžadována</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_button_install">Instalovat</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_primary_message">Aplikace <i>Locale</i> je nutná pro použití toho pluginu.  Chcete instalovat <i>Locale</i>?</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_secondary_message">Poklepem na \"Instalovat\" přejdete na stránku <i>Locale</i> v Android Marketu.</string> <!-- "Install" should match up with the twofortyfouram_locale_marketactivity_dialog_button_install string -->
+</resources>

@@ -1,0 +1,7 @@
+This is a library project for the Locale Developer Platform.  For documentation on Android Library Projects, please visit <http://developer.android.com/guide/developing/eclipse-adt.html#libraryProject>.
+
+We have found ADT to be buggy when handing library projects, so please note the following tips:
+ - In your Eclipse project, set a dependency on the library project under the "Android" settings.  Do NOT set a dependency on the library project under the "Java Build Path" settings
+ - If you'd like your application to use MarketActivity, you need to place an entry for MarketActivity in your main application's AndroidManifest.  ADT will NOT merge the Locale Developer Platform library project's AndroidManifest into your AndroidManifest automatically
+ - Avoid special characters in the path name of the library project (no spaces, no symbols, etc.).  To be safe, simply use alphabetic characters
+ - For ADT 0.9.7, an empty "libs" directory is necessary to work around an ADT bug
