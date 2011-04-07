@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.google.code.apndroid;
+package com.twofortyfouram.locale.platform;
 
 public final class R {
     public static final class array {
