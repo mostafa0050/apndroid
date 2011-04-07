@@ -3,13 +3,6 @@
  * Original file: /home/pavlov/projects/apndroid/trunk/src/com/google/code/apndroid/IActionService.aidl
  */
 package com.google.code.apndroid;
-import java.lang.String;
-import android.os.RemoteException;
-import android.os.IBinder;
-import android.os.IInterface;
-import android.os.Binder;
-import android.os.Parcel;
-import android.os.Bundle;
 public interface IActionService extends android.os.IInterface
 {
 /** Local-side IPC implementation stub class. */
@@ -22,7 +15,7 @@ public Stub()
 this.attachInterface(this, DESCRIPTOR);
 }
 /**
- * Cast an IBinder object into an IActionService interface,
+ * Cast an IBinder object into an com.google.code.apndroid.IActionService interface,
  * generating a proxy if needed.
  */
 public static com.google.code.apndroid.IActionService asInterface(android.os.IBinder obj)
@@ -154,8 +147,8 @@ _data.recycle();
 return _result;
 }
 }
-static final int TRANSACTION_getStatus = (IBinder.FIRST_CALL_TRANSACTION + 0);
-static final int TRANSACTION_switchStatus = (IBinder.FIRST_CALL_TRANSACTION + 1);
+static final int TRANSACTION_getStatus = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
+static final int TRANSACTION_switchStatus = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
 }
 public android.os.Bundle getStatus() throws android.os.RemoteException;
 public android.os.Bundle switchStatus(android.os.Bundle requestExtras) throws android.os.RemoteException;
