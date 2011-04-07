@@ -53,7 +53,7 @@ public class LocaleEventReceiver extends BroadcastReceiver {
 
             boolean targetDataEnabled = bundle.getInt(Constants.TARGET_APN_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean targetMmsEnabled = bundle.getInt(Constants.TARGET_MMS_STATE, Constants.STATE_ON) == Constants.STATE_ON;
-            boolean showNotification = intent.getBooleanExtra(Constants.SHOW_NOTIFICATION, true);
+            boolean showNotification = bundle.getBoolean(Constants.SHOW_NOTIFICATION, true);
             ConnectionDao dao = DaoFactory.getDao(context);
             Utils.switchIfNecessaryAndNotify(targetDataEnabled, targetMmsEnabled, showNotification, context, dao);
         }
