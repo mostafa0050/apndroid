@@ -32,7 +32,6 @@
         <receiver android:name="NotificatorReceiver" android:label="NotificatorReceiver">
             <intent-filter>
                 <action android:name="com.google.code.apndroid.intent.action.STATUS_CHANGED"/>
-                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
         </receiver>
         
@@ -67,12 +66,27 @@
         </receiver>
         
 		<!-- Locale plugin -->
-		
-		<activity android:name=".locale.LocaleActivity" android:label="@string/app_name" android:icon="@drawable/icon_plugin_color_32" android:exported="true">
-			<intent-filter>
-		        <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
-		    </intent-filter>
-		</activity>
+
+        <!--Locale plugin is moved to separate package, but for backward compatibility with 2.x version
+        we need to use alias-->
+        <activity-alias android:name=".LocaleActivity"
+                        android:label="@string/app_name"
+                        android:icon="@drawable/icon_plugin_color_32"
+                        android:exported="true"
+                        android:targetActivity=".locale.LocaleActivity">
+            <intent-filter>
+                <action
+                        android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </activity-alias>
+
+        <activity android:name=".locale.LocaleActivity"/>
+
+		<!--<activity android:name=".locale.LocaleActivity" android:label="@string/app_name" android:icon="@drawable/icon_plugin_color_32" android:exported="true">-->
+			<!--<intent-filter>-->
+		        <!--<action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>-->
+		    <!--</intent-filter>-->
+		<!--</activity>-->
 		
 		<receiver android:name=".locale.LocaleEventReceiver">
 		    <intent-filter>
