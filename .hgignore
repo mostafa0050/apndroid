@@ -19,3 +19,5 @@ glob:out/production
 glob:*ipr
 glob:*iws
 glob:*iml
+
+.idea/workspace.xml

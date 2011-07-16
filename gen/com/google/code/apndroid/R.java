@@ -9,13 +9,13 @@ package com.google.code.apndroid;
 
 public final class R {
     public static final class array {
-        public static final int state_labels=0x7f080000;
+        public static final int state_labels=0x7f070000;
     }
     public static final class attr {
     }
     public static final class dimen {
-        public static final int appwidget_height=0x7f070001;
-        public static final int appwidget_width=0x7f070000;
+        public static final int appwidget_height=0x7f050001;
+        public static final int appwidget_width=0x7f050000;
     }
     public static final class drawable {
         public static final int apndroid=0x7f020000;
@@ -50,55 +50,41 @@ public final class R {
         public static final int stat_apndroid_on=0x7f02001d;
     }
     public static final class id {
-        public static final int add_alarm=0x7f0b0006;
-        public static final int bar_data_onoff=0x7f0b0009;
-        public static final int data_onoff=0x7f0b0008;
-        public static final int indicator_data=0x7f0b0007;
-        public static final int info_text=0x7f0b000a;
-        public static final int locale_ellipsizing_title_text=0x7f0b0001;
-        public static final int main=0x7f0b000f;
-        public static final int main_layout=0x7f0b0005;
-        public static final int menu_dontsave=0x7f0b0012;
-        public static final int menu_save=0x7f0b0013;
-        public static final int mms=0x7f0b0003;
-        public static final int notification=0x7f0b0004;
-        public static final int reconnect_text=0x7f0b000b;
-        public static final int screen=0x7f0b0000;
-        public static final int statespinner=0x7f0b0002;
-        public static final int status_text=0x7f0b000c;
-        public static final int twofortyfouram_locale_dialog_primary_message=0x7f0b000d;
-        public static final int twofortyfouram_locale_dialog_secondary_message=0x7f0b000e;
-        public static final int twofortyfouram_locale_menu_dontsave=0x7f0b0015;
-        public static final int twofortyfouram_locale_menu_help=0x7f0b0014;
-        public static final int twofortyfouram_locale_menu_save=0x7f0b0016;
-        public static final int widgetButton=0x7f0b0011;
-        public static final int widgetCanvas=0x7f0b0010;
-    }
-    public static final class integer {
-        /**  The maximum blurb length in characters.  This value is based on Latin characters
- The maximum blurb length in characters.  This value is based on Latin characters
- The maximum blurb length in characters.  This value is based on Latin characters
-         */
-        public static final int twofortyfouram_locale_maximum_blurb_length=0x7f050000;
+        public static final int add_alarm=0x7f0a0006;
+        public static final int bar_data_onoff=0x7f0a0009;
+        public static final int data_onoff=0x7f0a0008;
+        public static final int indicator_data=0x7f0a0007;
+        public static final int info_text=0x7f0a000a;
+        public static final int locale_ellipsizing_title_text=0x7f0a0001;
+        public static final int main=0x7f0a000d;
+        public static final int main_layout=0x7f0a0005;
+        public static final int menu_dontsave=0x7f0a0010;
+        public static final int menu_save=0x7f0a0011;
+        public static final int mms=0x7f0a0003;
+        public static final int notification=0x7f0a0004;
+        public static final int reconnect_text=0x7f0a000b;
+        public static final int screen=0x7f0a0000;
+        public static final int statespinner=0x7f0a0002;
+        public static final int status_text=0x7f0a000c;
+        public static final int widgetButton=0x7f0a000f;
+        public static final int widgetCanvas=0x7f0a000e;
     }
     public static final class layout {
         public static final int locale_ellipsizing_title_text=0x7f030000;
         public static final int localemain=0x7f030001;
         public static final int main=0x7f030002;
         public static final int notification_info=0x7f030003;
-        public static final int twofortyfouram_locale_dialog=0x7f030004;
-        public static final int widget_layout=0x7f030005;
+        public static final int widget_layout=0x7f030004;
     }
     public static final class menu {
-        public static final int localemenu=0x7f0a0000;
-        public static final int twofortyfouram_locale_help_save_dontsave=0x7f0a0001;
+        public static final int localemenu=0x7f090000;
     }
     public static final class string {
-        public static final int app_name=0x7f060007;
-        public static final int close=0x7f06000c;
-        public static final int disable_all_property=0x7f060010;
-        public static final int disable_all_property_summary=0x7f060011;
-        public static final int dontsave=0x7f06001a;
+        public static final int app_name=0x7f060000;
+        public static final int close=0x7f060005;
+        public static final int disable_all_property=0x7f060009;
+        public static final int disable_all_property_summary=0x7f06000a;
+        public static final int dontsave=0x7f060013;
         /**  Locale plug-in 
  Locale plug-in 
  Locale plug-in 
@@ -111,55 +97,34 @@ public final class R {
  Locale plug-in 
  Locale plug-in 
          */
-        public static final int help=0x7f060018;
-        public static final int local_state_disabled=0x7f06001f;
-        public static final int local_state_enabled=0x7f06001e;
-        public static final int mms_hint=0x7f06001c;
-        public static final int mms_property=0x7f06000e;
-        public static final int mms_property_summary=0x7f06000f;
-        public static final int notification_hint=0x7f06001b;
-        public static final int notification_property=0x7f060012;
-        public static final int notification_property_summary=0x7f060013;
-        public static final int prefernces_category=0x7f06000d;
-        public static final int save=0x7f060019;
+        public static final int help=0x7f060011;
+        public static final int local_state_disabled=0x7f060018;
+        public static final int local_state_enabled=0x7f060017;
+        public static final int mms_hint=0x7f060015;
+        public static final int mms_property=0x7f060007;
+        public static final int mms_property_summary=0x7f060008;
+        public static final int notification_hint=0x7f060014;
+        public static final int notification_property=0x7f06000b;
+        public static final int notification_property_summary=0x7f06000c;
+        public static final int prefernces_category=0x7f060006;
+        public static final int save=0x7f060012;
         /**  Main activity menu 
          */
-        public static final int settings=0x7f060020;
-        public static final int state_hint=0x7f06001d;
-        public static final int status_disabled=0x7f06000b;
-        public static final int status_enabled=0x7f06000a;
-        public static final int switch_with_notification=0x7f060021;
-        public static final int switch_with_notification_summary=0x7f060022;
-        public static final int title_disabled=0x7f060009;
-        public static final int title_enabled=0x7f060008;
-        public static final int toggle_hint=0x7f060015;
-        public static final int toggle_off=0x7f060017;
-        public static final int toggle_on=0x7f060016;
-        public static final int toggle_title=0x7f060014;
-        /**  A toast message that appears if an application that is being launched isn't available.  There is no character length maximum, although this message will only appear on the screen for about 5 seconds in a Toast message so it should be short enough to be comprehended before it disappears 
-         */
-        public static final int twofortyfouram_locale_application_not_available=0x7f060000;
-        /**  A format string for breadcrumbs.  For left to right languages, such as English, the format will look something like "Main Activity > Sub Activity > Sub Activity 2".  Item #1 is the previous path, item #2 is the separator, and item #3 is the current item   
-         */
-        public static final int twofortyfouram_locale_breadcrumb_format=0x7f060001;
-        /**  The separator character for breadcrumbs 
-         */
-        public static final int twofortyfouram_locale_breadcrumb_separator=0x7f060002;
-        /**  The button that performs a search for the app on the Market or on <www.twofortyfouram.com>.  MDPI 17 character maximum 
-         */
-        public static final int twofortyfouram_locale_marketactivity_dialog_button_install=0x7f060004;
-        /**  The primary message of the MarketActivity dialog.  There is no character length maximum 
-         */
-        public static final int twofortyfouram_locale_marketactivity_dialog_primary_message=0x7f060005;
-        /**  The secondary message of the MarketActivity dialog.  The word "Install" should match the twofortyfouram_locale_marketactivity_dialog_button_install string.  There is no character length maximum 
-         */
-        public static final int twofortyfouram_locale_marketactivity_dialog_secondary_message=0x7f060006;
-        /**  The title of the MarketActivity.  MDPI 21 character maximum 
-         */
-        public static final int twofortyfouram_locale_marketactivity_dialog_title=0x7f060003;
+        public static final int settings=0x7f060019;
+        public static final int state_hint=0x7f060016;
+        public static final int status_disabled=0x7f060004;
+        public static final int status_enabled=0x7f060003;
+        public static final int switch_with_notification=0x7f06001a;
+        public static final int switch_with_notification_summary=0x7f06001b;
+        public static final int title_disabled=0x7f060002;
+        public static final int title_enabled=0x7f060001;
+        public static final int toggle_hint=0x7f06000e;
+        public static final int toggle_off=0x7f060010;
+        public static final int toggle_on=0x7f06000f;
+        public static final int toggle_title=0x7f06000d;
     }
     public static final class style {
-        public static final int alarm_list_left_column=0x7f090000;
+        public static final int alarm_list_left_column=0x7f080000;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;
