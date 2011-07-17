@@ -1,8 +1,7 @@
 package com.google.code.apndroid.ads;
 
 import android.app.Activity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
@@ -10,14 +9,15 @@ import com.google.ads.AdView;
 public class AdMobProvider implements AdProvider {
 
     @Override
-    public void addAd(Activity activity, ViewGroup adFrame) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+    public void show(Activity activity, RelativeLayout relativeLayout) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 
         AdView adView = new AdView(activity, AdSize.BANNER, AdConstants.ADMOB_AD_UNIT_ID);
-        adFrame.addView(adView, 0, layoutParams);
-        adFrame.invalidate();
+        relativeLayout.addView(adView, layoutParams);
+        relativeLayout.invalidate();
 
         adView.loadAd(new AdRequest());
     }

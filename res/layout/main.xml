@@ -7,13 +7,6 @@
     android:background="@drawable/radial_bg"
     >
 
-    <FrameLayout android:id="@+id/ad_frame"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:layout_alignParentBottom="true"
-            android:padding="0dp"
-            android:layout_margin="0dp"/>
-
     <ToggleButton
         android:id="@+id/btn_on_off"
         android:layout_width="wrap_content"

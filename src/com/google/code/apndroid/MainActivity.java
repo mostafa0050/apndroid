@@ -28,10 +28,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 import com.google.code.apndroid.ads.AdProvider;
-import com.google.code.apndroid.ads.AdProviderFactory;
+import com.google.code.apndroid.ads.AdUtil;
 import com.google.code.apndroid.dao.ConnectionDao;
 import com.google.code.apndroid.dao.DaoUtil;
 import com.google.code.apndroid.preferences.SettingsActivity;
@@ -46,7 +46,6 @@ public class MainActivity extends Activity {
 
     private ConnectivityManager mConnectivityManager;
     private BroadcastReceiver mReceiver;
-    private FrameLayout mAdFrame;
     private AdProvider mAdProvider;
     private ConnectionDao mDao;
 
@@ -66,8 +65,7 @@ public class MainActivity extends Activity {
 //        getWindow().setFormat(PixelFormat.RGBA_8888);
 
         mDao = DaoUtil.getDaoFactory(getApplication()).getDao(this);
-        mAdFrame = (FrameLayout) findViewById(R.id.ad_frame);
-        mAdProvider = AdProviderFactory.getProvider();
+        mAdProvider = AdUtil.getProvider(this);
         mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         mReceiver = new BroadcastReceiver() {
@@ -102,15 +100,10 @@ public class MainActivity extends Activity {
 
         registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-        if (mAdProvider == null) {
-            // if this is PRO version
-            mAdFrame.setVisibility(View.GONE);
-        } else {
-            // this is FREE version
-            mAdFrame.setVisibility(View.VISIBLE);
+        if (mAdProvider != null) {
             boolean connected = Utils.isConnected(mConnectivityManager, true);
             if (connected) {
-                mAdProvider.addAd(this, mAdFrame);
+                mAdProvider.show(this, (RelativeLayout) findViewById(R.id.main_layout));
             }
         }
     }
@@ -159,20 +152,11 @@ public class MainActivity extends Activity {
 
     private void onConnectivityEvent() {
 
-        // we're not initialized yet
-        if (mAdFrame == null) {
-            return;
-        }
-
         boolean connected = Utils.isConnected(mConnectivityManager, true);
         if (connected) {
-            if (mAdFrame.getChildCount() > 0) {
-                mAdFrame.removeViewAt(0);
-            }
-
-            AdProvider adProvider = AdProviderFactory.getProvider();
+            AdProvider adProvider = AdUtil.getProvider(this);
             if (adProvider != null) {
-                adProvider.addAd(this, mAdFrame);
+                adProvider.show(this, (RelativeLayout) findViewById(R.id.main_layout));
             }
         }
     }
