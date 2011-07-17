@@ -2,25 +2,24 @@ package com.google.code.apndroid.ads;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.mopub.mobileads.MoPubView;
 
 public class MoPubProvider implements AdProvider {
 
     @Override
-    public void addAd(final Activity activity, final ViewGroup adFrame) {
-        MoPubView adView = new MoPubView(activity);
+    public void show(final Activity activity, final RelativeLayout relativeLayout) {
+        final MoPubView adView = new MoPubView(activity);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 
-        adFrame.addView(adView, 0, layoutParams);
-        adFrame.invalidate();
+        relativeLayout.addView(adView, layoutParams);
+//        relativeLayout.invalidate();
 
         adView.setAdUnitId(AdConstants.MOPUB_AD_UNIT_ID);
-
         adView.setOnAdFailedListener(new MoPubView.OnAdFailedListener() {
             @Override
             public void OnAdFailed(MoPubView m) {
@@ -29,9 +28,9 @@ public class MoPubProvider implements AdProvider {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adFrame.removeViewAt(0);
-                        new AdMobProvider().addAd(activity, adFrame);
-                        adFrame.invalidate();
+                        relativeLayout.removeView(adView);
+                        new AdMobProvider().show(activity, relativeLayout);
+//                        relativeLayout.invalidate();
                     }
                 });
             }
