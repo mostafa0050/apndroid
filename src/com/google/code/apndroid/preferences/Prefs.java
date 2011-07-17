@@ -1,11 +1,10 @@
 package com.google.code.apndroid.preferences;
 
-import com.google.code.apndroid.Constants;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import com.google.code.apndroid.Constants;
 
 public class Prefs {
 
@@ -17,16 +16,14 @@ public class Prefs {
 
     private static final boolean DEFAULT_USE_SWITCH_NOTIFICATION = false;
     private static final boolean DEFAULT_DISABLE_ALL = false;
-    public static final boolean DEFAULT_NATIVE_TOGGLE = false;
+    public static final boolean DEFAULT_NATIVE_TOGGLE = true;
 
     private static final String SETTINGS_KEEP_MMS_ACTIVE = "com.google.code.apndroid.preferences.KEEP_MMS_ENABLED";
     private static final String SETTINGS_SHOW_NOTIFICATION = "com.google.code.apndroid.preferences.SHOW_NOTIFICATION";
     public static final String SETTINGS_USE_SWITCH_NOTIFICATION = "com.google.code.apndroid.preferences.SETTINGS_USE_SWITCH_NOTIFICATION";
     private static final String SETTINGS_DISABLE_ALL = "com.google.code.apndroid.preferences.DISABLE_ALL";
-    public static final String SETTINGS_NATIVE_TOGGLE = "com.google.code.apndroid.preferences.NATIVE_SWITCH"; 
-    static final String SETTINGS_ADS_ENABLED = "com.google.code.apndroid.preferences.ADS_ENABLED";
-    static final String SETTINGS_ADS_EXPIRY = "com.google.code.apndroid.preferences.ADS_EXPIRY";
 
+    public static final String SETTINGS_NATIVE_TOGGLE = "com.google.code.apndroid.preferences.NATIVE_SWITCH";
     public static final String PREFERENCES_HELP = "com.google.code.apndroid.preferences.HELP";
     public static final String PREFERENCES_CDMA_TIP = "com.google.code.apndroid.preferences.CDMA_TIP";
 
@@ -88,10 +85,4 @@ public class Prefs {
         return mPreferences.getBoolean(SETTINGS_DISABLE_ALL, DEFAULT_DISABLE_ALL);
     }
 
-    public boolean isAdsEnabled() {
-    	long expiration = mPreferences.getLong(SETTINGS_ADS_EXPIRY, System.currentTimeMillis() - 1000);
-    	long currentTime = System.currentTimeMillis();
-    	return currentTime > expiration;
-    }
-    
 }

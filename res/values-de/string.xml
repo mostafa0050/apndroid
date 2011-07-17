@@ -15,7 +15,7 @@
     <string name="notification_property">Benachrichtigungen</string>
     <string name="notification_property_summary">Benachrichtigung auf dem Display</string>
     <string name="toggle_title">3G/EDGE/GPRS</string>
-    <string name="toggle_hint">Hinweis: Füge Sie das Widget dem Home-Screen hinzu</string>
+    <string name="toggle_hint">Hinweis: Fügen Sie das Widget dem Home-Screen hinzu</string>
     <string name="toggle_on">An</string>
     <string name="toggle_off">Aus</string>
     <!-- Locale plug-in -->

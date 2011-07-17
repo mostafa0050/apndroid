@@ -3,9 +3,8 @@ package com.google.code.apndroid;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.code.apndroid.dao.ConnectionDao;
-import com.google.code.apndroid.dao.DaoFactory;
+import com.google.code.apndroid.dao.DaoUtil;
 import com.google.code.apndroid.preferences.Prefs;
 
 /**
@@ -24,7 +23,7 @@ public class ActionUtils {
         if (requestExtras == null) {
             // no parameters specified. switch to another state with default settings
             // todo this place can be optimized for one status request (now 2 performed)
-            boolean currentConnectionState = DaoFactory.getDao(context).isDataEnabled();
+            boolean currentConnectionState = DaoUtil.getDao(context).isDataEnabled();
             success = currentConnectionState != Utils.switchAndNotify(context);
         } else {
             // check what parameters specified by api caller
@@ -50,7 +49,7 @@ public class ActionUtils {
                 showNotification = requestExtras.getBoolean(Constants.SHOW_NOTIFICATION, Prefs.DEFAULT_SHOW_NOTIFICATION);
             }
 
-            ConnectionDao dao = DaoFactory.getDao(context);
+            ConnectionDao dao = DaoUtil.getDao(context);
             success = Utils.switchIfNecessaryAndNotify(targetStateEnabled, targetKeepMmsActive, showNotification, context, dao);
         }
         Bundle responseExtras = new Bundle();
@@ -59,7 +58,7 @@ public class ActionUtils {
     }
 
     public static Bundle processStatusRequest(Context context) {
-        ConnectionDao dao = DaoFactory.getDao(context);
+        ConnectionDao dao = DaoUtil.getDao(context);
 
         boolean dataEnabled = dao.isDataEnabled();
         Bundle responseExtras = new Bundle();

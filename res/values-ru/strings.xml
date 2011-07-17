@@ -32,4 +32,8 @@
      	<item>Вкл.</item>
         <item>Выкл.</item>
     </string-array>
+     <string-array name="dao_type_strings">
+        <item>Внутреннее API</item>
+        <item>Изменение APN</item>
+    </string-array>
 </resources>

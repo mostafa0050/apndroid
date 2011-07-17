@@ -25,7 +25,7 @@ import android.util.Log;
 import com.google.code.apndroid.Constants;
 import com.google.code.apndroid.Utils;
 import com.google.code.apndroid.dao.ConnectionDao;
-import com.google.code.apndroid.dao.DaoFactory;
+import com.google.code.apndroid.dao.DaoUtil;
 
 /**
  * Receiver that activated on locale event broadcast. On receive of event try
@@ -54,7 +54,7 @@ public class LocaleEventReceiver extends BroadcastReceiver {
             boolean targetDataEnabled = bundle.getInt(Constants.TARGET_APN_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean targetMmsEnabled = bundle.getInt(Constants.TARGET_MMS_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean showNotification = bundle.getBoolean(Constants.SHOW_NOTIFICATION, true);
-            ConnectionDao dao = DaoFactory.getDao(context);
+            ConnectionDao dao = DaoUtil.getDao(context);
             Utils.switchIfNecessaryAndNotify(targetDataEnabled, targetMmsEnabled, showNotification, context, dao);
         }
     }

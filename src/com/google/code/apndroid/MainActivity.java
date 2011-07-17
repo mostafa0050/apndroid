@@ -18,21 +18,22 @@
 package com.google.code.apndroid;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import android.widget.FrameLayout;
+import android.widget.ToggleButton;
+import com.google.code.apndroid.ads.AdProvider;
+import com.google.code.apndroid.ads.AdProviderFactory;
 import com.google.code.apndroid.dao.ConnectionDao;
-import com.google.code.apndroid.dao.DaoFactory;
-import com.google.code.apndroid.internal.AdSpecFactory;
+import com.google.code.apndroid.dao.DaoUtil;
 import com.google.code.apndroid.preferences.SettingsActivity;
 
 /**
@@ -42,8 +43,12 @@ public class MainActivity extends Activity {
 
     private static final int MENU_SETTINGS = 1;
     public static final int CHANGE_REQUEST = 1;
-    
-    private ConnectivityHandler mConnectivityHandler;
+
+    private ConnectivityManager mConnectivityManager;
+    private BroadcastReceiver mReceiver;
+    private FrameLayout mAdFrame;
+    private AdProvider mAdProvider;
+    private ConnectionDao mDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,30 +62,36 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main);
 
+        // http://crazygui.wordpress.com/2010/09/05/high-quality-radial-gradient-in-android/
+//        getWindow().setFormat(PixelFormat.RGBA_8888);
+
+        mDao = DaoUtil.getDaoFactory(getApplication()).getDao(this);
+        mAdFrame = (FrameLayout) findViewById(R.id.ad_frame);
+        mAdProvider = AdProviderFactory.getProvider();
+        mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                onConnectivityEvent();
+            }
+        };
+
         // take care about data icon
 
-        View indicatorData = findViewById(R.id.indicator_data);
-        boolean isConnectedOrConnecting = Utils.isConnectedOrConnecting(this,false);
-
-        // Set the initial resource for the bar image.
-        final ImageView barOnOff = (ImageView) indicatorData.findViewById(R.id.bar_data_onoff);
-        barOnOff.setImageResource(isConnectedOrConnecting ? R.drawable.ic_indicator_on : R.drawable.ic_indicator_off);
+        boolean isDataEnabled = mDao.isDataEnabled();
 
         // Set the initial state of the clock "checkbox"
-        final CheckBox dataOnOff = (CheckBox) indicatorData.findViewById(R.id.data_onoff);
-        dataOnOff.setChecked(isConnectedOrConnecting);
+        final ToggleButton dataOnOff = (ToggleButton) findViewById(R.id.btn_on_off);
+        dataOnOff.setBackgroundResource(isDataEnabled ? R.drawable.btn_on : R.drawable.btn_off);
+        dataOnOff.setChecked(isDataEnabled);
 
-        TextView infoText = (TextView) findViewById(R.id.info_text);
-        TextView reconnectText = (TextView) findViewById(R.id.reconnect_text);
-        mConnectivityHandler = new ConnectivityHandler(this, infoText, reconnectText, barOnOff);
-        
         // Clicking outside the "checkbox" should also change the state.
 
-        indicatorData.setOnClickListener(new OnClickListener() {
+        dataOnOff.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                dataOnOff.toggle();
                 boolean enable = dataOnOff.isChecked();
-                updateIndicatorAndData(getBaseContext(), enable, barOnOff);
+                updateIndicatorAndData(enable, dataOnOff);
             }
         });
     }
@@ -89,22 +100,33 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        mConnectivityHandler.resume();
-        
-        refreshAll();
-        
-        // Set up GoogleAdView
-        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
-        AdSpecFactory.create(this, mainLayout);
+        registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        if (mAdProvider == null) {
+            // if this is PRO version
+            mAdFrame.setVisibility(View.GONE);
+        } else {
+            // this is FREE version
+            mAdFrame.setVisibility(View.VISIBLE);
+            boolean connected = Utils.isConnected(mConnectivityManager, true);
+            if (connected) {
+                mAdProvider.addAd(this, mAdFrame);
+            }
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         
-        mConnectivityHandler.pause();
+        try {
+            unregisterReceiver(mReceiver);
+        } catch (IllegalArgumentException e) {
+            // there is no way to know whether receiver was registered
+            // so just ignore this
+        }
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_SETTINGS, 0, R.string.settings).setIcon(android.R.drawable.ic_menu_preferences);
@@ -122,16 +144,37 @@ public class MainActivity extends Activity {
         return false;
     }
 
-    static void updateIndicatorAndData(Context context, boolean enable, ImageView bar) {
-        bar.setImageResource(enable ? R.drawable.ic_indicator_on : R.drawable.ic_indicator_off);
-        //todo it is better to use Utils method here because it contains extra logic for apn dao switcher
-        ConnectionDao connectionDao = DaoFactory.getDao(context);
-        connectionDao.setDataEnabled(enable);
-        Utils.broadcastStatusChange(context, enable);
+    private void updateIndicatorAndData(final boolean enable, ToggleButton toggleButton) {
+        toggleButton.setBackgroundResource(enable ? R.drawable.btn_on: R.drawable.btn_off);
+        toggleButton.setChecked(enable);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //todo it is better to use Utils method here because it contains extra logic for apn dao switcher
+                mDao.setDataEnabled(MainActivity.this, enable);
+                Utils.broadcastStatusChange(MainActivity.this, enable);
+            }
+        }).start();
     }
 
-    private void refreshAll() {
-    	mConnectivityHandler.refresh();
+    private void onConnectivityEvent() {
+
+        // we're not initialized yet
+        if (mAdFrame == null) {
+            return;
+        }
+
+        boolean connected = Utils.isConnected(mConnectivityManager, true);
+        if (connected) {
+            if (mAdFrame.getChildCount() > 0) {
+                mAdFrame.removeViewAt(0);
+            }
+
+            AdProvider adProvider = AdProviderFactory.getProvider();
+            if (adProvider != null) {
+                adProvider.addAd(this, mAdFrame);
+            }
+        }
     }
 
 }

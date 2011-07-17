@@ -19,6 +19,7 @@ package com.google.code.apndroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 /**
@@ -30,24 +31,44 @@ public class ActionActivity extends Activity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        // todo use separate thread for switch operations
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
-            Intent response = new Intent(Constants.APN_DROID_RESULT);
-
-            if (intent.getAction().equals(Constants.STATUS_REQUEST)) {
-                Bundle responseExtras = ActionUtils.processStatusRequest(this);
-                setResult(RESULT_OK, response.putExtras(responseExtras));
-            } else if (intent.getAction().equals(Constants.CHANGE_STATUS_REQUEST)) {
-                Bundle responseExtras = ActionUtils.processSwitchRequest(this, intent.getExtras());
-                setResult(RESULT_OK, response.putExtras(responseExtras));
-            } else {
-                setResult(Activity.RESULT_CANCELED);
-            }
+            new ProcessRequestTask().execute(intent);
         } else {
             setResult(Activity.RESULT_CANCELED);
+            finish();
         }
-        finish();
+    }
+
+    private class ProcessRequestTask extends AsyncTask<Intent, Void, Bundle> {
+
+        @Override
+        protected Bundle doInBackground(Intent... intents) {
+
+            if (intents.length > 0) {
+                Intent intent = intents[0];
+                if (intent.getAction().equals(Constants.STATUS_REQUEST)) {
+                    return ActionUtils.processStatusRequest(ActionActivity.this);
+                } else if (intents[0].getAction().equals(Constants.CHANGE_STATUS_REQUEST)) {
+                    return ActionUtils.processSwitchRequest(ActionActivity.this, intent.getExtras());
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bundle bundle) {
+            if (bundle != null) {
+                Intent response = new Intent(Constants.APN_DROID_RESULT);
+                setResult(RESULT_OK, response.putExtras(bundle));
+                finish();
+            } else {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+            }
+        }
+
     }
 
 }

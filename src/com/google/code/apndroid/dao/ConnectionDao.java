@@ -1,5 +1,7 @@
 package com.google.code.apndroid.dao;
 
+import android.content.Context;
+
 /**
  * @author Dmitry Pavlov
  * @author Martin Adamek
@@ -24,7 +26,7 @@ public interface ConnectionDao {
      *               and {@code false} means that data should be disabled
      * @return {@code true} if data was successfully switched to target state and {@code false} otherwise
      */
-    boolean setDataEnabled(boolean enable);
+    boolean setDataEnabled(Context context, boolean enable);
 
     /**
      * Performs switching data connection to passed state.
@@ -36,7 +38,7 @@ public interface ConnectionDao {
      *                   and {@code false} means that mms should be disabled
      * @return {@code true} if data was successfully switched to target state and {@code false} otherwise
      */
-    boolean setDataEnabled(boolean enableData, boolean enableMms);
+    boolean setDataEnabled(Context context, boolean enableData, boolean enableMms);
 
     /**
      * Performs switching mms connection to passed state.

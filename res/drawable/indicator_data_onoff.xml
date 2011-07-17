@@ -16,6 +16,6 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" android:state_window_focused="true"
-        android:drawable="@drawable/ic_data_selected" />
+        android:drawable="@drawable/ic_data_selected"/>
     <item android:drawable="@drawable/ic_data_on" />
 </selector>

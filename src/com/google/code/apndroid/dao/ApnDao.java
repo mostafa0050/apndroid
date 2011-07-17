@@ -17,17 +17,17 @@
 
 package com.google.code.apndroid.dao;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import com.google.code.apndroid.Constants;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
-
-import com.google.code.apndroid.Constants;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
@@ -64,11 +64,11 @@ public final class ApnDao implements ConnectionDao {
         return !(countMmsApns() > 0 && countDisabledMmsApns() > 0);
     }
 
-    public boolean setDataEnabled(boolean enable) {
-        return setDataEnabled(enable, enable);
+    public boolean setDataEnabled(Context context, boolean enable) {
+        return setDataEnabled(context, enable, enable);
     }
 
-    public boolean setDataEnabled(boolean enableData, boolean enableMms) {
+    public boolean setDataEnabled(Context context, boolean enableData, boolean enableMms) {
         setMmsEnabled(enableMms);
         if (enableData) {
         	return enableAllInDb();
@@ -277,6 +277,9 @@ public final class ApnDao implements ConnectionDao {
     }
 
     public static String removeSuffix(String currentName) {
+        if (currentName == null) {
+            return "";
+        }
         if (currentName.endsWith(SUFFIX)) {
             return currentName.substring(0, currentName.length() - SUFFIX.length());
         } else {
