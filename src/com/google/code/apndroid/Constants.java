@@ -18,7 +18,7 @@
 package com.google.code.apndroid;
 
 /**
- * @author Pavlov Dmitry
+ * @author Dmitry Pavlov
  */
 public final class Constants {
 
@@ -70,8 +70,6 @@ public final class Constants {
 
     static final String STATUS_CHANGED_MESSAGE = "com.google.code.apndroid.intent.action.STATUS_CHANGED";
     static final String STATUS_SWITCH_IN_PROGRESS_MESSAGE = "com.google.code.apndroid.intent.action.STATUS_CHANGE_IN_PROGRESS";
-
-    public static final String HELP_URL = "http://apndroid.googlecode.com";
 
     /**
      * Common log tag

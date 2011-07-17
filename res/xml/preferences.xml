@@ -6,10 +6,12 @@
 	    android:title="Tip:"
 	    android:summary="Turn data ON to enable option below"
 	    android:key="com.google.code.apndroid.preferences.HELP" />
+
     <Preference
         android:title="Only system toggle available"
         android:summary="For CDMA phones only native toogle works"
         android:key="com.google.code.apndroid.preferences.CDMA_TIP"/>
+
 	<CheckBoxPreference
 	        android:key="com.google.code.apndroid.preferences.NATIVE_SWITCH"
 	        android:title="Use system toggle"
@@ -44,10 +46,12 @@
 	<PreferenceScreen
                android:key="pref_screen_apn_modifications"
                android:title="APN modifications"
-               android:summary="Used when switching is performed using APN modifications instead of system built-in toggle"
-	           android:dependency="com.google.code.apndroid.preferences.NATIVE_SWITCH"
+               android:summary="Advanced options for APN modifications"
 	           >
-            
+        <!--
+	           android:dependency="com.google.code.apndroid.preferences.NATIVE_SWITCH"
+        -->
+
         <CheckBoxPreference
                 android:key="com.google.code.apndroid.preferences.KEEP_MMS_ENABLED"
                 android:title="@string/mms_property"
@@ -62,21 +66,6 @@
                 android:defaultValue="false"
 	            />
 	            
-    </PreferenceScreen>
-
-	<PreferenceScreen
-               android:key="pref_screen_ads"
-               android:title="Ads"
-               android:summary="Ads make this application possible, but..."
-	           >
-            
-        <CheckBoxPreference
-                android:key="com.google.code.apndroid.preferences.ADS_ENABLED"
-                android:title="Display Ads"
-                android:summary="Ads make this application possible. But you can still turn them off, if you wish. They will appear again after 2 weeks and you can decide again :-)"
-                android:defaultValue="true"
-                />
-                
     </PreferenceScreen>
 
 </PreferenceScreen>

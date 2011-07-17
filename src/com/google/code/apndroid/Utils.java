@@ -17,17 +17,16 @@
 
 package com.google.code.apndroid;
 
-import java.text.MessageFormat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-
 import com.google.code.apndroid.dao.ConnectionDao;
-import com.google.code.apndroid.dao.DaoFactory;
+import com.google.code.apndroid.dao.DaoUtil;
 import com.google.code.apndroid.preferences.Prefs;
+
+import java.text.MessageFormat;
 
 /**
  * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
@@ -60,7 +59,7 @@ public final class Utils {
 
         boolean showNotification = prefs.showNotifications();
         boolean keepMmsActive = prefs.keepMmsActive();
-        ConnectionDao dao = DaoFactory.getDao(context);
+        ConnectionDao dao = DaoUtil.getDao(context);
         boolean currentState = dao.isDataEnabled();
         return switchAndNotify(!currentState, keepMmsActive, showNotification, context, dao);
     }
@@ -104,6 +103,14 @@ public final class Utils {
                 && info.isConnectedOrConnecting();
     }
 
+    public static boolean isConnected(ConnectivityManager connectivity, boolean anyConnectionType) {
+    	NetworkInfo info = connectivity.getActiveNetworkInfo();
+
+    	return info != null
+                && (info.getType() == ConnectivityManager.TYPE_MOBILE || anyConnectionType)
+                && info.isConnected();
+    }
+
     /**
      * Performs direct switching to passed target state. This method should be used if you already has initialized dao.
      * Passing existing dao helps to avoid creating a new one
@@ -115,7 +122,7 @@ public final class Utils {
         sendSwitchInProgressMessage(context);
         boolean success = false;
         try {
-            success = dao.setDataEnabled(targetDataStateEnabled, enableMms);
+            success = dao.setDataEnabled(context, targetDataStateEnabled, enableMms);
         } catch (Exception ex) {
             Log.e(Constants.APP_LOG, "Exception occurred while switching data connection",ex);
         } finally {

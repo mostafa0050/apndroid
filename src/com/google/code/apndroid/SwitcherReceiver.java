@@ -20,15 +20,9 @@ package com.google.code.apndroid;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import com.google.code.apndroid.dao.ConnectionDao;
-import com.google.code.apndroid.dao.DaoFactory;
-import com.google.code.apndroid.preferences.Prefs;
-
-import java.text.MessageFormat;
+import com.google.code.apndroid.dao.DaoUtil;
 
 /**
  * Broadcast receiver that performs switching current apn state and performs notification about this through sending a
@@ -39,22 +33,27 @@ import java.text.MessageFormat;
 public class SwitcherReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
         String action = intent.getAction();
         if (Constants.CHANGE_STATUS_REQUEST.equals(action)) {
-            processStandardSwitchEvent(context, intent);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    processStandardSwitchEvent(context, intent);
+                }
+            }).start();
         }
     }
 
     private void processStandardSwitchEvent(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        if (bundle == null || bundle.size() == 0) {// no params
+        if (bundle == null || bundle.size() == 0) { // no params
             Utils.switchAndNotify(context);
         } else {
             boolean targetDataEnabled = bundle.getInt(Constants.TARGET_APN_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean targetMmsEnabled = bundle.getInt(Constants.TARGET_MMS_STATE, Constants.STATE_ON) == Constants.STATE_ON;
             boolean showNotification = bundle.getBoolean(Constants.SHOW_NOTIFICATION, true);
-            ConnectionDao dao = DaoFactory.getDao(context);
+            ConnectionDao dao = DaoUtil.getDao(context);
             Utils.switchIfNecessaryAndNotify(targetDataEnabled, targetMmsEnabled, showNotification, context, dao);
         }
     }    

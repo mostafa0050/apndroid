@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="APNdroid" default="default" basedir="." xmlns:android="antlib:com.googlecode.autoandroid.ant">
-    <description>Builds, tests and runs Project</description>
-	<taskdef uri="antlib:com.googlecode.autoandroid.ant" classpath="buildtime_libs/android-ant-1.0-rc5.jar"/>	
-    <property name="build.root" value="api_build"/>
-    <property name="build.dir" value="${build.root}/build"/>                                   
-    <property name="build.src" value="${build.root}/src"/>
-    <property name="dist.dir" value="api_dist"/>
+<project name="apndroid_base" default="help">
 
-	<android:home/>
+<!-- The local.properties file is created and updated by the 'android'
+     tool.
+     It contains the path to the SDK. It should *NOT* be checked into
+     Version Control Systems. -->
+    <property file="local.properties" />
 
-    <!-- ============= Default front targets ================== -->
-    <target name="default" depends="clean,dist" description="Performs API compilation and packs it into JAR"/>    
+    <!-- The build.properties file can be created by you and is never touched
+         by the 'android' tool. This is the place to change some of the
+         default property values used by the Ant rules.
+         Here are some properties you may want to change/update:
 
-    <target name="rebuild" depends="clean, dist" description="Rebuilds project"/>
+         source.dir
+             The name of the source directory. Default is 'src'.
+         out.dir
+             The name of the output directory. Default is 'bin'.
 
-    <!-- ============= Initialization section ================== -->
-    <target name="init">
-        <!--init target-->
-        <path id="build.classpath">
-            <pathelement location="${build.dir}"/>
-        	<pathelement location ="${android-home}/android.jar"/>
-        </path>
+         Properties related to the SDK location or the project target should
+         be updated using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems.
+
+         -->
+    <property file="build.properties" />
+
+    <!-- The default.properties file is created and updated by the 'android'
+         tool, as well as ADT.
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems. -->
+    <property file="default.properties" />
+
+    <!-- Custom Android task to deal with the project target, and import the
+         proper rules.
+         This requires ant 1.6.0 or above. -->
+    <path id="android.antlibs">
+        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
+    </path>
+
+    <taskdef name="setup"
+        classname="com.android.ant.SetupTask"
+        classpathref="android.antlibs" />
+
+<!-- extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets -->
+<!--
+    <target name="-pre-build">
+    </target>
+    <target name="-pre-compile">
     </target>
 
-    <!-- =========== Compilation section =================== -->
-    <target name="compile" depends="compile.init, aidl"
-            description="Perfroms compilation of project and it's tests">
-        <!--compile project classes-->
-        <copy todir="${build.src}">
-            <fileset dir="src">
-                <include name="**/Constants.java"/>
-            </fileset>
-        </copy>
-        <javac classpathref="build.classpath" srcdir="${build.src}" destdir="${build.dir}" debug="false"
-               deprecation="false" source="1.5" target="1.5" includeantruntime="false" encoding="UTF-8">
-        </javac>
+    [This is typically used for code obfuscation.
+     Compiled code location: ${out.classes.absolute.dir}
+     If this is not done in place, override ${out.dex.input.absolute.dir}]
+    <target name="-post-compile">
     </target>
+-->
 
-    <target name="compile.init" depends="init">
-        <mkdir dir="${build.root}"/>
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.src}"/>
-    </target>
-	
-	<target name="aidl" depends="compile.init">
-		<android:aidl>
-			<arg value="-p${android-home}/framework.aidl"/>
-			<arg value="-o${build.src}"/>
-			<arg value="src/com/google/code/apndroid/IActionService.aidl"/>
-		</android:aidl>
-	</target>
 
-    <!-- =========== Dist building section =================== -->
+    <!-- Execute the Android Setup task that will setup some properties
+         specific to the target, and import the build rules files.
 
-    <target name="dist"
-            depends="dist.init"
-            description="Make distribution">
-        <jar jarfile="${dist.dir}/apndroid_api.jar" compress="true">
-            <fileset dir="${build.dir}"/>
-        </jar>
-    </target>
+         The rules file is imported from
+            <SDK>/platforms/<target_platform>/ant/ant_rules_r#.xml
 
-    <target name="dist.init" depends="compile">
-        <mkdir dir="${dist.dir}"/>
-    </target>
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <setup> task.
+             - customize it to your needs.
+         - Customize the whole script.
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, *after* the <setup> task
+             - disable the import of the rules by changing the setup task
+               below to <setup import="false" />.
+             - customize to your needs.
+    -->
+    <setup />
 
-    <!-- =========== JavaDoc section ========================= -->
-    <target name="javadoc" depends="init" description="Generate Javadoc">
-        <mkdir dir="${dist.dir}/javadoc"/>
-        <javadoc destdir="${dist.dir}/javadoc" notree="false" use="true"
-                 nonavbar="false" noindex="false" splitindex="true" author="false"
-                 version="false" private="false" failonerror="true">
-            <classpath refid="build.classpath"/>
-            <fileset dir="${build.src}" includes="**/*.java"/>
-        </javadoc>
-    </target>
-
-    <!-- =========== Clean section ============================ -->
-    <target name="clean" depends="init" description="Clean project">
-        <delete dir="${build.root}"/>
-        <delete dir="${dist.dir}"/>        
-    </target>
 </project>

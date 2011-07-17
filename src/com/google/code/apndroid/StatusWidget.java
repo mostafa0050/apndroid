@@ -26,8 +26,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
-
-import com.google.code.apndroid.dao.DaoFactory;
+import com.google.code.apndroid.dao.DaoUtil;
 import com.google.code.apndroid.preferences.Prefs;
 
 /**
@@ -70,7 +69,7 @@ public class StatusWidget extends AppWidgetProvider {
         if (prefs.hasLastStatus()) {
             isNetEnabled = prefs.isLastStatusConnected();
         } else {
-            isNetEnabled = DaoFactory.getDao(context).isDataEnabled();
+            isNetEnabled = DaoUtil.getDao(context).isDataEnabled();
         }
         showWidget(context, appWidgetManager, ints, isNetEnabled);
     }
