@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<string name="app_name">APNdroid</string>
+	<string name="app_name">APNdroid Lite</string>
 	<string name="title_enabled">3G/EDGE/GPRS Enabled</string>
 	<string name="title_disabled">3G/EDGE/GPRS Disabled</string>
 	<string name="status_enabled">Internet access is enabled.</string>

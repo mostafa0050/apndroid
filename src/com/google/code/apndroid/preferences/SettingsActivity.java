@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
@@ -42,34 +40,6 @@ public class SettingsActivity extends PreferenceActivity {
         
         Prefs prefs = new Prefs(this);
         prefs.registerListener(mListener);
-
-        // disable Native Toggle preference checkbox if data is turned off
-        // one can change the switching method only when data is on
-        boolean dataEnabled = DaoUtil.getDao(this).isDataEnabled();
-        CheckBoxPreference nativeToggle = (CheckBoxPreference) findPreference(Prefs.SETTINGS_NATIVE_TOGGLE);
-
-        boolean apnToggleWorks = isApnToggleWorks();
-
-        if (!apnToggleWorks){
-            //force set to native toggle
-            if (!nativeToggle.isChecked()){
-                nativeToggle.setChecked(true);
-            }
-        }
-        nativeToggle.setEnabled(dataEnabled && apnToggleWorks);
-
-        if (dataEnabled || !apnToggleWorks) {
-        	Preference help = findPreference(Prefs.PREFERENCES_HELP);
-        	if (help != null) {
-        		getPreferenceScreen().removePreference(help);
-        	}
-        }
-        if (apnToggleWorks){
-            Preference cdmaTip = findPreference(Prefs.PREFERENCES_CDMA_TIP);
-            if (cdmaTip != null){
-                getPreferenceScreen().removePreference(cdmaTip);
-            }
-        }
     }
 
     private boolean isApnToggleWorks(){
