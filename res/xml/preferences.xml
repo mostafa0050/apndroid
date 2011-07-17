@@ -2,24 +2,6 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<Preference
-	    android:title="Tip:"
-	    android:summary="Turn data ON to enable option below"
-	    android:key="com.google.code.apndroid.preferences.HELP" />
-
-    <Preference
-        android:title="Only system toggle available"
-        android:summary="For CDMA phones only native toogle works"
-        android:key="com.google.code.apndroid.preferences.CDMA_TIP"/>
-
-	<CheckBoxPreference
-	        android:key="com.google.code.apndroid.preferences.NATIVE_SWITCH"
-	        android:title="Use system toggle"
-	        android:summary="Use Android built-in switch"
-	        android:defaultValue="true"
-	        android:disableDependentsState="true"
-	        />
-
 	<PreferenceScreen
                android:key="pref_screen_notifications"
                android:title="Notifications"
@@ -48,9 +30,6 @@
                android:title="APN modifications"
                android:summary="Advanced options for APN modifications"
 	           >
-        <!--
-	           android:dependency="com.google.code.apndroid.preferences.NATIVE_SWITCH"
-        -->
 
         <CheckBoxPreference
                 android:key="com.google.code.apndroid.preferences.KEEP_MMS_ENABLED"
