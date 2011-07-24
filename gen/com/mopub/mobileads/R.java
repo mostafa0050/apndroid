@@ -85,6 +85,16 @@ public final class R {
     public static final class string {
         public static final int advanced_options_for_apn=0x7f060005;
         /**  Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
+ Settings screen - APN modifications 
          */
         public static final int apn_modifications=0x7f060004;
         public static final int app_name=0x7f060000;
@@ -101,17 +111,57 @@ public final class R {
         public static final int notification_property=0x7f06000c;
         public static final int notification_property_summary=0x7f06000d;
         /**  Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
+ Settings screen - Notifications 
          */
         public static final int notifications=0x7f06000a;
         /**  Locale plugin 
+ Locale plugin 
+ Locale plugin 
+ Locale plugin 
+ Locale plugin 
+ Locale plug-in 
+ Locale plugin 
+ Locale plugin 
+ Locale plugin 
+ Locale plugin 
+ Locale plugin 
          */
         public static final int save=0x7f060010;
         /**  Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
+ Main activity menu 
          */
         public static final int settings=0x7f060003;
         public static final int state_hint=0x7f060014;
         public static final int status_disabled=0x7f060002;
         /**  Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
+ Description in notification (if turned on) 
          */
         public static final int status_enabled=0x7f060001;
         public static final int switch_with_notification=0x7f06000e;
