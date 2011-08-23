@@ -20,4 +20,4 @@ glob:*ipr
 glob:*iws
 glob:*iml
 
-.idea/workspace.xml
+.idea/*
