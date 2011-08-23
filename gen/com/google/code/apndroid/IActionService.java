@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /Users/martin/sources/apndroid/src/com/google/code/apndroid/IActionService.aidl
+ * Original file: /home/pavlov/projects/apndroid/trunk/src/com/google/code/apndroid/IActionService.aidl
  */
 package com.google.code.apndroid;
 public interface IActionService extends android.os.IInterface
