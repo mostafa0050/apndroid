@@ -89,6 +89,7 @@
 		<!-- Locale plugin -->
 
         <activity android:name="com.google.code.apndroid.locale.LocaleActivity"/>
+        <activity android:name=".StatisticsActivity"/>
 
         <!--Locale plugin is moved to separate package, but for backward compatibility with 2.x version
         we need to use alias-->

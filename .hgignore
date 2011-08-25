@@ -21,3 +21,4 @@ glob:*iws
 glob:*iml
 
 .idea/*
+gen/com/twofortyfouram/locale/platform/R.java
