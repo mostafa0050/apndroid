@@ -11,11 +11,19 @@ public final class DaoFactoryLite implements DaoFactory {
 
     @Override
     public ConnectionDao getDao(Context context) {
+        return createApnDao(context);
+    }
+
+    @Override
+    public ApnInformationDao getInformationDao(Context context) {
+        return createApnDao(context);
+    }
+
+    private ApnDao createApnDao(Context context) {
         Prefs prefs = new Prefs(context);
         boolean disableAll = prefs.isDisableAll();
         ApnDao apnDao = new ApnDao(context.getContentResolver());
         apnDao.setDisableAllApns(disableAll);
         return apnDao;
     }
-
 }

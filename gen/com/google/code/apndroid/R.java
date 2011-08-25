@@ -57,24 +57,29 @@ public final class R {
         public static final int stat_apndroid_on=0x7f020024;
     }
     public static final class id {
+        public static final int active_apn=0x7f0b000c;
+        public static final int apn_count_field=0x7f0b000b;
         public static final int btn_on_off=0x7f0b0006;
         public static final int locale_ellipsizing_title_text=0x7f0b0001;
-        public static final int main=0x7f0b000a;
+        public static final int main=0x7f0b000f;
         public static final int main_layout=0x7f0b0005;
-        public static final int menu_dontsave=0x7f0b000d;
-        public static final int menu_save=0x7f0b000e;
+        public static final int menu_dontsave=0x7f0b0012;
+        public static final int menu_save=0x7f0b0013;
         public static final int mms=0x7f0b0003;
         public static final int notification=0x7f0b0004;
+        public static final int op_code=0x7f0b0009;
+        public static final int op_name=0x7f0b000a;
         public static final int screen=0x7f0b0000;
         public static final int statespinner=0x7f0b0002;
-        public static final int status_text=0x7f0b0007;
-        public static final int twofortyfouram_locale_dialog_primary_message=0x7f0b0008;
-        public static final int twofortyfouram_locale_dialog_secondary_message=0x7f0b0009;
-        public static final int twofortyfouram_locale_menu_dontsave=0x7f0b0010;
-        public static final int twofortyfouram_locale_menu_help=0x7f0b000f;
-        public static final int twofortyfouram_locale_menu_save=0x7f0b0011;
-        public static final int widgetButton=0x7f0b000c;
-        public static final int widgetCanvas=0x7f0b000b;
+        public static final int stats_button=0x7f0b0007;
+        public static final int status_text=0x7f0b0008;
+        public static final int twofortyfouram_locale_dialog_primary_message=0x7f0b000d;
+        public static final int twofortyfouram_locale_dialog_secondary_message=0x7f0b000e;
+        public static final int twofortyfouram_locale_menu_dontsave=0x7f0b0015;
+        public static final int twofortyfouram_locale_menu_help=0x7f0b0014;
+        public static final int twofortyfouram_locale_menu_save=0x7f0b0016;
+        public static final int widgetButton=0x7f0b0011;
+        public static final int widgetCanvas=0x7f0b0010;
     }
     public static final class integer {
         /**  The maximum blurb length in characters.  This value is based on Latin characters
@@ -88,8 +93,9 @@ public final class R {
         public static final int localemain=0x7f030001;
         public static final int main=0x7f030002;
         public static final int notification_info=0x7f030003;
-        public static final int twofortyfouram_locale_dialog=0x7f030004;
-        public static final int widget_layout=0x7f030005;
+        public static final int phone_statistics=0x7f030004;
+        public static final int twofortyfouram_locale_dialog=0x7f030005;
+        public static final int widget_layout=0x7f030006;
     }
     public static final class menu {
         public static final int localemenu=0x7f0a0000;

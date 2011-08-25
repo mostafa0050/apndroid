@@ -6,4 +6,6 @@ public interface DaoFactory {
 
     ConnectionDao getDao(Context context);
 
+    ApnInformationDao getInformationDao(Context context);
+
 }

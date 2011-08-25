@@ -24,4 +24,12 @@
         android:gravity="center"
         android:background="@drawable/data_on"/>
 
+    <Button android:id="@+id/stats_button"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Send work stats"
+            />
+
 </RelativeLayout>

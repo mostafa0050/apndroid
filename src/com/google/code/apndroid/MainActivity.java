@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 import com.google.code.apndroid.ads.AdProvider;
@@ -90,6 +91,14 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 boolean enable = dataOnOff.isChecked();
                 updateIndicatorAndData(enable, dataOnOff);
+            }
+        });
+
+        Button statsActivity = (Button) findViewById(R.id.stats_button);
+        statsActivity.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.this.startActivity(new Intent(MainActivity.this, StatisticsActivity.class));
             }
         });
     }

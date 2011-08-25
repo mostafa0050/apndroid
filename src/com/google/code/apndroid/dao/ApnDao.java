@@ -23,17 +23,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.google.code.apndroid.Constants;
+import com.google.code.apndroid.stats.ApnInformation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * @author Martin Adamek <martin.adamek@gmail.com>
  * @author Dmitry Pavlov <pavlov.dmitry.n@gmail.com>
  */
-public final class ApnDao implements ConnectionDao {
+public final class ApnDao implements ConnectionDao, ApnInformationDao {
 
     private static final String SUFFIX = "apndroid";
     private static final String ID = "_id";
@@ -42,7 +40,8 @@ public final class ApnDao implements ConnectionDao {
 
     // from frameworks/base/core/java/android/provider/Telephony.java
     private static final Uri CONTENT_URI = Uri.parse("content://telephony/carriers");
-
+    private static final Uri PREFERRED_APN_URI = Uri.parse("content://telephony/carriers/preferapn");
+    private static final String PREFER_APN_ID_KEY = "apn_id";
     private static final String DB_LIKE_SUFFIX = "%" + SUFFIX;
     private static final String DB_LIKE_TYPE_SUFFIX = "%" +SUFFIX + "%";
 
@@ -299,6 +298,25 @@ public final class ApnDao implements ConnectionDao {
             }
         }
         return builder.toString();
+    }
+
+    @Override
+    public List<ApnInformation> findAllApns() {
+        List<ApnInformation> apnList = new LinkedList<ApnInformation>();
+        for (ApnInfo info : selectApnInfo(null, null)){
+            apnList.add(new ApnInformation(info.id, info.apn, info.type));
+        }
+        return apnList;
+    }
+
+    @Override
+    public Long getCurrentActiveApnId() {
+        Cursor cursor = mContentResolver.query(PREFERRED_APN_URI, new String[]{ID}, null, null, null);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()){
+            return cursor.getLong(0);
+        }
+        return null;
     }
 
     /**
