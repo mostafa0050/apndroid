@@ -29,6 +29,8 @@ public class StatisticsData {
     private List<ExtendedApnInfo> registeredApns;
     private Long currentActiveApnId;
 
+    private String userComment;
+
     public PhoneRadioType getPhoneRadioType() {
         return phoneRadioType;
     }
