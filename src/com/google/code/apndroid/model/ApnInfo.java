@@ -1,19 +1,18 @@
-package com.google.code.apndroid.stats;
+package com.google.code.apndroid.model;
 
 /**
- * @author pavlov
- * @since 25.08.11
+ * Selection of few interesting columns from APN table
  */
-public class ApnInformation {
+public class ApnInfo {
 
     private long id;
     private String apn;
     private String type;
 
-    public ApnInformation() {
+    public ApnInfo() {
     }
 
-    public ApnInformation(long id, String apn, String type) {
+    public ApnInfo(long id, String apn, String type) {
         this.id = id;
         this.apn = apn;
         this.type = type;
