@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.TextView;
 import com.google.code.apndroid.dao.ApnInformationDao;
 import com.google.code.apndroid.dao.DaoUtil;
@@ -55,6 +56,7 @@ public class StatisticsActivity extends Activity {
         phoneData.setPhoneManufacturer(Build.MANUFACTURER);
         phoneData.setOsReleaseVersion(Build.VERSION.RELEASE);
         phoneData.setSdkVersion(Build.VERSION.SDK_INT);
+
 
         ApnInformationDao dao = DaoUtil.getDaoFactory(getApplication()).getInformationDao(this);
         phoneData.setRegisteredApns(dao.findAllApns());

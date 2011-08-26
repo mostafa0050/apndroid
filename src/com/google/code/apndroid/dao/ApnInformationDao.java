@@ -1,6 +1,6 @@
 package com.google.code.apndroid.dao;
 
-import com.google.code.apndroid.stats.ApnInformation;
+import com.google.code.apndroid.model.ExtendedApnInfo;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ApnInformationDao {
 
-    List<ApnInformation> findAllApns();
+    List<ExtendedApnInfo> findAllApns();
 
     Long getCurrentActiveApnId();
 

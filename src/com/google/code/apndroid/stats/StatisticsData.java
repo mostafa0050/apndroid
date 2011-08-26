@@ -1,5 +1,7 @@
 package com.google.code.apndroid.stats;
 
+import com.google.code.apndroid.model.ExtendedApnInfo;
+
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public class StatisticsData {
     private String osReleaseVersion;
     private int sdkVersion;
 
-    private List<ApnInformation> registeredApns;
+    private List<ExtendedApnInfo> registeredApns;
     private Long currentActiveApnId;
 
     public PhoneRadioType getPhoneRadioType() {
@@ -115,11 +117,11 @@ public class StatisticsData {
         this.sdkVersion = sdkVersion;
     }
 
-    public List<ApnInformation> getRegisteredApns() {
+    public List<ExtendedApnInfo> getRegisteredApns() {
         return registeredApns;
     }
 
-    public void setRegisteredApns(List<ApnInformation> registeredApns) {
+    public void setRegisteredApns(List<ExtendedApnInfo> registeredApns) {
         this.registeredApns = registeredApns;
     }
 
