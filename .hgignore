@@ -1,9 +1,7 @@
 build
 dist
 bin
-nbproject/private
-nbproject/sqe.properties
-nbproject/findbugs.settings
+gen
 /test/(coverage|lib|results|work)$
 derby\.log
 \.class$
@@ -20,5 +18,4 @@ glob:*ipr
 glob:*iws
 glob:*iml
 
-.idea/*
-gen/com/twofortyfouram/locale/platform/R.java
+.idea/workspace.xml
