@@ -261,7 +261,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         try {
             cursor = mContentResolver.query(CONTENT_URI, new String[] { "count(*)" }, whereQuery, whereParams, null);
             if (cursor != null && cursor.moveToFirst()) {
-                return cursor.getInt(ApnQuery._ID);
+                return cursor.getInt(0);
             } else {
                 return -1;
             }
