@@ -34,20 +34,7 @@ import java.util.*;
  */
 public final class ApnDao implements ConnectionDao, ApnInformationDao {
 
-//    all available fields from apn table
-//    [_id,name,numeric,mcc,mnc,apn,user,server,password,proxy,port,mmsproxy,mmsport,mmsc,authtype,type,current]
-
-    private static final String SUFFIX = "apndroid";
-    private static final String ID = "_id";
-    private static final String APN = "apn";
-    private static final String TYPE = "type";
-    private static final String NAME = "name";
-    private static final String PROXY = "proxy";
-    private static final String PORT = "port";
-    private static final String MMSC = "mmsc";
-    private static final String MCC = "mcc";
-    private static final String MNC = "mnc";
-    private static final String AUTH_TYPE = "authtype";
+    public static final String SUFFIX = "apndroid";
 
     // from frameworks/base/core/java/android/provider/Telephony.java
     private static final Uri CONTENT_URI = Uri.parse("content://telephony/carriers");
@@ -126,10 +113,10 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
     private List<ApnInfo> selectApnInfo(String whereQuery, String[] whereParams) {
         Cursor cursor = null;
         try {
-            cursor = mContentResolver.query(CONTENT_URI, new String[] { ID, APN, TYPE }, whereQuery, whereParams, null);
-
-            if (cursor == null) return Collections.emptyList();
-            
+            cursor = mContentResolver.query(CONTENT_URI, ApnQuery.PROJECTION, whereQuery, whereParams, null);
+            if (cursor == null) {
+                return Collections.emptyList();
+            }
             return createApnList(cursor);
         } finally {
             if (cursor != null) {
@@ -141,12 +128,10 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
     private List<ExtendedApnInfo> selectExtendedApnInfo(String whereQuery, String[] whereParams) {
         Cursor cursor = null;
         try {
-            cursor = mContentResolver.query(CONTENT_URI,
-                    new String[] { ID, APN, TYPE, NAME, PROXY, PORT, MMSC, MCC, MNC, AUTH_TYPE },
-                    whereQuery, whereParams, null);
-
-            if (cursor == null) return Collections.emptyList();
-
+            cursor = mContentResolver.query(CONTENT_URI, ApnQuery.PROJECTION, whereQuery, whereParams, null);
+            if (cursor == null) {
+                return Collections.emptyList();
+            }
             return createExtendedApnList(cursor);
         } finally {
             if (cursor != null) {
@@ -171,10 +156,11 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         List<ApnInfo> result = new ArrayList<ApnInfo>();
         mCursor.moveToFirst();
         while (!mCursor.isAfterLast()) {
-            long id = mCursor.getLong(0);
-            String apn = mCursor.getString(1);
-            String type = mCursor.getString(2);
-            result.add(new ApnInfo(id, apn, type));
+            result.add(new ApnInfo(
+                    mCursor.getLong(ApnQuery._ID),
+                    mCursor.getString(ApnQuery.APN),
+                    mCursor.getString(ApnQuery.TYPE)
+                    ));
             mCursor.moveToNext();
         }
         return result;
@@ -185,16 +171,16 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             ExtendedApnInfo info = new ExtendedApnInfo(
-                cursor.getLong(0),
-                cursor.getString(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getString(4),
-                cursor.getString(5),
-                cursor.getString(6),
-                cursor.getString(7),
-                cursor.getString(8),
-                cursor.getString(9)
+                cursor.getLong(ApnQuery._ID),
+                cursor.getString(ApnQuery.APN),
+                cursor.getString(ApnQuery.TYPE),
+                cursor.getString(ApnQuery.NAME),
+                cursor.getString(ApnQuery.PROXY),
+                cursor.getString(ApnQuery.PORT),
+                cursor.getString(ApnQuery.MMSC),
+                cursor.getString(ApnQuery.MCC),
+                cursor.getString(ApnQuery.MNC),
+                cursor.getString(ApnQuery.AUTH_TYPE)
             );
             result.add(info);
 
@@ -231,14 +217,14 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
             String newApnName = removeSuffix(apnInfo.getApn());
-            values.put(APN, newApnName);
+            values.put(ApnColumns.APN, newApnName);
             String newApnType = removeComplexSuffix(apnInfo.getType());
             if ("".equals(newApnType)) {
-                values.putNull(TYPE);
+                values.putNull(ApnColumns.TYPE);
             } else {
-                values.put(TYPE, newApnType);
+                values.put(ApnColumns.TYPE, newApnType);
             }
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[] { String.valueOf(apnInfo.getId()) });
+            contentResolver.update(CONTENT_URI, values, ApnColumns._ID + "=?", new String[] { String.valueOf(apnInfo.getId()) });
 
         }
         return true;// we always return true because in any situation we can
@@ -250,10 +236,10 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         for (ApnInfo apnInfo : apns) {
             ContentValues values = new ContentValues();
             String newApnName = addSuffix(apnInfo.getApn());
-            values.put(APN, newApnName);
+            values.put(ApnColumns.APN, newApnName);
             String newApnType = addComplexSuffix(apnInfo.getType());
-            values.put(TYPE, newApnType);
-            contentResolver.update(CONTENT_URI, values, ID + "=?", new String[] { String.valueOf(apnInfo.getId()) });
+            values.put(ApnColumns.TYPE, newApnType);
+            contentResolver.update(CONTENT_URI, values, ApnColumns._ID + "=?", new String[] { String.valueOf(apnInfo.getId()) });
         }
         return true;
     }
@@ -275,7 +261,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         try {
             cursor = mContentResolver.query(CONTENT_URI, new String[] { "count(*)" }, whereQuery, whereParams, null);
             if (cursor != null && cursor.moveToFirst()) {
-                return cursor.getInt(0);
+                return cursor.getInt(ApnQuery._ID);
             } else {
                 return -1;
             }
@@ -358,10 +344,10 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
 
     @Override
     public Long getCurrentActiveApnId() {
-        Cursor cursor = mContentResolver.query(PREFERRED_APN_URI, new String[]{ID}, null, null, null);
+        Cursor cursor = mContentResolver.query(PREFERRED_APN_URI, new String[]{ApnColumns._ID}, null, null, null);
         cursor.moveToFirst();
         if (!cursor.isAfterLast()){
-            return cursor.getLong(0);
+            return cursor.getLong(ApnQuery._ID);
         }
         return null;
     }
