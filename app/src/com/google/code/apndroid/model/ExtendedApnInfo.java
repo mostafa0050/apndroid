@@ -4,75 +4,60 @@ package com.google.code.apndroid.model;
  * @author pavlov
  * @since 26.08.11
  */
-public class ExtendedApnInfo extends ApnInfo{
+public class ExtendedApnInfo extends ApnInfo {
 
-    private String name;
+    private final String name;
 
-    private String proxy;
+    private final String proxy;
 
-    private String port;
+    private final String port;
 
-    private String mmsc;
+    private final String mmsc;
 
-    private String mmc;
+    private final String mmc;
 
-    private String mnc;
+    private final String mnc;
 
-    private String authType;
+    private final String authType;
+
+    public ExtendedApnInfo(long id, String apn, String type, String name, String proxy, String port,
+                           String mmsc, String mmc, String mnc, String authType) {
+        super(id, apn, type);
+        this.name = name;
+        this.proxy = proxy;
+        this.port = port;
+        this.mmsc = mmsc;
+        this.mmc = mmc;
+        this.mnc = mnc;
+        this.authType = authType;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getProxy() {
         return proxy;
     }
 
-    public void setProxy(String proxy) {
-        this.proxy = proxy;
-    }
-
     public String getPort() {
         return port;
-    }
-
-    public void setPort(String port) {
-        this.port = port;
     }
 
     public String getMmsc() {
         return mmsc;
     }
 
-    public void setMmsc(String mmsc) {
-        this.mmsc = mmsc;
-    }
-
     public String getMmc() {
         return mmc;
-    }
-
-    public void setMmc(String mmc) {
-        this.mmc = mmc;
     }
 
     public String getMnc() {
         return mnc;
     }
 
-    public void setMnc(String mnc) {
-        this.mnc = mnc;
-    }
-
     public String getAuthType() {
         return authType;
     }
 
-    public void setAuthType(String authType) {
-        this.authType = authType;
-    }
 }

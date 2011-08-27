@@ -22,7 +22,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import com.google.code.apndroid.Constants;
 import com.google.code.apndroid.model.ApnInfo;
 import com.google.code.apndroid.model.ExtendedApnInfo;
@@ -185,17 +184,18 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         List<ExtendedApnInfo> result = new LinkedList<ExtendedApnInfo>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
-            ExtendedApnInfo info = new ExtendedApnInfo();
-            info.setId(cursor.getLong(0));
-            info.setType(cursor.getString(1));
-            info.setType(cursor.getString(2));
-            info.setName(cursor.getString(3));
-            info.setProxy(cursor.getString(4));
-            info.setPort(cursor.getString(5));
-            info.setMmsc(cursor.getString(6));
-            info.setMmc(cursor.getString(7));
-            info.setMnc(cursor.getString(8));
-            info.setAuthType(cursor.getString(9));
+            ExtendedApnInfo info = new ExtendedApnInfo(
+                cursor.getLong(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getString(5),
+                cursor.getString(6),
+                cursor.getString(7),
+                cursor.getString(8),
+                cursor.getString(9)
+            );
             result.add(info);
 
             cursor.moveToNext();
