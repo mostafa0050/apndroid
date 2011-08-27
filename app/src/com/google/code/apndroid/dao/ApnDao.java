@@ -298,7 +298,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         return mDisableAll ? "" : " and current is not null";
     }
 
-    public static String addSuffix(String currentName) {
+    private static String addSuffix(String currentName) {
         if (currentName == null) {
             return SUFFIX;
         } else {
@@ -306,7 +306,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         }
     }
 
-    public String addComplexSuffix(String complexString){
+    private String addComplexSuffix(String complexString){
         if (complexString == null) return SUFFIX;
 
         StringBuilder builder = new StringBuilder(complexString.length());
@@ -326,7 +326,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         return builder.toString();
     }
 
-    public static String removeSuffix(String currentName) {
+    private static String removeSuffix(String currentName) {
         if (currentName == null) {
             return "";
         }
@@ -337,7 +337,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
         }
     }
 
-    public static String removeComplexSuffix(String complexString){
+    private  static String removeComplexSuffix(String complexString){
         if (complexString == null) return "";
 
         StringBuilder builder = new StringBuilder(complexString.length());
