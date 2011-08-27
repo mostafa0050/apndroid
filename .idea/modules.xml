@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/apndroid.iml" filepath="$PROJECT_DIR$/app/apndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/locale_platform/locale_platform.iml" filepath="$PROJECT_DIR$/locale_platform/locale_platform.iml" />
+    </modules>
+  </component>
+</project>
+
