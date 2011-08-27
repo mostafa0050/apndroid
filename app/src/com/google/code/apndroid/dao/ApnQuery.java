@@ -2,7 +2,13 @@ package com.google.code.apndroid.dao;
 
 public final class ApnQuery {
 
-    public static String[] PROJECTION = {
+    public static String[] SWITCH_PROJECTION = {
+            ApnColumns._ID,
+            ApnColumns.APN,
+            ApnColumns.TYPE
+    };
+
+    public static String[] EXTENDED_PROJECTION = {
             ApnColumns._ID,
             ApnColumns.APN,
             ApnColumns.TYPE,

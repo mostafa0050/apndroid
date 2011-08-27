@@ -113,7 +113,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
     private List<ApnInfo> selectApnInfo(String whereQuery, String[] whereParams) {
         Cursor cursor = null;
         try {
-            cursor = mContentResolver.query(CONTENT_URI, ApnQuery.PROJECTION, whereQuery, whereParams, null);
+            cursor = mContentResolver.query(CONTENT_URI, ApnQuery.SWITCH_PROJECTION, whereQuery, whereParams, null);
             if (cursor == null) {
                 return Collections.emptyList();
             }
@@ -128,7 +128,7 @@ public final class ApnDao implements ConnectionDao, ApnInformationDao {
     private List<ExtendedApnInfo> selectExtendedApnInfo(String whereQuery, String[] whereParams) {
         Cursor cursor = null;
         try {
-            cursor = mContentResolver.query(CONTENT_URI, ApnQuery.PROJECTION, whereQuery, whereParams, null);
+            cursor = mContentResolver.query(CONTENT_URI, ApnQuery.EXTENDED_PROJECTION, whereQuery, whereParams, null);
             if (cursor == null) {
                 return Collections.emptyList();
             }
