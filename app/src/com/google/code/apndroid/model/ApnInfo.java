@@ -9,9 +9,6 @@ public class ApnInfo {
     private String apn;
     private String type;
 
-    public ApnInfo() {
-    }
-
     public ApnInfo(long id, String apn, String type) {
         this.id = id;
         this.apn = apn;
