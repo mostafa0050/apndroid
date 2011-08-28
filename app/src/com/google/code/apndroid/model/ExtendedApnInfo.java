@@ -7,17 +7,11 @@ package com.google.code.apndroid.model;
 public class ExtendedApnInfo extends ApnInfo {
 
     private final String name;
-
     private final String proxy;
-
     private final String port;
-
     private final String mmsc;
-
     private final String mcc;
-
     private final String mnc;
-
     private final String authType;
 
     public ExtendedApnInfo(long id, String apn, String type, String name, String proxy, String port,

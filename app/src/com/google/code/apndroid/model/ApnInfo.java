@@ -19,23 +19,12 @@ public class ApnInfo {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getApn() {
         return apn;
-    }
-
-    public void setApn(String apn) {
-        this.apn = apn;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 }
