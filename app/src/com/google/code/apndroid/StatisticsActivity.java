@@ -5,10 +5,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.code.apndroid.dao.ApnInformationDao;
 import com.google.code.apndroid.dao.DaoUtil;
+import com.google.code.apndroid.stats.MailStatisticsSender;
 import com.google.code.apndroid.stats.StatisticsData;
+import com.google.code.apndroid.stats.StatisticsSender;
+
+import java.security.PrivateKey;
 
 /**
  * Activity for gather phone information:
@@ -90,5 +96,18 @@ public class StatisticsActivity extends Activity {
         return (TextView) findViewById(id);
     }
 
+
+    public void doSendGatheredStats(View source){
+        StatisticsSender sender = getSender();
+        try{
+            sender.sendStatistics(phoneData);
+        }catch (Exception e){
+            Toast.makeText(this, "Failed to send statistics.\nReason: "+e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private StatisticsSender getSender(){
+        return new MailStatisticsSender("apndroid@dnpavlov.com", this);
+    }
 
 }
