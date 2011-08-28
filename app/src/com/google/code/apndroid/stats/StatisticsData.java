@@ -134,4 +134,12 @@ public class StatisticsData {
     public void setCurrentActiveApnId(Long currentActiveApnId) {
         this.currentActiveApnId = currentActiveApnId;
     }
+
+    public String getUserComment() {
+        return userComment;
+    }
+
+    public void setUserComment(String userComment) {
+        this.userComment = userComment;
+    }
 }
