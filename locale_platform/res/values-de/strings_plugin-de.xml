@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="twofortyfouram_locale_application_not_available">Anwendung ist nicht installiert.</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_title"><i>Locale</i> benötigt</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_button_install">Installieren</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_primary_message"><i>Locale</i> wird für dieses Plug-In benötigt. Möchten Sie <i>Locale</i> installieren?</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_secondary_message">Klicken Sie auf \"Installieren\" um <i>Locale</i> im Android Market zu finden.</string> <!-- "Install" should match up with the twofortyfouram_locale_marketactivity_dialog_button_install string -->
-</resources>
